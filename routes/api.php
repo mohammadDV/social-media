@@ -17,3 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::middleware(['auth:sanctum'])->get('/profile', function() {
+    return response()->json([
+        "title" => "yes"
+    ]);
+});
+
+
+require __DIR__.'/api/auth.php';

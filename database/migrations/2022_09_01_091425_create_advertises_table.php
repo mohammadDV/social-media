@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateAdvertisesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('advertises', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->text('link')->nullable();
+            $table->string('image', 2048);
+            $table->tinyInteger('status')->default(0);
+            $table->bigInteger('place_id')->nullable();
+            $table->bigInteger("user_id")->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('advertises');
+    }
+}
