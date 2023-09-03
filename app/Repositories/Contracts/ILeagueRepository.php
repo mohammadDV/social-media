@@ -3,6 +3,7 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\League;
+use App\Models\Step;
 
  /**
  * Interface ILeagueRepository.
@@ -22,5 +23,12 @@ interface ILeagueRepository  {
      * @return array
      */
     public function getLeagueInfo(League $league) :array;
+
+    /**
+     * Get the step info.
+     * @param Step $step
+     * @return array
+     */
+    public function getStepInfo(Step $step) :array;
 
 }

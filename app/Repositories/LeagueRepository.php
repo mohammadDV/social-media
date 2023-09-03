@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Services\Image\ImageService;
 use App\Services\MatchService;
 use App\Models\League;
+use App\Models\Step;
 use App\Repositories\Contracts\ILeagueRepository;
 use Illuminate\Http\Client\Request;
 
@@ -72,6 +73,24 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
         }
 
         return $data;
+
+    }
+
+    /**
+     * Get the step info.
+     * @param Step $step
+     * @return array
+     */
+    public function getStepInfo(Step $step) :array
+    {
+
+        $league     = League::find($step->league_id);
+        $matches    = $this->getMatches($step->id);
+        $clubs      = $league->type == 1 ? $this->getClubs($league->id) : $this->getTournamentClubs($step->id);
+        return [
+            "matches"   => $matches,
+            "clubs"     => $clubs,
+        ];
 
     }
 

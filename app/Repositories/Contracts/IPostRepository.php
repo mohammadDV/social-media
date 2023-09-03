@@ -2,6 +2,16 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Http\Requests\PostRequest;
+use App\Http\Requests\PostUpdateRequest;
+use App\Http\Resources\PostResource;
+use App\Models\Category;
+use App\Models\Post;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
+
  /**
  * Interface IPostRepository.
  */
@@ -14,5 +24,66 @@ interface IPostRepository  {
      * @return array
      */
     public function index(array $categories, int $count) :array;
+
+    /**
+     * Get the post info.
+     * @param Post $post
+     * @return PostResource
+     */
+    public function getPostInfo(Post $post) :PostResource;
+
+    /**
+     * Get all of post per category.
+     * @param Category $category
+     * @return AnonymousResourceCollection
+     */
+    public function getPostsPerCategory(Category $category) :AnonymousResourceCollection;
+
+    /**
+     * Get searched posts.
+     * @param search $category
+     * @return AnonymousResourceCollection
+     */
+    public function search(string $search) :AnonymousResourceCollection;
+
+    /**
+     * Get all posts.
+     * @return LengthAwarePaginator
+     */
+    public function postPaginate() :LengthAwarePaginator;
+
+    /**
+     * Store the post.
+     *
+     * @param  PostRequest  $request
+     * @return JsonResponse
+     */
+    public function store(PostRequest $request) :JsonResponse;
+
+    /**
+     * Update the post.
+     *
+     * @param  PostUpdateRequest  $request
+     * @param  Post  $post
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function update(PostUpdateRequest $request, Post $post) :JsonResponse;
+
+    /**
+     * Delete the post.
+     *
+     * @param  Post  $post
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function destroy(Post $post) :JsonResponse;
+
+    /**
+     * Delete completely the post.
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function realDestroy(int $id): JsonResponse;
 
 }
