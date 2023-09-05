@@ -23,4 +23,5 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::delete('/{status}', [StatusController::class, 'destroy'])->name('profile.status.delete');
         Route::delete('/delete/{status}', [StatusController::class, 'realDestroy'])->name('profile.status.real.delete');
     });
+
 });

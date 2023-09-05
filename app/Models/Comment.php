@@ -25,7 +25,10 @@ class Comment extends Model
 
     public function parents()
     {
-        return $this->hasMany(Comment::class, 'parent_id')->with('user');
+        return $this->hasMany(Comment::class, 'parent_id')
+            ->with('user')
+            ->with('likes.user')
+            ->where('status', 1);
     }
 
     public function likes()
