@@ -13,6 +13,11 @@ class Comment extends Model
 //    protected $dateFormat   = 'U';
     protected $guarded      = [];
 
+    protected $hidden = [
+        'commentable_type',
+        'commentable_id',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

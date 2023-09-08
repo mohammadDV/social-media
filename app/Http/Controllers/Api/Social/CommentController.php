@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\Social;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\PostUpdateRequest;
+use App\Http\Requests\StoreCommentRequest;
 use App\Models\Post;
+use App\Models\Status;
 use App\Repositories\Contracts\ICommentRepository;
 use App\Repositories\Contracts\IPostRepository;
 use Illuminate\Http\JsonResponse;
@@ -33,11 +35,35 @@ class CommentController extends Controller
     }
 
     /**
-     * Store the post.
+     * Store the post comment
+     * @param StoreCommentRequest $request
+     * @param Post $post
+     * @return JsonResponse
      */
-    public function store(PostRequest $request): JsonResponse
+    public function storePostComment(StoreCommentRequest $request, Post $post): JsonResponse
     {
-        return $this->repository->store($request);
+        return $this->repository->storePostComment($request, $post);
+    }
+
+    /**
+     * Get the status comments.
+     * @param Status $status
+     * @return JsonResponse
+     */
+    public function getStatusComments(Status $status): JsonResponse
+    {
+        return response()->json($this->repository->getStatusComments($status), Response::HTTP_OK);
+    }
+
+    /**
+     * Store the status comment
+     * @param StoreCommentRequest $request
+     * @param Status $status
+     * @return JsonResponse
+     */
+    public function storeStatusComment(StoreCommentRequest $request, Status $status): JsonResponse
+    {
+        return $this->repository->storeStatusComment($request, $status);
     }
 
     /**

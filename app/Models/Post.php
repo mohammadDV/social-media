@@ -38,7 +38,7 @@ class Post extends Model
 
     public function likes()
     {
-        return $this->morphMany(Comment::class,"Likeable",'likeable_type', 'likeable_id');
+        return $this->morphMany(Like::class,"Likeable",'likeable_type', 'likeable_id')->with('user');
     }
 
     public function user()

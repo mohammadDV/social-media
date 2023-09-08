@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Social\CommentController;
 use App\Http\Controllers\Api\Social\FollowController;
+use App\Http\Controllers\Api\Social\LikeController;
 use App\Http\Controllers\Api\Social\MemberController;
 use App\Http\Controllers\Api\social\StatusController;
 use App\Models\User;
@@ -19,9 +20,16 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
 
     // Comment
     Route::prefix('comment')->group(function () {
-        Route::get('/post/{post}', [CommentController::class, 'getPostComments'])->name('profile.comment.post');
-        Route::post('/post/{post}', [CommentController::class, 'store'])->name('profile.comment.post.store');
-        Route::get('/status/{status}', [CommentController::class, 'getStatusComments'])->name('profile.comment.status');
-        Route::post('/status/{status}', [CommentController::class, 'statusStore'])->name('profile.comment.status.store');
+        Route::get('/post/{post}', [CommentController::class, 'getPostComments'])->name('social.comment.post');
+        Route::post('/post/{post}', [CommentController::class, 'storePostComment'])->name('social.comment.post.store');
+        Route::get('/status/{status}', [CommentController::class, 'getStatusComments'])->name('social.comment.status');
+        Route::post('/status/{status}', [CommentController::class, 'storeStatusComment'])->name('social.comment.status.store');
+    });
+
+    // Like
+    Route::prefix('like')->group(function () {
+        Route::post('/all', [LikeController::class, 'getLikes'])->name('social.like.get.all');
+        Route::post('/count', [LikeController::class, 'getLikeCount'])->name('social.like.get.count');
+        Route::post('/', [LikeController::class, 'store'])->name('social.like.store');
     });
 });
