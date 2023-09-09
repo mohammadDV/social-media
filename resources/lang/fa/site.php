@@ -1,6 +1,7 @@
 <?php
 return array(
-    'You choose dupliacate club'                             => 'شما یک باشگاه را دوبار انتخاب نموده اید.',
+    'Duplicate email error'                             => 'این ایمیل در سیستم قبلا ثبت شده است.',
+    'You choose duplicate club'                             => 'شما یک باشگاه را دوبار انتخاب نموده اید.',
     'Top main page'                             => 'بالای صفحه اصلی',
     'Left main page'                             => 'سمت چپ صفحه اصلی',
     'Top ranking main page'                             => 'بالای رده بندی در صفحه اصلی',

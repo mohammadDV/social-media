@@ -7,7 +7,7 @@ use App\Http\Requests\StatusUpdateRequest;
 use App\Models\Status;
 use App\Models\User;
 use App\Repositories\Contracts\IStatusRepository;
-use App\Repositories\traits\LevelAccess;
+use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class StatusRepository implements IStatusRepository {
 
 
-    use LevelAccess;
+    use GlobalFunc;
 
     /**
      * @param ImageService $imageService

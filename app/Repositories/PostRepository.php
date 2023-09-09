@@ -10,7 +10,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Repositories\Contracts\IPostRepository;
-use App\Repositories\traits\LevelAccess;
+use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
 use Illuminate\Http\JsonResponse;
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 
 class PostRepository implements IPostRepository {
 
-    use LevelAccess;
+    use GlobalFunc;
 
     protected $categories_id    = [];
     protected $count            = 100;
