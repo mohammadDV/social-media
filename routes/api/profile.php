@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Profile\ClubController;
 use App\Http\Controllers\Api\Profile\PostController;
 use App\Http\Controllers\Api\Profile\StatusController;
 use App\Http\Controllers\Api\Profile\UserController;
@@ -31,8 +32,29 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::get('/info', [UserController::class, 'show'])->name('profile.user.show');
         Route::post('/', [UserController::class, 'store'])->name('profile.user.store');
         Route::post('/{user}', [UserController::class, 'update'])->name('profile.user.update');
-        Route::get('/password', [PasswordController::class, 'index'])->name('profile.user.password');
-        Route::patch('/password/update', [PasswordController::class, 'update'])->name('profile.user.password.update');
+        Route::patch('/password', [UserController::class, 'updatePassword'])->name('profile.user.password.update');
+    });
+
+    // clubs
+    Route::prefix('clubs')->group(function () {
+        Route::get('/', [ClubController::class, 'indexPaginate'])->name('profile.club.index');
+        Route::get('/{club}', [ClubController::class, 'show'])->name('profile.club.show');
+        Route::post('/', [ClubController::class, 'store'])->name('profile.club.store');
+        Route::post('/{club}', [ClubController::class, 'update'])->name('profile.club.update');
+        Route::delete('/{club}', [ClubController::class, 'destroy'])->name('profile.club.delete');
+    });
+
+    // leagues
+    Route::prefix('league')->group(function () {
+        Route::get('/', [LeagueController::class, 'index'])->name('profile.league.index');
+        Route::post('/get', [LeagueController::class, 'get'])->name('profile.league.get');
+        Route::get('/create', [LeagueController::class, 'create'])->name('profile.league.create');
+        Route::post('/', [LeagueController::class, 'store'])->name('profile.league.store');
+        Route::patch('/{league}', [LeagueController::class, 'update'])->name('profile.league.update');
+        Route::get('/edit/{league}', [LeagueController::class, 'edit'])->name('profile.league.edit');
+        Route::get('/delete/{league}', [LeagueController::class, 'destroy'])->name('profile.league.delete');
+        Route::get('/clubs/{league}', [LeagueController::class, 'getClubs'])->name('profile.league.clubs');
+        Route::post('/clubs/{league}', [LeagueController::class, 'storeClubs'])->name('profile.league.clubs.store');
     });
 
 });

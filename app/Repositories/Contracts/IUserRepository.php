@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
@@ -39,5 +40,13 @@ interface IUserRepository  {
      * @return JsonResponse
      */
     public function update(UpdateUserRequest $request, User $user) :JsonResponse;
+
+    /**
+    * Update the password of user.
+    * @param UpdatePasswordRequest $request
+    * @param User $user
+    * @return JsonResponse
+    */
+   public function updatePassword(UpdatePasswordRequest $request, User $user) :JsonResponse;
 
 }

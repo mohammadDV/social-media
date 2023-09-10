@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
@@ -104,6 +105,41 @@ class UserRepository implements IUserRepository {
         }
 
         throw new \Exception();
+    }
+
+    /**
+     * Update the password of user.
+     * @param UpdatePasswordRequest $request
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function updatePassword(UpdatePasswordRequest $request, User $user) :JsonResponse
+    {
+
+        if (empty($request->input('current_password')) || ! Hash::check($request->input('current_password'), auth()->user()->password)) {
+
+            return response()->json([
+                'status' => 0,
+                'message' => __('The provided password does not match your current password.')
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = User::query()
+            ->where('id' , Auth::user()->id)
+            ->update([
+                'password' => Hash::make($request->input('password')),
+            ]);
+
+
+        if ($user) {
+            return response()->json([
+                'status' => 1,
+                'message' => __('site.The password of user has been changed')
+            ], Response::HTTP_CREATED);
+        }
+
+        throw new \Exception();
+
     }
 
     /**

@@ -202,7 +202,7 @@ return array(
     'The operation failed'          => 'عملیات با خطا مواجه شد.',
     'Please insert your tags ...'   => 'لطفا تگ های خود را وارد کنید.',
     'Your comment has been stored successfully'   => 'دیگاه شما با موفقیت ثبت گردید.',
-    'The operation has been successfully'   => 'دیگاه شما با موفقیت ثبت گردید.',
+    'The operation has been successfully'   => 'عملیات با موفقیت انجام گردید.',
     'Please choose the type'   => 'لطفا یک تایپ را انتخاب کنید.',
     'Image,video, Maximum file size : 10M'                      => 'تصویر، ویدئو یا صوت. حداکثر حجم: 10 مگابایت',
     'What are you have in your mind? write it and get your followers involved'          => 'در ذهن شما چه می‌گذرد؟ چیزی بنویسید و دنبال کنندگان خود را نیز درگیر آن کنید...',

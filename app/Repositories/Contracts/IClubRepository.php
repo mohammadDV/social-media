@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Repositories\Contracts;
+
+use App\Http\Requests\ClubRequest;
+use App\Http\Requests\ClubUpdateRequest;
+use App\Http\Requests\TableRequest;
+use App\Http\Requests\UpdatePasswordRequest;
+use App\Models\Club;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
+
+ /**
+ * Interface IClubRepository.
+ */
+interface IClubRepository  {
+
+    /**
+     * Get the clubs pagination.
+     * @param TableRequest $request
+     * @return LengthAwarePaginator
+     */
+    public function indexPaginate(TableRequest $request) :LengthAwarePaginator;
+
+    /**
+     * Get the club.
+     * @param Club $club
+     * @return Club
+     */
+    public function show(Club $club) :Club;
+
+    /**
+     * Store the club.
+     * @param ClubRequest $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function store(ClubRequest $request) :JsonResponse;
+
+    /**
+     * Update the club.
+     * @param ClubUpdateRequest $request
+     * @param Club $club
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function update(ClubUpdateRequest $request, Club $club) :JsonResponse;
+
+    /**
+    * Delete the club.
+    * @param UpdatePasswordRequest $request
+    * @param Club $club
+    * @return JsonResponse
+    */
+   public function destroy(Club $club) :JsonResponse;
+
+}

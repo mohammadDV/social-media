@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
@@ -58,4 +59,16 @@ class UserController extends Controller
     {
         return $this->repository->update($request, $user);
     }
+
+    /**
+    * Update the password of user.
+    * @param UpdatePasswordRequest $request
+    * @param User $user
+    * @return JsonResponse
+    */
+   public function updatePassword(UpdatePasswordRequest $request, User $user) :JsonResponse
+   {
+        return $this->repository->updatePassword($request, $user);
+   }
+
 }
