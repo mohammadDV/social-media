@@ -13,7 +13,7 @@ use Illuminate\Http\Response;
 class StatusController extends Controller
 {
     /**
-     * Constructor of PostController.
+     * Constructor of StatusController.
      */
     public function __construct(protected IStatusRepository $repository)
     {

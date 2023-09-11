@@ -2,14 +2,34 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\LeagueRequest;
+use App\Http\Requests\LeagueUpdateRequest;
+use App\Http\Requests\TableRequest;
 use App\Services\Image\ImageService;
 use App\Services\MatchService;
 use App\Models\League;
 use App\Models\Step;
 use App\Repositories\Contracts\ILeagueRepository;
+use App\Repositories\traits\GlobalFunc;
+use App\Services\File\FileService;
 use Illuminate\Http\Client\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
 class LeagueRepository extends MatchService implements ILeagueRepository {
+
+    use GlobalFunc;
+
+    /**
+     * @param ImageService $imageService
+     * @param FileService $fileService
+     */
+    public function __construct(protected ImageService $imageService, protected FileService $fileService)
+    {
+
+    }
 
     /**
      * Get the leagues.
@@ -146,12 +166,69 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     }
 
     /**
-     * Get all of data.
-     * @param Request $request
+     * Get the clubs pagination.
+     * @param TableRequest $request
+     * @return LengthAwarePaginator
+     */
+    public function indexPaginate(TableRequest $request) :LengthAwarePaginator
+    {
+        $search = $request->input('search') ?? null;
+        $count = $request->input('count') ?? 10;
+
+        return League::query()
+            ->with('sport','country')
+            ->orderBy($request->get('column') ?? 'id', $request->get('sort') ?? 'desc')
+            ->when(!empty($search), function ($query) use($search) {
+                $query->where('title','like','%' . $search . '%')
+                ->orWhere('alias_title','like','%' . $search . '%');
+            })
+            ->paginate($count);
+    }
+
+    /**
+     * Get the League.
+     * @param League $league
      * @return League
      */
-    public function store(Request $request) :League
+    public function show(League $league) :League
     {
+        return League::query()
+                ->with('sport','country')
+                ->where('id', $league->id)
+                ->first();
+    }
+
+    /**
+    * Delete the club.
+    * @param UpdatePasswordRequest $request
+    * @param League $league
+    * @return JsonResponse
+    */
+   public function destroy(League $league) :JsonResponse
+   {
+        $this->checkLevelAccess(Auth::user()->id == $league->user_id);
+
+        $league->delete();
+
+        if ($league) {
+            return response()->json([
+                'status' => 1,
+                'message' => __('site.The operation has been successfully')
+            ], Response::HTTP_OK);
+        }
+
+        throw new \Exception();
+   }
+
+    /**
+     * Store the league.
+     * @param LeagueRequest $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function store(LeagueRequest $request) :JsonResponse
+    {
+        $this->checkLevelAccess();
 
         $imageService   = new ImageService();
         $imageResult    = null;
@@ -160,25 +237,41 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
             $imageResult = $imageService->save($request->file('image'));
         }
 
-        return League::create([
+        $league = League::create([
+            'alias_id'      => $request->input('alias_id'),
+            'alias_title'   => $request->input('alias_title'),
             'title'         => $request->input('title'),
             'image'         => $imageResult,
             'country_id'    => $request->input('country_id'),
             'sport_id'      => $request->input('sport_id'),
             'user_id'       => auth()->user()->id,
             'status'        => $request->input('status'),
-            'type'          => $request->input('type')
+            'type'          => $request->input('type'),
+            'priority'      => $request->input('priority', 0)
         ]);
+
+
+        if ($league) {
+            return response()->json([
+                'status' => 1,
+                'message' => __('site.The operation has been successfully')
+            ], Response::HTTP_CREATED);
+        }
+
+        throw new \Exception();
 
     }
 
     /**
      * Update the league.
-     * @param Request $request
+     * @param LeagueUpdateRequest $request
      * @param League $league
-     * @return bool
+     * @return JsonResponse
+     * @throws \Exception
      */
-    public function update(Request $request, League $league) :bool {
+    public function update(LeagueUpdateRequest $request, League $league) :JsonResponse
+    {
+        $this->checkLevelAccess(Auth::user()->id == $league->user_id);
 
         $imageService   = new ImageService();
         $imageResult    = $league->image;
@@ -190,72 +283,28 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
             }
         }
 
-        return $league->update([
+        $league = $league->update([
+            'alias_id'      => $request->input('alias_id'),
+            'alias_title'   => $request->input('alias_title'),
             'title'         => $request->input('title'),
             'image'         => $imageResult,
             'country_id'    => $request->input('country_id'),
             'sport_id'      => $request->input('sport_id'),
             'user_id'       => auth()->user()->id,
             'status'        => $request->input('status'),
-            'type'          => $request->input('type')
+            'type'          => $request->input('type'),
+            'priority'      => $request->input('priority', 0)
         ]);
 
-    }
 
-    /**
-     * Get the league.
-     * @param Request $request
-     * @return array
-     */
-    public function get(Request $request) :array
-    {
-        $draw               = $request->get('draw');
-        $start              = $request->get('start');
-        $rowperpage         = $request->get('length');
-        $columnIndex_arr    = $request->get('order');
-        $columnName_arr     = $request->get('columns');
-        $order_arr          = $request->get('order');
-        $search_arr         = $request->get('search');
-        $columnIndex        = $columnIndex_arr[0]['column'];
-        $columnName         = $columnName_arr[$columnIndex]['data'];
-        $columnSortOrder    = $order_arr[0]['dir'];
-        $searchValue        = $search_arr['value'];
-
-        $totalRecords = League::select('count(*) as allcount')->count();
-
-        $totalRecordsWithFilter = League::select('count(*) as allcount')
-            ->where('title','like','%' . $searchValue . '%')
-            ->orWhere('alias_title','like','%' . $searchValue . '%')
-            ->count();
-
-        $records = League::with('sport','country')->orderBy($columnName,$columnSortOrder)
-            ->where('title','like','%' . $searchValue . '%')
-            ->orWhere('alias_title','like','%' . $searchValue . '%')
-            ->skip($start)
-            ->take($rowperpage)
-            ->get();
-
-
-        $data_arr = [];
-        foreach ($records as $record) {
-            $data_arr[] = [
-                'id'            => $record->id,
-                'title'         => $record->title,
-                'user_id'       => $record->user_id,
-                'sport'         => $record->sport->title,
-                'country'       => $record->country->title,
-                'type'          => $record->type_name,
-                'status'        => $record->status_name,
-                'created_at'    => $record->created_at->diffforhumans(),
-            ];
+        if ($league) {
+            return response()->json([
+                'status' => 1,
+                'message' => __('site.The operation has been successfully')
+            ], Response::HTTP_OK);
         }
 
-        return [
-            "draw" => intval($draw),
-            "iTotalRecords" => $totalRecords,
-            "iTotalDisplayRecords" => $totalRecordsWithFilter,
-            "aaData" => $data_arr
-        ];
+        throw new \Exception();
 
     }
 }

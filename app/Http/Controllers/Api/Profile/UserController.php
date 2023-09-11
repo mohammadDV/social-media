@@ -9,13 +9,12 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
     /**
-     * Constructor of PostController.
+     * Constructor of UserController.
      */
     public function __construct(protected  IUserRepository $repository)
     {

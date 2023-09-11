@@ -14,7 +14,7 @@ use Illuminate\Http\Response;
 class ClubController extends Controller
 {
     /**
-     * Constructor of PostController.
+     * Constructor of ClubController.
      */
     public function __construct(protected  IClubRepository $repository)
     {
