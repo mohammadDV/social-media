@@ -139,58 +139,54 @@ class MatchService {
                     ]);
                 }
             }
-
             return true;
-
         });
-
-
     }
 
-    public function storeClubs($request,$league) {
+    // public function storeClubs($request,$league) {
 
-        return DB::transaction(function () use ($request,$league) {
-            $club_ids       = $request->input('club_id');
-            $points         = $request->input('points');
-            $games_count    = $request->input('games_count');
-            $clubs          = ClubLeague::Where('league_id',$league->id)->get();
-            foreach($clubs ?? [] as $key => $club){
+    //     return DB::transaction(function () use ($request,$league) {
+    //         $club_ids       = $request->input('club_id');
+    //         $points         = $request->input('points');
+    //         $games_count    = $request->input('games_count');
+    //         $clubs          = ClubLeague::Where('league_id',$league->id)->get();
+    //         foreach($clubs ?? [] as $key => $club){
 
-                $ID = array_search($club->club_id,$club_ids);
-                if(!$ID){
-                    ClubLeague::where([["club_id",$club->club_id],["league_id",$league->id]])->delete();
-                    continue;
-                }
+    //             $ID = array_search($club->club_id,$club_ids);
+    //             if(!$ID){
+    //                 ClubLeague::where([["club_id",$club->club_id],["league_id",$league->id]])->delete();
+    //                 continue;
+    //             }
 
-                if(!empty($club_ids[$ID])){
-                    ClubLeague::where([["club_id",$club_ids[$ID]],["league_id",$league->id]])->update([
-                        "points"        => clear($points[$ID]),
-                        "games_count"   => clear($games_count[$ID]),
-                        // "user_id"       => auth()->user()->id,
-                    ]);
-                }
+    //             if(!empty($club_ids[$ID])){
+    //                 ClubLeague::where([["club_id",$club_ids[$ID]],["league_id",$league->id]])->update([
+    //                     "points"        => clear($points[$ID]),
+    //                     "games_count"   => clear($games_count[$ID]),
+    //                     // "user_id"       => auth()->user()->id,
+    //                 ]);
+    //             }
 
-                unset($club_ids[$ID]);
-            }
+    //             unset($club_ids[$ID]);
+    //         }
 
-            foreach($club_ids ?? [] as $key => $club_id){
-                if(!empty($club_id)){
-                    ClubLeague::create([
-                        "club_id"       => clear($club_id),
-                        "points"        => clear($points[$key]),
-                        "games_count"   => clear($games_count[$key]),
-                        // "user_id"   => auth()->user()->id,
-                        "league_id"     => $league->id,
-                    ]);
-                }
-            }
+    //         foreach($club_ids ?? [] as $key => $club_id){
+    //             if(!empty($club_id)){
+    //                 ClubLeague::create([
+    //                     "club_id"       => clear($club_id),
+    //                     "points"        => clear($points[$key]),
+    //                     "games_count"   => clear($games_count[$key]),
+    //                     // "user_id"   => auth()->user()->id,
+    //                     "league_id"     => $league->id,
+    //                 ]);
+    //             }
+    //         }
 
-            return true;
+    //         return true;
 
-        });
+    //     });
 
 
-    }
+    // }
 
     public function storeTournamentClubs($request,$step) {
 

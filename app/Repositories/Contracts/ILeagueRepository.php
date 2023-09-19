@@ -6,6 +6,7 @@ use App\Http\Requests\LeagueRequest;
 use App\Http\Requests\LeagueUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Http\Requests\StoreClubRequest;
 use App\Models\League;
 use App\Models\Step;
 use Illuminate\Database\Eloquent\Collection;
@@ -76,6 +77,14 @@ interface ILeagueRepository  {
     * @return JsonResponse
     */
    public function destroy(League $league) :JsonResponse;
+
+    /**
+    * Store the club to the league.
+    * @param StoreClubRequest $request
+    * @param League $league
+    * @return JsonResponse
+    */
+   public function storeClub(StoreClubRequest $request, League $league) :JsonResponse;
 
     /**
     * Get the clubs of league.

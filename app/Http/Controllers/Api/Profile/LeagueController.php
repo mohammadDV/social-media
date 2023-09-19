@@ -72,6 +72,16 @@ class LeagueController extends Controller
         return $this->repository->destroy($league);
     }
 
+    /**
+     * Store the club to the league.
+     * @param League $league
+     * @return JsonResponse
+     */
+    public function storeClub(League $league) :JsonResponse
+    {
+        return $this->repository->storeClub($league);
+    }
+
      /**
     * Get the clubs of league.
     * @param League $league
