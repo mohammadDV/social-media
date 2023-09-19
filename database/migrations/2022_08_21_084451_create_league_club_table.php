@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLeagueClubTable extends Migration
+class CreateClubLeagueTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLeagueClubTable extends Migration
      */
     public function up()
     {
-        Schema::create('league_club', function (Blueprint $table) {
+        Schema::create('club_league', function (Blueprint $table) {
             $table->bigInteger("league_id")->unsigned()->index();
             $table->foreign('league_id')->references('id')->on('leagues')->onDelete('cascade');
             $table->bigInteger("club_id")->unsigned()->index();
@@ -31,6 +31,6 @@ class CreateLeagueClubTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('league_club');
+        Schema::dropIfExists('club_league');
     }
 }

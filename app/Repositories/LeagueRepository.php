@@ -12,6 +12,7 @@ use App\Models\Step;
 use App\Repositories\Contracts\ILeagueRepository;
 use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Client\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -87,7 +88,7 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
         $data['step']       = $this->getSteps($league->id ?? 0);
         $data['matches']    = $this->getMatches($data['step']['current']->id ?? 0);
         if($league->type == 1){
-            $data['clubs']      = $this->getClubs($league->id ?? 0);
+            $data['clubs']      = $this->getClubs($league);
         }else{
             $data['clubs']      = $this->getTournamentClubs($data['step']['current']->id ?? 0);
         }
@@ -106,7 +107,7 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
 
         $league     = League::find($step->league_id);
         $matches    = $this->getMatches($step->id);
-        $clubs      = $league->type == 1 ? $this->getClubs($league->id) : $this->getTournamentClubs($step->id);
+        $clubs      = $league->type == 1 ? $this->getClubs($league) : $this->getTournamentClubs($step->id);
         return [
             "matches"   => $matches,
             "clubs"     => $clubs,
@@ -306,5 +307,16 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
 
         throw new \Exception();
 
+    }
+
+    /**
+    * Get the clubs of league.
+    * @param League $league
+    * @return collectoin
+    */
+   public function getClubs(League $league) :Collection
+   {
+
+    return League::find($league->id)->clubs;
     }
 }

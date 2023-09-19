@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LeagueClub extends Model
+class ClubLeague extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
-    protected $table = "league_club";
+    protected $table = "club_league";
     public $timestamps = false;
 }

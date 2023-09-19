@@ -8,6 +8,7 @@ use App\Http\Requests\TableRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\League;
 use App\Models\Step;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -75,5 +76,12 @@ interface ILeagueRepository  {
     * @return JsonResponse
     */
    public function destroy(League $league) :JsonResponse;
+
+    /**
+    * Get the clubs of league.
+    * @param League $league
+    * @return collectoin
+    */
+   public function getClubs(League $league) :Collection;
 
 }

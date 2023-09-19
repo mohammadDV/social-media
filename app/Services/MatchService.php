@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Club;
-use App\Models\LeagueClub;
+use App\Models\ClubLeague;
 use App\Models\Matches;
 use App\Models\Step;
 use App\Models\StepClub;
@@ -66,23 +66,6 @@ class MatchService {
         return $result;
     }
 
-    public function getClubs(int $league_id) : array {
-        $result = [];
-
-        $leagueClub = LeagueClub::where('league_id',$league_id)->take(100)->orderBy('points','DESC')->get();
-        $clubs      = Club::whereIn('id',array_merge(array_column($leagueClub->toArray(),'club_id')))->get()->keyBy('id');
-
-        foreach($leagueClub ?? [] as $key => $item) {
-            $result[$key]['id']             = $key+1;
-            $result[$key]['club_id']        = $item->club_id;
-            $result[$key]['points']         = $item->points;
-            $result[$key]['games_count']    = $item->games_count;
-            $result[$key]['title']          = $clubs[$item->club_id]->title;
-            $result[$key]['image']          = $clubs[$item->club_id]->image;
-        }
-        return $result;
-    }
-
     public function getTournamentClubs(int $step_id) : array {
         $result = [];
 
@@ -103,10 +86,10 @@ class MatchService {
     public function getClubsPerTournament(int $league_id) : array {
         $result = [];
 
-        $leagueClub = LeagueClub::where('league_id',$league_id)->take(100)->orderBy('points','DESC')->get();
-        $clubs      = Club::whereIn('id',array_merge(array_column($leagueClub->toArray(),'club_id')))->get()->keyBy('id');
+        $clubLeague = ClubLeague::where('league_id',$league_id)->take(100)->orderBy('points','DESC')->get();
+        $clubs      = Club::whereIn('id',array_merge(array_column($clubLeague->toArray(),'club_id')))->get()->keyBy('id');
 
-        foreach($leagueClub ?? [] as $key => $item) {
+        foreach($clubLeague ?? [] as $key => $item) {
             $result[$key]['id']             = $key+1;
             $result[$key]['points']         = $item->points;
             $result[$key]['games_count']    = $item->games_count;
@@ -170,17 +153,17 @@ class MatchService {
             $club_ids       = $request->input('club_id');
             $points         = $request->input('points');
             $games_count    = $request->input('games_count');
-            $clubs          = LeagueClub::Where('league_id',$league->id)->get();
+            $clubs          = ClubLeague::Where('league_id',$league->id)->get();
             foreach($clubs ?? [] as $key => $club){
 
                 $ID = array_search($club->club_id,$club_ids);
                 if(!$ID){
-                    LeagueClub::where([["club_id",$club->club_id],["league_id",$league->id]])->delete();
+                    ClubLeague::where([["club_id",$club->club_id],["league_id",$league->id]])->delete();
                     continue;
                 }
 
                 if(!empty($club_ids[$ID])){
-                    LeagueClub::where([["club_id",$club_ids[$ID]],["league_id",$league->id]])->update([
+                    ClubLeague::where([["club_id",$club_ids[$ID]],["league_id",$league->id]])->update([
                         "points"        => clear($points[$ID]),
                         "games_count"   => clear($games_count[$ID]),
                         // "user_id"       => auth()->user()->id,
@@ -192,7 +175,7 @@ class MatchService {
 
             foreach($club_ids ?? [] as $key => $club_id){
                 if(!empty($club_id)){
-                    LeagueClub::create([
+                    ClubLeague::create([
                         "club_id"       => clear($club_id),
                         "points"        => clear($points[$key]),
                         "games_count"   => clear($games_count[$key]),

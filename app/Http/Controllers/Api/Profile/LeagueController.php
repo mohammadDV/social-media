@@ -71,4 +71,14 @@ class LeagueController extends Controller
     {
         return $this->repository->destroy($league);
     }
+
+     /**
+    * Get the clubs of league.
+    * @param League $league
+    * @return JsonResponse
+    */
+    public function getClubs(League $league) :JsonResponse
+    {
+        return response()->json($this->repository->getClubs($league), Response::HTTP_OK);
+    }
 }
