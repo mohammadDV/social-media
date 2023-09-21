@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Profile\ClubController;
 use App\Http\Controllers\Api\Profile\LeagueController;
 use App\Http\Controllers\Api\Profile\PostController;
 use App\Http\Controllers\Api\Profile\StatusController;
+use App\Http\Controllers\Api\Profile\StepController;
 use App\Http\Controllers\Api\Profile\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,5 +56,17 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::get('/clubs/{league}', [LeagueController::class, 'getClubs'])->name('profile.league.clubs');
         Route::post('/clubs/{league}', [LeagueController::class, 'storeClubs'])->name('profile.league.clubs.store');
     });
+
+    // steps
+    Route::prefix('steps')->group(function () {
+        Route::get('/{step}', [StepController::class, 'getStepInfo'])->name('profile.step');
+        Route::get('/create/{league}', [StepController::class, 'create'])->name('profile.step.create');
+        Route::post('/{league}', [StepController::class, 'store'])->name('profile.step.store');
+        Route::patch('/{step}', [StepController::class, 'update'])->name('profile.step.update');
+        Route::delete('/{step}', [StepController::class, 'destroy'])->name('profile.step.destroy');
+        Route::get('/clubs/{step}', [StepController::class, 'getClubs'])->name('profile.step.clubs');
+        Route::post('/clubs/{step}', [StepController::class, 'storeClubs'])->name('profile.step.clubs.store');
+    });
+
 
 });

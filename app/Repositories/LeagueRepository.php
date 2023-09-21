@@ -4,7 +4,9 @@ namespace App\Repositories;
 
 use App\Http\Requests\LeagueRequest;
 use App\Http\Requests\LeagueUpdateRequest;
+use App\Http\Requests\StoreClubRequest;
 use App\Http\Requests\TableRequest;
+use App\Models\ClubLeague;
 use App\Services\Image\ImageService;
 use App\Services\MatchService;
 use App\Models\League;
@@ -95,24 +97,6 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
         }
 
         return $data;
-
-    }
-
-    /**
-     * Get the step info.
-     * @param Step $step
-     * @return array
-     */
-    public function getStepInfo(Step $step) :array
-    {
-
-        $league     = League::find($step->league_id);
-        $matches    = $this->getMatches($step->id);
-        $clubs      = $league->type == 1 ? $this->getClubs($league) : $this->getTournamentClubs($step->id);
-        return [
-            "matches"   => $matches,
-            "clubs"     => $clubs,
-        ];
 
     }
 
@@ -326,49 +310,34 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     * @param League $league
     * @return JsonResponse
     */
-    public function storeClub(StoreClubRequest $request, League $league) :JsonResponse
+    public function storeClubs(StoreClubRequest $request, League $league) :JsonResponse
     {
 
         return DB::transaction(function () use ($request,$league) {
 
-            
+            $clubs = $request->input('clubs');
 
-            $club_ids       = $request->input('club_id');
-            $points         = $request->input('points');
-            $games_count    = $request->input('games_count');
-            $clubs          = ClubLeague::Where('league_id',$league->id)->get();
-            foreach($clubs ?? [] as $key => $club){
+            // Delete all of clubs
+            ClubLeague::query()
+                ->where("league_id", $league->id)
+                ->delete();
 
-                $ID = array_search($club->club_id,$club_ids);
-                if(!$ID){
-                    ClubLeague::where([["club_id",$club->club_id],["league_id",$league->id]])->delete();
-                    continue;
-                }
+            // Add all of clubs
 
-                if(!empty($club_ids[$ID])){
-                    ClubLeague::where([["club_id",$club_ids[$ID]],["league_id",$league->id]])->update([
-                        "points"        => clear($points[$ID]),
-                        "games_count"   => clear($games_count[$ID]),
-                        // "user_id"       => auth()->user()->id,
-                    ]);
-                }
-
-                unset($club_ids[$ID]);
+            foreach ($clubs as $club) {
+                ClubLeague::create([
+                    "club_id"       => $club["id"],
+                    "points"        => $club["points"],
+                    "games_count"   => $club["games_count"],
+                    // "user_id"   => auth()->user()->id,
+                    "league_id"     => $league->id,
+                ]);
             }
 
-            foreach($club_ids ?? [] as $key => $club_id){
-                if(!empty($club_id)){
-                    ClubLeague::create([
-                        "club_id"       => clear($club_id),
-                        "points"        => clear($points[$key]),
-                        "games_count"   => clear($games_count[$key]),
-                        // "user_id"   => auth()->user()->id,
-                        "league_id"     => $league->id,
-                    ]);
-                }
-            }
-
-            return true;
+            return response()->json([
+                'status' => 1,
+                'message' => __('site.Clubs has been stored')
+            ], Response::HTTP_OK);
 
         });
 

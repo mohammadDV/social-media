@@ -30,4 +30,14 @@ class Matches extends Model
         }
         return $status;
     }
+
+    public function teamHome() {
+        return $this->belongsTo(Club::class, 'home_id');
+    }
+
+    public function teamAway() {
+        return $this->belongsTo(Club::class, 'away_id');
+    }
+
+
 }

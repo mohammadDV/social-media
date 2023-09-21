@@ -6,7 +6,7 @@ use App\Models\Club;
 use App\Models\ClubLeague;
 use App\Models\Matches;
 use App\Models\Step;
-use App\Models\StepClub;
+use App\Models\ClubStep;
 use Illuminate\Support\Facades\DB;
 
 class MatchService {
@@ -69,10 +69,10 @@ class MatchService {
     public function getTournamentClubs(int $step_id) : array {
         $result = [];
 
-        $stepClub   = StepClub::where('step_id',$step_id)->take(100)->orderBy('points','DESC')->get();
-        $clubs      = Club::whereIn('id',array_merge(array_column($stepClub->toArray(),'club_id')))->get()->keyBy('id');
+        $clubStep   = ClubStep::where('step_id',$step_id)->take(100)->orderBy('points','DESC')->get();
+        $clubs      = Club::whereIn('id',array_merge(array_column($clubStep->toArray(),'club_id')))->get()->keyBy('id');
 
-        foreach($stepClub ?? [] as $key => $item) {
+        foreach($clubStep ?? [] as $key => $item) {
             $result[$key]['id']             = $key+1;
             $result[$key]['club_id']        = $item->club_id;
             $result[$key]['points']         = $item->points;
@@ -194,17 +194,17 @@ class MatchService {
             $club_ids       = $request->input('club_id');
             $points         = $request->input('points');
             $games_count    = $request->input('games_count');
-            $clubs          = StepClub::Where('step_id',$step->id)->get();
+            $clubs          = ClubStep::Where('step_id',$step->id)->get();
             foreach($clubs ?? [] as $key => $club){
 
                 $ID = array_search($club->club_id,$club_ids);
                 if(!$ID){
-                    StepClub::where([["club_id",$club->club_id],["step_id",$step->id]])->delete();
+                    ClubStep::where([["club_id",$club->club_id],["step_id",$step->id]])->delete();
                     continue;
                 }
 
                 if(!empty($club_ids[$ID])){
-                    StepClub::where([["club_id",$club_ids[$ID]],["step_id",$step->id]])->update([
+                    ClubStep::where([["club_id",$club_ids[$ID]],["step_id",$step->id]])->update([
                         "points"        => clear($points[$ID]),
                         "games_count"   => clear($games_count[$ID]),
                         // "user_id"       => auth()->user()->id,
@@ -216,7 +216,7 @@ class MatchService {
 
             foreach($club_ids ?? [] as $key => $club_id){
                 if(!empty($club_id)){
-                    StepClub::create([
+                    ClubStep::create([
                         "club_id"       => clear($club_id),
                         "points"        => clear($points[$key]),
                         "games_count"   => clear($games_count[$key]),

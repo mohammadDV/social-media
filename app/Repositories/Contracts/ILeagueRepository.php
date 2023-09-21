@@ -33,13 +33,6 @@ interface ILeagueRepository  {
     public function getLeagueInfo(League $league) :array;
 
     /**
-     * Get the step info.
-     * @param Step $step
-     * @return array
-     */
-    public function getStepInfo(Step $step) :array;
-
-    /**
      * Get the leagues pagination.
      * @param TableRequest $request
      * @return LengthAwarePaginator
@@ -84,7 +77,7 @@ interface ILeagueRepository  {
     * @param League $league
     * @return JsonResponse
     */
-   public function storeClub(StoreClubRequest $request, League $league) :JsonResponse;
+   public function storeClubs(StoreClubRequest $request, League $league) :JsonResponse;
 
     /**
     * Get the clubs of league.

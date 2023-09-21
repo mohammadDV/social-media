@@ -14,4 +14,13 @@ class Step extends Model
     public function league() {
         return $this->belongsTo(League::class);
     }
+
+    public function matches() {
+        return $this->hasMany(Matches::class, 'step_id', 'id');
+    }
+
+    public function clubs()
+    {
+        return $this->belongsToMany(Club::class);
+    }
 }

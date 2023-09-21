@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LeagueRequest;
 use App\Http\Requests\LeagueUpdateRequest;
+use App\Http\Requests\StoreClubRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\League;
 use App\Repositories\Contracts\ILeagueRepository;
@@ -77,9 +78,9 @@ class LeagueController extends Controller
      * @param League $league
      * @return JsonResponse
      */
-    public function storeClub(League $league) :JsonResponse
+    public function storeClubs(StoreClubRequest $request, League $league) :JsonResponse
     {
-        return $this->repository->storeClub($league);
+        return $this->repository->storeClubs($request, $league);
     }
 
      /**
