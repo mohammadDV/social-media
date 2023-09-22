@@ -44,7 +44,6 @@ interface IStepRepository  {
 
     /**
     * Delete the step.
-    * @param UpdatePasswordRequest $request
     * @param Step $step
     * @return JsonResponse
     */

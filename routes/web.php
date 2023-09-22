@@ -223,6 +223,7 @@ Operation Bodyguard</span></a></sup></span></p>
             $data[] = [
                 "id" => $i,
                 "type" => rand(1,2),
+                "article_view" => rand(100,2000),
                 "title" => $i . "داستان روسیه از اول",
                 "file" => "https://bpluspodcast.com/wp-content/uploads/2023/07/%D8%AA%D8%A7%D8%B1%DB%8C%D8%AE-%D8%B1%D9%88%D8%B3%DB%8C%D9%87-%D8%B9%D9%84%DB%8C-%D8%A8%D9%86%D8%AF%D8%B1%DB%8C-%DA%A9%D8%A7%D9%86%D8%A7%D9%84-%DB%8C%D9%88%D8%AA%DB%8C%D9%88%D8%A8-%D8%A8%DB%8C-%D9%BE%D9%84%D8%A7%D8%B3-1024x576.jpg",
                 "summary" => "نویسنده: بهجت بندری، علی بندری روسیه رو که نگاه می‌کنیم امروز چی می‌بینیم؟ یک کشور خیلی خیلی بزرگ، قدرتمند، که از جایگاه خودش در دنیا راضی نیست. زمان تزارها همین…",
@@ -239,7 +240,7 @@ Operation Bodyguard</span></a></sup></span></p>
         );
     });
 
-    Route::get('/article/comment_list', function () {
+    Route::get('/article/comment_list/{id}', function () {
 
         $data = [];
         for ($i = 1; $i<10 ; $i++) {

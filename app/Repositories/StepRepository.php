@@ -137,8 +137,6 @@ class StepRepository extends MatchService implements IStepRepository {
     {
         $this->checkLevelAccess(Auth::user()->id == $step->user_id);
 
-        $this->checkLevelAccess();
-
         if($request->current == 1) {
             Step::query()
                 ->where('league_id', $step->league_id)

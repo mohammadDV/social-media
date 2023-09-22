@@ -9,7 +9,7 @@ class Matches extends Model
 {
     use HasFactory;
 
-    protected $teble = "matches";
+    protected $table = "matches";
 
     protected $guarded = [];
 

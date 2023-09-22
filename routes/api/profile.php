@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\ClubController;
 use App\Http\Controllers\Api\Profile\LeagueController;
 use App\Http\Controllers\Api\Profile\PostController;
@@ -66,6 +67,14 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::delete('/{step}', [StepController::class, 'destroy'])->name('profile.step.destroy');
         Route::get('/clubs/{step}', [StepController::class, 'getClubs'])->name('profile.step.clubs');
         Route::post('/clubs/{step}', [StepController::class, 'storeClubs'])->name('profile.step.clubs.store');
+    });
+
+    // matches
+    Route::prefix('matches')->group(function () {
+        Route::get('/{matches}', [MatchController::class, 'show'])->name('profile.match.show');
+        Route::patch('/{matches}', [MatchController::class, 'update'])->name('profile.match.update');
+        Route::delete('/{matches}', [MatchController::class, 'destroy'])->name('profile.match.destroy');
+        Route::post('/{step}', [MatchController::class, 'store'])->name('profile.match.store');
     });
 
 
