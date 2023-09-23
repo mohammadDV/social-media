@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api\Profile;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MatchRequest;
-use App\Models\Matches;
-use App\Models\Step;
-use App\Repositories\Contracts\IMatchRepository;
+use App\Http\Requests\PageRequest;
+use App\Http\Requests\PageUpdateRequest;
+use App\Http\Requests\TableRequest;
+use App\Models\Page;
+use App\Repositories\Contracts\IPageRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -15,51 +16,60 @@ class PageController extends Controller
     /**
      * Constructor of PageController.
      */
-    public function __construct(protected  IMatchRepository $repository)
+    public function __construct(protected  IPageRepository $repository)
     {
         //
     }
 
     /**
-     * Get the step.
-     * @param Matches $match
+     * Get all of page with pagination
+     * @param TableRequest $request
      * @return JsonResponse
      */
-    public function show(Matches $matches) :JsonResponse
+    public function indexPaginate(TableRequest $request): JsonResponse
     {
-
-        return response()->json($this->repository->show($matches), Response::HTTP_OK);
+        return response()->json($this->repository->indexPaginate($request), Response::HTTP_OK);
     }
 
     /**
-     * Store the match.
-     * @param MatchRequest $request
-     * @param Step $step
+     * Get the page.
+     * @param Page $page
      * @return JsonResponse
      */
-    public function store(MatchRequest $request, Step $step) :JsonResponse
+    public function show(Page $page) :JsonResponse
     {
-        return $this->repository->store($request, $step);
+
+        return response()->json($this->repository->show($page), Response::HTTP_OK);
     }
 
     /**
-     * Update the step.
-     * @param MatchRequest $request
-     * @param Matches $matches
+     * Store the page.
+     * @param PageRequest $request
      * @return JsonResponse
      */
-    public function update(MatchRequest $request, Matches $matches) :JsonResponse
+    public function store(PageRequest $request) :JsonResponse
     {
-        return $this->repository->update($request, $matches);
+        return $this->repository->store($request);
     }
 
     /**
-     * Delete the match.
-     * @param Matches $matches
+     * Update the page.
+     * @param PageUpdateRequest $request
+     * @param Page $page
      * @return JsonResponse
      */
-    public function destroy(Matches $matches) :JsonResponse
+    public function update(PageUpdateRequest $request, Page $page) :JsonResponse
     {
-        return $this->repository->destroy($matches);
+        return $this->repository->update($request, $page);
+    }
+
+    /**
+     * Delete the page.
+     * @param Page $page
+     * @return JsonResponse
+     */
+    public function destroy(Page $page) :JsonResponse
+    {
+        return $this->repository->destroy($page);
     }
 }
