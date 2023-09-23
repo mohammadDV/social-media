@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Profile\AdvertiseController;
 use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\ClubController;
 use App\Http\Controllers\Api\Profile\LeagueController;
+use App\Http\Controllers\Api\Profile\PageController;
 use App\Http\Controllers\Api\Profile\PostController;
 use App\Http\Controllers\Api\Profile\StatusController;
 use App\Http\Controllers\Api\Profile\StepController;
@@ -87,5 +88,13 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::delete('/{advertise}', [AdvertiseController::class, 'destroy'])->name('profile.advertise.delete');
     });
 
+    // pages
+    Route::prefix('pages')->group(function () {
+        Route::get('/', [PageController::class, 'indexPaginate'])->name('profile.page.index');
+        Route::get('/{page}', [PageController::class, 'show'])->name('profile.page.show');
+        Route::post('/', [PageController::class, 'store'])->name('profile.page.store');
+        Route::post('/{page}', [PageController::class, 'update'])->name('profile.page.update');
+        Route::delete('/{page}', [PageController::class, 'destroy'])->name('profile.page.delete');
+    });
 
 });

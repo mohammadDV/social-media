@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 
-class PageRequest extends BaseRequest
+class PageUpdateRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class PageRequest extends BaseRequest
             'content' => 'required|string',
             'status' => 'required|integer|in:0,1',
             'priority' => 'required|integer|min:0|max:100',
-            'image' => ['required','image','mimes:jpg,jpeg,png,gif,svg','max:2048'],
+            'image' => !empty($this->get('image')) ? ['required','image','mimes:jpg,jpeg,png,gif,svg','max:2048'] : 'sometimes',
         ];
     }
 }
