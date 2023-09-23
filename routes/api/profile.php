@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Profile\AdvertiseController;
 use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\ClubController;
 use App\Http\Controllers\Api\Profile\LeagueController;
@@ -75,6 +76,15 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::patch('/{matches}', [MatchController::class, 'update'])->name('profile.match.update');
         Route::delete('/{matches}', [MatchController::class, 'destroy'])->name('profile.match.destroy');
         Route::post('/{step}', [MatchController::class, 'store'])->name('profile.match.store');
+    });
+
+     // advertises
+     Route::prefix('advertise')->group(function () {
+        Route::get('/', [AdvertiseController::class, 'indexPaginate'])->name('profile.advertise.index');
+        Route::get('/{advertise}', [AdvertiseController::class, 'show'])->name('profile.advertise.show');
+        Route::post('/', [AdvertiseController::class, 'store'])->name('profile.advertise.store');
+        Route::post('/{advertise}', [AdvertiseController::class, 'update'])->name('profile.advertise.update');
+        Route::delete('/{advertise}', [AdvertiseController::class, 'destroy'])->name('profile.advertise.delete');
     });
 
 

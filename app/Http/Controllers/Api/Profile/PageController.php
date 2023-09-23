@@ -10,10 +10,10 @@ use App\Repositories\Contracts\IMatchRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
-class MatchController extends Controller
+class PageController extends Controller
 {
     /**
-     * Constructor of MatchController.
+     * Constructor of PageController.
      */
     public function __construct(protected  IMatchRepository $repository)
     {
@@ -21,7 +21,7 @@ class MatchController extends Controller
     }
 
     /**
-     * Get the match.
+     * Get the step.
      * @param Matches $match
      * @return JsonResponse
      */
@@ -43,7 +43,7 @@ class MatchController extends Controller
     }
 
     /**
-     * Update the match.
+     * Update the step.
      * @param MatchRequest $request
      * @param Matches $matches
      * @return JsonResponse
