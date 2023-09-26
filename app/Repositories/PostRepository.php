@@ -66,7 +66,7 @@ class PostRepository implements IPostRepository {
             count($data['latest'])  >= $this->latestCount || in_array($post->category_id,$this->ignoreCategories) ?: $data['latest'][] =  $post;
             if($post->type === 1){
                 if($post->special === 1 && count($data['latest']) < $this->spVideoCount) { $data['specialVideos'][] = $post; }
-                $$data['videos'][] = $post;
+                $data['videos'][] = $post;
             }else{
                 if($post->special === 1 && count($data['latest']) < $this->spPostCount) { $data['specialPosts'][] = $post; }
                 $data['posts'][$post->category_id][] = $post;
