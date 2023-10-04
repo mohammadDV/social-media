@@ -45,13 +45,25 @@ class StepRepository extends MatchService implements IStepRepository {
     /**
      * Get the step info.
      * @param Step $step
-     * @return Step
+     * @return array
      */
-    public function getStepInfo(Step $step) :Step
+    public function getStepInfo(Step $step) :array
     {
-        return Step::query()
+        $step = Step::query()
             ->where('id', $step->id)
-            ->with('league', 'matches', 'matches.teamHome', 'matches.teamAway', 'clubs')->first();
+            ->with('league')->first();
+            // ->with('league', 'matches', 'matches.teamHome', 'matches.teamAway', 'clubs')->first();
+
+        $data['matches']    = $this->getMatches($step->id);
+
+        // dd();
+        if($step->league->type == 1){
+            $data['clubs']      = $this->getClubs($step);
+        }else{
+            $data['clubs']      = $this->getTournamentClubs($step->id);
+        }
+
+        return $data;
 
     }
 
@@ -181,7 +193,7 @@ class StepRepository extends MatchService implements IStepRepository {
     */
    public function getClubs(Step $step) :Collection
    {
-        return Step::find($step->id)->clubs;
+        return League::find($step->league->id)->clubs;
    }
 
     /**

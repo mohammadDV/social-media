@@ -53,7 +53,6 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
             ->get();
         });
 
-
         $data       = [];
         $leagues    = [];
         $result     = [];
@@ -88,8 +87,8 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     public function getLeagueInfo(League $league) :array
     {
 
-        $data['step']       = $this->getSteps($league->id ?? 0);
-        $data['matches']    = $this->getMatches($data['step']['current']->id ?? 0);
+        $data['steps']       = $this->getSteps($league->id ?? 0);
+        $data['matches']    = $this->getMatches($data['steps']['current']->id ?? 0);
         if($league->type == 1){
             $data['clubs']      = $this->getClubs($league);
         }else{
