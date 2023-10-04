@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\League;
 use App\Models\Step;
 use App\Repositories\Contracts\ILeagueRepository;
+use App\Repositories\Contracts\IStepRepository;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 
@@ -14,7 +15,7 @@ class LeagueController extends Controller
     /**
      * Constructor of LeagueController.
      */
-    public function __construct(protected ILeagueRepository $repository)
+    public function __construct(protected ILeagueRepository $repository, protected IStepRepository $stepRepository)
     {
         //
     }
@@ -46,6 +47,6 @@ class LeagueController extends Controller
      */
     public function getStepInfo(Step $step): JsonResponse
     {
-        return response()->json($this->repository->getStepInfo($step), Response::HTTP_OK);
+        return response()->json($this->stepRepository->getStepInfo($step), Response::HTTP_OK);
     }
 }

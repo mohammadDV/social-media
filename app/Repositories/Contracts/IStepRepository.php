@@ -21,9 +21,9 @@ interface IStepRepository  {
     /**
      * Get the step info.
      * @param Step $step
-     * @return Step
+     * @return array
      */
-    public function getStepInfo(Step $step) :Step;
+    public function getStepInfo(Step $step) :array;
 
     /**
      * Store the step.
