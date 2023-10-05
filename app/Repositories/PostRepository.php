@@ -112,7 +112,7 @@ class PostRepository implements IPostRepository {
      */
     public function getPostInfo(Post $post) :PostResource
     {
-        $post = Post::with('comments.user', 'comments.parents')->find($post->id);
+        $post = Post::with('category' ,'comments.user', 'comments.parents')->find($post->id);
         return new PostResource($post);
     }
 

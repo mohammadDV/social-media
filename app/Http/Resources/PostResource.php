@@ -29,6 +29,7 @@ class PostResource extends JsonResource
             'video' => $this->video,
             'created_at' => $this->created_at,
             'comments' => CommentResource::collection($this->comments),
+            'category' => $this->category,
         ];
     }
 }
