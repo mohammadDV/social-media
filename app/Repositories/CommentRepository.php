@@ -3,12 +3,14 @@
 namespace App\Repositories;
 
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Status;
 use App\Repositories\Contracts\ICommentRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,12 +19,12 @@ class CommentRepository implements ICommentRepository {
     /**
      * Get the post comment
      * @param Post $post
-     * @return Collection
+     * @return CommentResource
      */
-    public function getPostComments(Post $post) :Collection
+    public function getPostComments(Post $post) :AnonymousResourceCollection
     {
 
-        return Comment::query()
+        $comments = Comment::query()
             ->where('parent_id', 0)
             ->where('commentable_id', $post->id)
             ->where('status', 1)
@@ -31,6 +33,9 @@ class CommentRepository implements ICommentRepository {
             ->with('likes')
             ->with('likes.user')
             ->get();
+
+        return CommentResource::collection($comments);
+
 
     }
 

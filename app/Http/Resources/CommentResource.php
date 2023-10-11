@@ -19,7 +19,7 @@ class CommentResource extends JsonResource
             'message' => $this->text,
             'user' => new UserResource($this->whenLoaded('user')),
             'parents' => CommentResource::collection($this->whenLoaded('parents')),
-            // Other comment attributes
+            'reply' => $this->reply,
         ];
     }
 }
