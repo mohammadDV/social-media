@@ -40,4 +40,8 @@ class Comment extends Model
     {
         return $this->morphMany(Like::class,"likeable",'likeable_type', 'likeable_id');
     }
+
+    public function getReplyAttribute() {
+        return false;
+    }
 }
