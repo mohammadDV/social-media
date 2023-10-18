@@ -119,20 +119,26 @@ class PostRepository implements IPostRepository {
     /**
      * Get all of post per category.
      * @param Category $category
-     * @return AnonymousResourceCollection
+     * @return array
      */
-    public function getPostsPerCategory(Category $category) :AnonymousResourceCollection
+    public function getPostsPerCategory(Category $category) :array
     {
         // ->addMinutes('1'),
-        return cache()->remember("posts.per.category." . $category->id, now(),
+        $data = cache()->remember("posts.per.category." . $category->id, now(),
             function () use($category) {
                 $posts = Post::query()
                     ->where('category_id', $category->id)
                     ->where('status',1)
-                    ->latest()->paginate(10);
+                    ->orderBy('id', 'desc')
+                    ->paginate(10);
 
                 return PostResource::collection($posts);
         });
+
+        return [
+            'data' => $data,
+            'category' => $category
+        ];
     }
 
     /**

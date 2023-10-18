@@ -35,9 +35,9 @@ interface IPostRepository  {
     /**
      * Get all of post per category.
      * @param Category $category
-     * @return AnonymousResourceCollection
+     * @return array
      */
-    public function getPostsPerCategory(Category $category) :AnonymousResourceCollection;
+    public function getPostsPerCategory(Category $category) :array;
 
     /**
      * Get searched posts.
