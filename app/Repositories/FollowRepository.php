@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\UserResource;
 use App\Models\Follow;
 use App\Models\Live;
 use App\Models\User;
@@ -28,7 +29,7 @@ class FollowRepository implements IFollowRepository {
             ->get()
             ->toArray(), 'follower_id');
 
-        $data['followers'] = User::whereIn('id', $followers)->where('status',1)->get();
+        $data['followers'] = UserResource::collection(User::whereIn('id', $followers)->where('status',1)->get());
 
         $data['followingsCount'] = Follow::select('user_id')->where('follower_id', $userId)->count();
         $followings = array_column(Follow::query()
@@ -39,7 +40,7 @@ class FollowRepository implements IFollowRepository {
             ->get()
             ->toArray(), 'user_id');
 
-        $data['followings'] = User::whereIn('id', $followings)->where('status',1)->get();
+        $data['followings'] = UserResource::collection(User::whereIn('id', $followings)->where('status',1)->get());
 
         return $data;
 

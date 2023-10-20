@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\traits\GlobalFunc;
@@ -42,13 +43,14 @@ class UserRepository implements IUserRepository {
 
     /**
      * Get the user.
-     * @return User
+     * @return UserResource
      */
-    public function show() :User
+    public function show() :UserResource
     {
-        return User::query()
-            ->where('id', Auth::user()->id)
-            ->first();
+        return new UserResource(User::query()
+        ->where('id', Auth::user()->id)
+        ->with('clubs')
+        ->first());
     }
 
     /**

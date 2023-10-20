@@ -5,6 +5,7 @@ namespace App\Repositories\Contracts;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -22,9 +23,9 @@ interface IUserRepository  {
 
     /**
      * Get the user.
-     * @return User
+     * @return UserResource
      */
-    public function show() :User;
+    public function show() :UserResource;
 
     /**
      * Store the user.
