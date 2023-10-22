@@ -2,6 +2,7 @@
 
 namespace App\Services\File;
 
+use Illuminate\Support\Facades\Storage;
 
 class FileService extends FileToolsService
 {
@@ -25,6 +26,9 @@ class FileService extends FileToolsService
         //execute provider
         $this->provider();
         //save File
+        $result = Storage::disk('s3')->put($this->getFinalFileDirectory(), $file);
+        return  Storage::disk('s3')->url($result);
+
         $result = $file->move(storage_path($this->getFinalFileDirectory()), $this->getFinalFileName());
         return $result ? $this->getFileAddress() : false;
     }
