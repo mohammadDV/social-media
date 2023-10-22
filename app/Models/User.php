@@ -45,7 +45,7 @@ class User extends Authenticatable
 
 
     protected $visible = [
-        'id','first_name','last_name','nickname','biography','profile_photo_path','bg_photo_path','point','role_id', 'email'
+        'id','first_name','last_name','nickname', 'clubs','biography','profile_photo_path','bg_photo_path','point','role_id', 'email'
     ];
 
     protected $hidden = [

@@ -18,7 +18,7 @@ class Status extends Model
     ];
 
     protected $visible = [
-        'id','text','file'
+        'id','text','file', 'user', 'likes'
     ];
 
     public function comments()
@@ -28,7 +28,7 @@ class Status extends Model
 
     public function likes()
     {
-        return $this->morphMany(Like::class,"likeable",'likeable_type', 'likeable_id');
+        return $this->morphMany(Like::class,"likeable",'likeable_type', 'likeable_id')->with('user');
     }
 
     public function user()

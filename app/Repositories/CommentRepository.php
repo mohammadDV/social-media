@@ -81,6 +81,7 @@ class CommentRepository implements ICommentRepository {
             ->where('commentable_id', $status->id)
             ->where('status', 1)
             ->where('commentable_type', "App\\Models\\Status")
+            ->with('user')
             ->with('parents.user')
             ->with('likes')
             ->with('likes.user')

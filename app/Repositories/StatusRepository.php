@@ -43,9 +43,9 @@ class StatusRepository implements IStatusRepository {
                 ->when(!empty($user->id), function ($query) use($user) {
                     return $query->where('user_id', $user->id);
                 })
-                ->with(['comments','likes','user'])
+                ->with(['likes','user'])
                 ->where('status',1)
-                ->orderBy('id', 'DESC')->paginate(100);
+                ->orderBy('id', 'DESC')->paginate(3);
         });
     }
 
