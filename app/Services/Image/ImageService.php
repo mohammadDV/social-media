@@ -19,23 +19,23 @@ class ImageService extends ImageToolsService
         $this->provider();
 
         // Save image
-        if($image->getClientOriginalExtension()=='gif'){
+        // if($image->getClientOriginalExtension()=='gif'){
 
-            if(env('APP_ENV') == "production") {
+            // if(env('APP_ENV') == "production") {
+                // $result = Storage::disk('s3')->put($this->getFinalImageDirectory(), $image);
+                // $S3Path = Storage::disk('s3')->url($result);
+            // }else{
+            //     $result = $image->move(public_path($this->getFinalImageDirectory()),$this->getImageName() . "." . $this->getImageFormat());
+            // }
+        // }else{
+            // if(env('APP_ENV') == "production") {
+                // $result = Image::make($image->getRealPath())->encode($this->getImageFormat());
                 $result = Storage::disk('s3')->put($this->getFinalImageDirectory(), $image);
-                $S3Path = Storage::disk('s3')->url($result);
-            }else{
-                $result = $image->move(public_path($this->getFinalImageDirectory()),$this->getImageName() . "." . $this->getImageFormat());
-            }
-        }else{
-            if(env('APP_ENV') == "production") {
-                $result = Image::make($image->getRealPath())->encode($this->getImageFormat());
-                $result = Storage::disk('s3')->put($this->getFinalImageDirectory(), $image);
-                $S3Path = Storage::disk('s3')->url($result);
-            }else{
-                $result = Image::make($image->getRealPath())->save(public_path($this->getImageAddress()), null, $this->getImageFormat());
-            }
-        }
+            return  $S3Path = Storage::disk('s3')->url($result);
+            // }else{
+            //     $result = Image::make($image->getRealPath())->save(public_path($this->getImageAddress()), null, $this->getImageFormat());
+            // }
+        // }
 
         // return explode(config('filesystems.disks.s3.bucket') . "/",$S3Path)[1];
         return env('APP_ENV') == "production" ? explode(config('filesystems.disks.s3.bucket') . "/",$S3Path)[1] :  $this->getImageAddress();
@@ -82,7 +82,7 @@ class ImageService extends ImageToolsService
                 //save image
                 $result = Image::make($image->getRealPath())->fit($imageSize['width'], $imageSize['height'])->save(public_path($this->getImageAddress()), null, $this->getImageFormat());
                     if($result)
-                    $indexArray[$sizeAlias] = $this->getImageAddress();
+                        $indexArray[$sizeAlias] = $this->getImageAddress();
                     else
                     {
                         return false;
