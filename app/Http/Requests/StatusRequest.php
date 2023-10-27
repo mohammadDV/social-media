@@ -21,7 +21,7 @@ class StatusRequest extends BaseRequest
     {
         return [
             'content' => ['required','string','min:5'],
-            'file' => !empty($this->get('file')) ? ['image','mimes:jpg,jpeg,png,gif,svg,mov,webp','max:2048'] : ['sometimes'],
+            'file' => !empty($this->get('file')) ? ['string', 'max:225'] : ['sometimes'],
             'status' => ['required','min:0','max:1']
         ];
     }
