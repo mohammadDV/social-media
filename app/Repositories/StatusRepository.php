@@ -74,15 +74,11 @@ class StatusRepository implements IStatusRepository {
     public function store(StatusRequest $request) :JsonResponse
     {
 
-        $imageResult = null;
-        if ($request->hasFile('file')){
-            $this->fileService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'file' . DIRECTORY_SEPARATOR . 'status');
-            $imageResult = $this->fileService->moveToPublic($request->file('file'));
-        }
+        $imageResult = $request->get('file');
 
         Auth::user()->statuses()->create([
             'text'        => $request->input('content'),
-            'file'        => $imageResult,
+            'file'        => $imageResult ?? null,
             'status'      => $request->input('status',0)
         ]);
 

@@ -21,9 +21,9 @@ class FileController extends Controller
     /**
      * Get all of lives.
      */
-    public function uploadImage(FileRequest $request): JsonResponse
+    public function uploadFile(FileRequest $request): JsonResponse
     {
-        return response()->json($this->repository->uploadImage($request), Response::HTTP_OK);
+        return response()->json($this->repository->uploadFile($request), Response::HTTP_OK);
     }
 
 }
