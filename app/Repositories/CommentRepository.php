@@ -109,7 +109,7 @@ class CommentRepository implements ICommentRepository {
         if ($comment){
             return response()->json([
                 'status'    => 1,
-                'message'   => [__('site.Your comment has been stored successfully')],
+                'message'   => __('site.Your comment has been stored successfully'),
             ], Response::HTTP_CREATED);
         }
 

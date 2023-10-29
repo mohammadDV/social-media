@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 
 class ValidationController extends Controller
 {
@@ -47,7 +48,7 @@ class ValidationController extends Controller
 
         $requestClass = new $requestNameFull;
 
-        $validator = app('validator')->make($requestClass->all(), $requestClass->rules());
+        $validator = app('validator')->make($request->all(), $requestClass->rules());
 
         if ($validator->fails()) {
             // Validation failed
@@ -57,7 +58,7 @@ class ValidationController extends Controller
             if (isset($errors[$request->get('field')])) {
                 return [
                     'status' => 1,
-                    'massage' => reset($errors[$request->get('field')])
+                    'message' => reset($errors[$request->get('field')])
                 ];
             }
         }
