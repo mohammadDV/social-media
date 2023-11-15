@@ -22,6 +22,6 @@ class CategoryController extends Controller
      */
     public function getActives(): JsonResponse
     {
-        return response()->json($this->repository->getActıves(), Response::HTTP_OK);
+        return response()->json($this->repository->getActives(), Response::HTTP_OK);
     }
 }

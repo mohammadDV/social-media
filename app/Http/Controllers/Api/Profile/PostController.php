@@ -24,9 +24,9 @@ class PostController extends Controller
     /**
      * Get all of post except newspaper.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return response()->json($this->repository->postPaginate(), Response::HTTP_OK);
+        return response()->json($this->repository->postPaginate($request), Response::HTTP_OK);
     }
 
     /**

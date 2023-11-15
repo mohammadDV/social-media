@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests;
 
-
-class AdvertiseUpdateRequest extends BaseRequest
+class ImageRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,11 +20,7 @@ class AdvertiseUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string:min:5|max:255',
-            'place_id' => 'required|integer|min:0|max:100',
-            'link' => 'required|string|max:255',
-            'status' => 'required|integer|in:0,1',
-            'image' => !empty($this->get('image')) ? ['required','string'] : 'sometimes',
+            'image' => ['required','image','mimes:jpg,jpeg,png,gif,svg','max:2048']
         ];
     }
 }

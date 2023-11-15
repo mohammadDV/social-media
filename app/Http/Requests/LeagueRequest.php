@@ -25,10 +25,10 @@ class LeagueRequest extends BaseRequest
             'alias_title' => !empty($this->get('alias_title')) ? ['required','string','min:3','max:255'] : 'sometimes',
             'country_id' => ['required','integer','exists:countries,id'],
             'sport_id' => ['required','integer','exists:sports,id'],
-            'image' => ['required','image','mimes:jpg,jpeg,png,gif,svg','max:2048'],
+            'image' => ['required','string'],
             'status' => ['required', 'integer','in:0,1'],
             'type' => ['required', 'integer','in:1,2'],
-            'prıorıty' => !empty($this->get('prıorıty')) ? ['required', 'integer','in:1,2'] : 'sometimes'
+            'priority' => !empty($this->get('priority')) ? ['required', 'integer','in:1,2'] : 'sometimes'
         ];
     }
 }

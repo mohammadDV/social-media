@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Http\Requests\FileRequest;
+use App\Http\Requests\ImageRequest;
+use App\Http\Requests\VideoRequest;
 use App\Repositories\Contracts\IFileRepository;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
@@ -19,13 +20,12 @@ class FileRepository implements IFileRepository {
     }
 
     /**
-     * Upload the file
-     * @param FileRequest $request
+     * Upload the image
+     * @param ImageRequest $request
      * @return array
      */
-    public function uploadFile(FileRequest $request)
+    public function uploadImage(ImageRequest $request)
     {
-
         if ($request->hasFile('image')) {
             $this->imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $request->input('dir', 'default'));
             $imageResult = $this->imageService->save($request->file('image'));
@@ -33,15 +33,26 @@ class FileRepository implements IFileRepository {
                 throw new \Exception(__('site.Error in save data'));
             }
 
-            // if ($imageResult && !empty($advertise->image)){
-            //     $imageService->deleteImage($advertise->image);
-            // }
-
             return [
                 'status' => !empty($imageResult),
                 'url' => $imageResult
             ];
         }
+
+        return [
+            'status' => false,
+            'url' => ''
+        ];
+
+    }
+
+    /**
+     * Upload the video
+     * @param VideoRequest $request
+     * @return array
+     */
+    public function uploadVideo(VideoRequest $request)
+    {
 
         if ($request->hasFile('video')) {
 

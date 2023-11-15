@@ -27,9 +27,9 @@ class PostUpdateRequest extends BaseRequest
             'summary' => ['max:255'],
             'content' => ['required','string','min:5'],
             'tags' => ['max:255'],
-            'image' => !empty($this->get('image')) ? ['required','image','mimes:jpg,jpeg,png,gif,svg','max:2048'] : ['sometimes'],
+            'image' => !empty($this->get('image')) ? ['required','string'] : ['sometimes'],
             'type' => ['integer','min:0','max:1'],
-            'video' =>  $this->get('type') == 1 && !empty($this->get('video')) ? 'required|mimes:mp4,ogx,oga,ogv,ogg,webm|max:102400' : 'sometimes',
+            'video' =>  $this->get('type') == 1 && !empty($this->get('video')) ? 'required|string' : 'sometimes',
             'status' => ['required','min:0','max:1'],
             'special' => ['required','min:0','max:1']
         ];
