@@ -25,7 +25,7 @@ class ClubUpdateRequest extends BaseRequest
             'alias_title' => !empty($this->get('alias_title')) ? ['required','string','min:3','max:255'] : 'sometimes',
             'country_id' => ['required','integer','exists:countries,id'],
             'sport_id' => ['required','integer','exists:sports,id'],
-            'image' => !empty($this->get('image')) ? ['required','image','mimes:jpg,jpeg,png,gif,svg','max:2048'] : 'sometimes',
+            'image' => !empty($this->get('image')) ? ['required','string'] : 'sometimes',
             'status' => ['required', 'integer','in:0,1']
         ];
     }

@@ -25,7 +25,7 @@ class AdvertiseRequest extends BaseRequest
             'place_id' => 'required|integer|min:0|max:100',
             'link' => 'required|string|max:255',
             'status' => 'required|integer|in:0,1',
-            'image' => ['required','image','mimes:jpg,jpeg,png,gif,svg','max:2048'],
+            'image' => ['required','string'],
         ];
     }
 }

@@ -63,12 +63,12 @@ class PostRepository implements IPostRepository {
         $data['challenged']     = $this->getChallenged();
         $data['popular']        = $this->getPopular();
         foreach($posts ?? [] as $post){
-            count($data['latest'])  >= $this->latestCount || in_array($post->category_id,$this->ignoreCategories) ?: $data['latest'][] =  $post;
+            count($data['latest'])  >= $this->latestCount || in_array($post->category_id, $this->ignoreCategories) ?: $data['latest'][] =  $post;
             if($post->type === 1){
-                if($post->special === 1 && count($data['latest']) < $this->spVideoCount) { $data['specialVideos'][] = $post; }
+                if($post->special === 1 && count($data['specialVideos']) < $this->spVideoCount) { $data['specialVideos'][] = $post; }
                 $data['videos'][] = $post;
             }else{
-                if($post->special === 1 && count($data['latest']) < $this->spPostCount) { $data['specialPosts'][] = $post; }
+                if($post->special === 1 && count($data['specialPosts']) < $this->spPostCount) { $data['specialPosts'][] = $post; }
                 $data['posts'][$post->category_id][] = $post;
             }
         }
@@ -163,16 +163,24 @@ class PostRepository implements IPostRepository {
 
     /**
      * Get all posts.
+     * @param Request $request
      * @return LengthAwarePaginator
      */
-    public function postPaginate() :LengthAwarePaginator
+    public function postPaginate(Request $request) :LengthAwarePaginator
     {
+
+
+        $search = $request->get('query');
         return Post::query()
             ->when(Auth::user()->level != 3, function ($query) {
                 return $query->where('user_id', Auth::user()->id);
             })
-            ->orderBy('id', 'DESC')
-            ->paginate(10);
+            ->when(!empty($search), function ($query) use ($search) {
+                return $query->where('title', 'like', '%' . $search . '%');
+            })
+            ->withCount('comments')
+            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->paginate($request->get('rowsPerPage', 25));
     }
 
     /**
@@ -185,30 +193,14 @@ class PostRepository implements IPostRepository {
     public function store(PostRequest $request) :JsonResponse
     {
 
-        $imageResult = false;
-        $videoResult = null;
-        if ($request->hasFile('image')){
-            $this->imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'posts');
-            $imageResult = $this->imageService->createIndexAndSave($request->file('image'));
-        }
-        if ($request->hasFile('video') && $request->get('type') == 1){
-            $this->fileService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'videos' . DIRECTORY_SEPARATOR . 'posts');
-            $videoResult = $this->fileService->moveToPublic($request->file('video'));
-            if (!$videoResult){
-                throw new \Exception(__('site.Error in save data'));
-            }
-        }
-        if (!$imageResult){
-            throw new \Exception(__('site.Error in save data'));
-        }
 
         $post = auth()->user()->posts()->create([
             'pre_title'   => $request->input('pre_title'),
             'title'       => $request->input('title'),
             'content'     => $request->input('content'),
             'summary'     => $request->input('summary'),
-            'image'       => $imageResult,
-            'video'       => $videoResult,
+            'image'       => $request->input('image', null),
+            'video'       => $request->input('type') == 1 ? $request->input('video', null) : null,
             'type'        => $request->input('type',0),
             'category_id' => $request->input('category_id'),
             'status'      => $request->input('status'),

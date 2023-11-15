@@ -13,6 +13,6 @@ interface ICategoryRepository  {
      * Get the active categories.
      * @return AnonymousResourceCollection
      */
-    public function getActıves() :AnonymousResourceCollection;
+    public function getActives() :AnonymousResourceCollection;
 
 }

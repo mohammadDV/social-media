@@ -48,9 +48,10 @@ interface IPostRepository  {
 
     /**
      * Get all posts.
+     * @param Request $request
      * @return LengthAwarePaginator
      */
-    public function postPaginate() :LengthAwarePaginator;
+    public function postPaginate(Request $request) :LengthAwarePaginator;
 
     /**
      * Store the post.

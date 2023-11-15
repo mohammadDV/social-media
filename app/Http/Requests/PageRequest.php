@@ -25,7 +25,7 @@ class PageRequest extends BaseRequest
             'content' => 'required|string',
             'status' => 'required|integer|in:0,1',
             'priority' => 'required|integer|min:0|max:100',
-            'image' => ['required','image','mimes:jpg,jpeg,png,gif,svg','max:2048'],
+            'image' => ['required','string'],
         ];
     }
 }

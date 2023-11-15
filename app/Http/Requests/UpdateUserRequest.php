@@ -24,8 +24,8 @@ class UpdateUserRequest extends BaseRequest
             'last_name' => ['required','string','max:255'],
             'nickname' => !empty($this->get('nickname')) ? ['required', 'string', 'min:3', 'max:25'] : 'sometimes',
             'biography' => !empty($this->get('biography')) ? ['required', 'string', 'min:5', 'max:255'] : 'sometimes',
-            'profile_photo_path' => !empty($this->get('profile_photo_path')) ? ['required', 'image','mimes:jpg,jpeg,png,gif,svg','max:2048'] : 'sometimes',
-            'bg_photo_path' => !empty($this->get('bg_photo_path')) ? ['image','mimes:jpg,jpeg,png,gif,svg','max:2048'] : 'sometimes',
+            'profile_photo_path' => !empty($this->get('profile_photo_path')) ? ['required', 'string'] : 'sometimes',
+            'bg_photo_path' => !empty($this->get('bg_photo_path')) ? ['string'] : 'sometimes',
             'mobile' => !empty($this->get('mobile')) ? ['required', 'string', 'min:11', 'max:12'] : 'sometimes',
             'status' => ['required','in:0,1']
         ];

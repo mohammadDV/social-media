@@ -13,7 +13,7 @@ class CategoryRepository implements ICategoryRepository {
      * Get the active categories.
      * @return AnonymousResourceCollection
      */
-    public function getActıves() :AnonymousResourceCollection
+    public function getActives() :AnonymousResourceCollection
     {
         // ->addMinutes('1'),
         return cache()->remember("categories.all", now(), function () {

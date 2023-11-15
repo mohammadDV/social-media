@@ -169,7 +169,7 @@ return array(
     'Match management'               => 'مدیریت بازی ها',
     'Page management'               => 'مدیریت صفحات',
     'Advertise management'               => 'مدیریت تبلیغات',
-    'Favorıte clubs'                => 'باشگاه موردعلاقه',
+    'Favorite clubs'                => 'باشگاه موردعلاقه',
     'My favorite clubs'               => 'باشگاه های موردعلاقه من',
     'Store'      => 'ذخیره',
     'New page has been stored'         => 'صفحه جدید با موفقیت ثبت شدند.',
