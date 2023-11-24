@@ -16,6 +16,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
 
     // Posts
     Route::prefix('posts')->group(function () {
+        Route::get('/{post}', [PostController::class, 'show'])->name('profile.post.show');
         Route::get('/', [PostController::class, 'index'])->name('profile.post.index');
         Route::post('/', [PostController::class, 'store'])->name('profile.post.store');
         Route::post('/{post}', [PostController::class, 'update'])->name('profile.post.update');
@@ -34,7 +35,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
     // userInfo
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'indexPaginate'])->name('profile.users.pagination');
-        Route::get('/info', [UserController::class, 'show'])->name('profile.user.show');
+        Route::get('/info/{id?}', [UserController::class, 'show'])->name('profile.user.show');
         Route::post('/', [UserController::class, 'store'])->name('profile.user.store');
         Route::post('/{user}', [UserController::class, 'update'])->name('profile.user.update');
         Route::patch('/password', [UserController::class, 'updatePassword'])->name('profile.user.password.update');

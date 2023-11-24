@@ -9,6 +9,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
@@ -23,19 +24,21 @@ class UserController extends Controller
 
     /**
      * Get all of users with pagination
+     * @param Request $request
      */
-    public function indexPaginate(): JsonResponse
+    public function indexPaginate(Request $request): JsonResponse
     {
-        return response()->json($this->repository->indexPaginate(), Response::HTTP_OK);
+        return response()->json($this->repository->indexPaginate($request), Response::HTTP_OK);
     }
 
     /**
      * Get the user.
+     * @param int $id
      * @return JsonResponse
      */
-    public function show() :JsonResponse
+    public function show($id = 0) :JsonResponse
     {
-        return response()->json($this->repository->show(), Response::HTTP_OK);
+        return response()->json($this->repository->show($id), Response::HTTP_OK);
     }
 
     /**

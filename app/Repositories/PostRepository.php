@@ -41,6 +41,21 @@ class PostRepository implements IPostRepository {
     }
 
     /**
+     * Get the post.
+     * @param Post $post
+     * @return array
+     */
+    public function show(Post $post) {
+
+        $this->checkLevelAccess($post->user_id == Auth::user()->id);
+
+        return Post::query()
+            ->where('id', $post->id)
+            ->with('tags')
+            ->first();
+    }
+
+    /**
      * Get the posts.
      * @param $categories
      * @param $count
@@ -207,9 +222,11 @@ class PostRepository implements IPostRepository {
             'special'     => $request->input('special',0),
         ]);
 
-        if (!empty($request->input('tags')) && !is_array($request->input('tags'))) {
+
+        if (!empty($request->input('tags')) && is_array($request->input('tags'))) {
             $tagIds = [];
-            $tags_arr = array_unique(explode(',',$request->input('tags')));
+            // $tags_arr = array_unique(explode(',',$request->input('tags')));
+            $tags_arr = array_unique($request->input('tags'));
             if (!empty($tags_arr)){
                 foreach($tags_arr as $tagitem) {
                     $tagIds[] = Tag::firstOrCreate(['title' => $tagitem])->id;
@@ -217,6 +234,7 @@ class PostRepository implements IPostRepository {
                 $post->tags()->attach($tagIds);
             }
         }
+
 
         return response()->json([
             'status' => 1,
@@ -237,26 +255,6 @@ class PostRepository implements IPostRepository {
 
         $this->checkLevelAccess($post->user_id == Auth::user()->id);
 
-        $imageResult = $post->image;
-        $videoResult = $post->video;
-        if ($request->hasFile('image')){
-            $this->imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'posts');
-            $imageResult = $this->imageService->createIndexAndSave($request->file('image'));
-            if ($imageResult && !empty($post->image)){
-                $this->imageService->deleteDirectoryAndFiles($post->image['directory']);
-            }
-        }
-        if ($request->hasFile('video') && $request->get('type') == 1){
-            $this->fileService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'videos' . DIRECTORY_SEPARATOR . 'posts');
-            $videoResult = $this->fileService->moveToPublic($request->file('video'));
-            if (!$videoResult){
-                throw new \Exception(__('site.Error in save data'));
-            }
-        }
-        if (!$imageResult){
-            throw new \Exception(__('site.Error in save data'));
-        }
-
         if (empty($request->get('type')) && !empty($videoResult)){
             $this->fileService->deleteFile($videoResult);
             $videoResult = null;
@@ -269,16 +267,16 @@ class PostRepository implements IPostRepository {
                 'title'       => $request->input('title'),
                 'content'     => $request->input('content'),
                 'summary'     => $request->input('summary'),
-                'image'       => $imageResult,
-                'video'       => $videoResult,
+                'image'       => $request->input('image', null),
+                'video'       => $request->input('type') == 1 ? $request->input('video', null) : null,
                 'type'        => $request->input('type',0),
                 'category_id' => $request->input('category_id'),
                 'status'      => $request->input('status'),
             ]);
 
-            if (!is_array($request->input('tags'))) {
+            if (is_array($request->input('tags'))) {
                 $tagIds = [];
-                $tags_arr = !empty($request->input('tags')) ? array_unique(explode(',',$request->input('tags'))) : '';
+                $tags_arr = !empty($request->input('tags')) ? array_unique($request->input('tags')) : [];
                 if (!empty($tags_arr)){
                     foreach($tags_arr as $tagitem) {
                         if (!empty($tagitem)){

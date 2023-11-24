@@ -17,10 +17,6 @@ class Status extends Model
         'file' => 'array'
     ];
 
-    protected $visible = [
-        'id','text','file', 'user', 'likes'
-    ];
-
     public function comments()
     {
         return $this->morphMany(Comment::class,"commentable",'commentable_type', 'commentable_id')->where('parent_id',0)->with(['likes','parents']);

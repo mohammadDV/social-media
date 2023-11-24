@@ -26,6 +26,13 @@ interface IPostRepository  {
     public function index(array $categories, int $count) :array;
 
     /**
+     * Get the post.
+     * @param Post $post
+     * @return array
+     */
+    public function show(Post $post);
+
+    /**
      * Get the post info.
      * @param Post $post
      * @return PostResource

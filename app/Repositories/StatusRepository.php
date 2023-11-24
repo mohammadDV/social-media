@@ -11,6 +11,7 @@ use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,16 +53,24 @@ class StatusRepository implements IStatusRepository {
 
     /**
      * Get all status.
+     * @param Request $request
      * @return LengthAwarePaginator
      */
-    public function statusPaginate() :LengthAwarePaginator
+    public function statusPaginate(Request $request) :LengthAwarePaginator
     {
+
+        $search = $request->get('query');
         return Status::query()
             ->when(Auth::user()->level != 3, function ($query) {
                 return $query->where('user_id', Auth::user()->id);
             })
-            ->orderBy('id', 'DESC')
-            ->paginate(10);
+            ->when(!empty($search), function ($query) use ($search) {
+                return $query->where('text', 'like', '%' . $search . '%');
+            })
+            ->withCount('comments')
+            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->paginate($request->get('rowsPerPage', 25));
+
     }
 
     /**
