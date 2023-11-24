@@ -16,6 +16,7 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'email' => $this->email,
             'fullname' => !empty($this->nickname) ? $this->nickname : trim($this->first_name . ' ' . $this->last_name),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
@@ -27,7 +28,7 @@ class UserResource extends JsonResource
             'national_code' => $this->national_code,
             'point' => $this->point,
             'status' => $this->status,
-            'status' => $this->status,
+            'created_at' => $this->created_at,
             'clubs' => new ClubResource($this->whenLoaded('clubs')),
         ];
     }

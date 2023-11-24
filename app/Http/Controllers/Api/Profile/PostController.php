@@ -30,6 +30,14 @@ class PostController extends Controller
     }
 
     /**
+     * Get the post.
+     */
+    public function show(Post $post): JsonResponse
+    {
+        return response()->json($this->repository->show($post), Response::HTTP_OK);
+    }
+
+    /**
      * Store the post.
      */
     public function store(PostRequest $request): JsonResponse

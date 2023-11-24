@@ -8,6 +8,7 @@ use App\Http\Requests\StatusUpdateRequest;
 use App\Models\Status;
 use App\Repositories\Contracts\IStatusRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class StatusController extends Controller
@@ -22,12 +23,12 @@ class StatusController extends Controller
 
     /**
      * Get all of post except newspaper.
-     *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return response()->json($this->repository->statusPaginate(), Response::HTTP_OK);
+        return response()->json($this->repository->statusPaginate($request), Response::HTTP_OK);
     }
 
     /**

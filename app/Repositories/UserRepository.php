@@ -12,6 +12,7 @@ use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -31,26 +32,39 @@ class UserRepository implements IUserRepository {
     }
 
     /**
-     * Get the live.
+     * Get the users
+     * @param Request $request
      * @return LengthAwarePaginator
      */
-    public function indexPaginate() :LengthAwarePaginator
+    public function indexPaginate(Request $request) :LengthAwarePaginator
     {
+        $this->checkLevelAccess();
+
+        $search = $request->get('query');
         return User::query()
-            ->orderBy('id', 'DESC')
-            ->paginate(10);
+            ->when(!empty($search), function ($query) use ($search) {
+                return $query->where('first_name', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%')
+                    ->orWhere('nickname', 'like', '%' . $search . '%')
+                    ->orWhere('id', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            })
+            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->paginate($request->get('rowsPerPage', 25));
+
     }
 
     /**
      * Get the user.
+     * @param int $id
      * @return UserResource
      */
-    public function show() :UserResource
+    public function show(int $id) :UserResource
     {
         return new UserResource(User::query()
-        ->where('id', Auth::user()->id)
-        ->with('clubs')
-        ->first());
+            ->where('id', !empty($id) ? $id : Auth::user()->id)
+            ->with('clubs')
+            ->first());
     }
 
     /**
@@ -73,17 +87,6 @@ class UserRepository implements IUserRepository {
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $prImageResult = "";
-        $bgImageResult = "";
-        if ($request->hasFile('profile_photo_path')){
-            $this->imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'users');
-            $prImageResult = $this->imageService->save($request->file('profile_photo_path'));
-        }
-        if ($request->hasFile('bg_photo_path')){
-            $this->imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'users');
-            $bgImageResult = $this->imageService->save($request->file('bg_photo_path'));
-        }
-
         $user = User::create([
             'first_name'            => $request->input('first_name'),
             'last_name'             => $request->input('last_name'),
@@ -95,8 +98,8 @@ class UserRepository implements IUserRepository {
             'mobile'                => $request->input('mobile'),
             'national_code'         => $request->input('national_code'),
             'biography'             => $request->input('biography'),
-            'profile_photo_path'    => $prImageResult,
-            'bg_photo_path'         => $bgImageResult,
+            'profile_photo_path'    => $request->input('profile_photo_path'),
+            'bg_photo_path'         => $request->input('bg_photo_path'),
         ]);
 
         if ($user) {
@@ -155,19 +158,6 @@ class UserRepository implements IUserRepository {
 
         $this->checkLevelAccess($user->id == Auth::user()->id);
 
-        $prImageResult = $user->profile_photo_path;
-
-        $url = 'uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'users';
-        if ($request->hasFile('profile_photo_path')){
-            $prImageResult = $this->uploadImage($this->imageService, $request->file('profile_photo_path'), $url, $user->profile_photo_path);
-        }
-
-        $bgImageResult = $user->bg_photo_path;
-
-        if ($request->hasFile('bg_photo_path')){
-            $bgImageResult = $this->uploadImage($this->imageService, $request->file('bg_photo_path'), $url, $user->bg_photo_path);
-        }
-
         $update = $user->update([
             'first_name'            => $request->input('first_name'),
             'last_name'             => $request->input('last_name'),
@@ -176,8 +166,8 @@ class UserRepository implements IUserRepository {
             'mobile'                => $request->input('mobile'),
             'national_code'         => $request->input('national_code'),
             'biography'             => $request->input('biography'),
-            'profile_photo_path'    => $prImageResult,
-            'bg_photo_path'         => $bgImageResult,
+            'profile_photo_path'    => $request->input('profile_photo_path'),
+            'bg_photo_path'         => $request->input('bg_photo_path'),
         ]);
 
         if ($update) {

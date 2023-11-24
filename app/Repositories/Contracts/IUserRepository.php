@@ -8,6 +8,7 @@ use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
  /**
@@ -16,16 +17,18 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface IUserRepository  {
 
     /**
-     * Get the users pagination.
+     * Get the users
+     * @param Request $request
      * @return LengthAwarePaginator
      */
-    public function indexPaginate() :LengthAwarePaginator;
+    public function indexPaginate(Request $request) :LengthAwarePaginator;
 
     /**
      * Get the user.
+     * @param int $id
      * @return UserResource
      */
-    public function show() :UserResource;
+    public function show(int $id) :UserResource;
 
     /**
      * Store the user.

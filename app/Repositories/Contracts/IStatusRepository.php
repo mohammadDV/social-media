@@ -7,6 +7,7 @@ use App\Http\Requests\StatusUpdateRequest;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
  /**
@@ -30,9 +31,10 @@ interface IStatusRepository  {
 
     /**
      * Get all statuses.
+     * @param Request $request
      * @return LengthAwarePaginator
      */
-    public function statusPaginate() :LengthAwarePaginator;
+    public function statusPaginate(Request $request) :LengthAwarePaginator;
 
     /**
      * Store the status.
