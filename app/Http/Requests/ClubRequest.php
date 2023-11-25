@@ -20,7 +20,7 @@ class ClubRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'alias_id' => !empty($this->get('alias_id')) ? ['required','string','min:3','max:255'] : 'sometimes',
+            'alias_id' => !empty($this->get('alias_id')) ? ['required'] : 'sometimes',
             'title' => ['required','string','min:3','max:255'],
             'alias_title' => !empty($this->get('alias_title')) ? ['required','string','min:3','max:255'] : 'sometimes',
             'country_id' => ['required','integer','exists:countries,id'],

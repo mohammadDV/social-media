@@ -3,9 +3,11 @@
 use App\Http\Controllers\Api\Profile\AdvertiseController;
 use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\ClubController;
+use App\Http\Controllers\Api\Profile\CountryController;
 use App\Http\Controllers\Api\Profile\LeagueController;
 use App\Http\Controllers\Api\Profile\PageController;
 use App\Http\Controllers\Api\Profile\PostController;
+use App\Http\Controllers\Api\Profile\SportController;
 use App\Http\Controllers\Api\Profile\StatusController;
 use App\Http\Controllers\Api\Profile\StepController;
 use App\Http\Controllers\Api\Profile\UserController;
@@ -39,6 +41,26 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::post('/', [UserController::class, 'store'])->name('profile.user.store');
         Route::post('/{user}', [UserController::class, 'update'])->name('profile.user.update');
         Route::patch('/password', [UserController::class, 'updatePassword'])->name('profile.user.password.update');
+    });
+
+    // sports
+    Route::prefix('sports')->group(function () {
+        Route::get('/index', [SportController::class, 'index'])->name('profile.sport.index');
+        Route::get('/', [SportController::class, 'indexPaginate'])->name('profile.sport');
+        Route::get('/{sport}', [SportController::class, 'show'])->name('profile.sport.show');
+        Route::post('/', [SportController::class, 'store'])->name('profile.sport.store');
+        Route::post('/{sport}', [SportController::class, 'update'])->name('profile.sport.update');
+        Route::delete('/{sport}', [SportController::class, 'destroy'])->name('profile.sport.delete');
+    });
+
+    // sports
+    Route::prefix('countries')->group(function () {
+        Route::get('/index', [CountryController::class, 'index'])->name('profile.country');
+        Route::get('/', [CountryController::class, 'indexPaginate'])->name('profile.country.index');
+        Route::get('/{country}', [CountryController::class, 'show'])->name('profile.country.show');
+        Route::post('/', [CountryController::class, 'store'])->name('profile.country.store');
+        Route::post('/{country}', [CountryController::class, 'update'])->name('profile.country.update');
+        Route::delete('/{country}', [CountryController::class, 'destroy'])->name('profile.country.delete');
     });
 
     // clubs

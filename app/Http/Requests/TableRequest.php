@@ -20,6 +20,7 @@ class TableRequest extends BaseRequest
     public function rules(): array
     {
         return [
+            'query' => !empty($this->get('query')) ? ['required', 'string', 'min:1', 'max:50'] : 'sometimes',
             'column' => !empty($this->get('column')) ? ['required', 'string', 'min:2', 'max:50'] : 'sometimes',
             'sort' => !empty($this->get('sort')) ? ['required', 'string', 'in:desc,asc'] : 'sometimes',
             'page' => !empty($this->get('page')) ? ['required','integer'] : 'sometimes',

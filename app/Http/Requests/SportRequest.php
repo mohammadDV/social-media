@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class ClubUpdateRequest extends BaseRequest
+class SportRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,7 @@ class ClubUpdateRequest extends BaseRequest
             'alias_id' => !empty($this->get('alias_id')) ? ['required'] : 'sometimes',
             'title' => ['required','string','min:3','max:255'],
             'alias_title' => !empty($this->get('alias_title')) ? ['required','string','min:3','max:255'] : 'sometimes',
-            'country_id' => ['required','integer','exists:countries,id'],
-            'sport_id' => ['required','integer','exists:sports,id'],
-            'image' => !empty($this->get('image')) ? ['required','string'] : 'sometimes',
+            'image' => ['required','string'],
             'status' => ['required', 'integer','in:0,1']
         ];
     }

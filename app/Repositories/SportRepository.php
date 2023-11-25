@@ -2,21 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Http\Requests\ClubRequest;
-use App\Http\Requests\ClubUpdateRequest;
+use App\Http\Requests\SportRequest;
+use App\Http\Requests\SportUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\UpdatePasswordRequest;
-use App\Models\Club;
-use App\Repositories\Contracts\IClubRepository;
+use App\Models\Sport;
+use App\Repositories\Contracts\ISportRepository;
 use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
-class ClubRepository implements IClubRepository {
+class SportRepository implements ISportRepository {
 
     use GlobalFunc;
 
@@ -30,14 +31,14 @@ class ClubRepository implements IClubRepository {
     }
 
     /**
-     * Get the clubs pagination.
+     * Get the sports pagination.
      * @param TableRequest $request
      * @return LengthAwarePaginator
      */
     public function indexPaginate(TableRequest $request) :LengthAwarePaginator
     {
         $search = $request->get('query');
-        return Club::query()
+        return Sport::query()
             ->when(Auth::user()->level != 3, function ($query) {
                 return $query->where('user_id', Auth::user()->id);
             })
@@ -45,46 +46,51 @@ class ClubRepository implements IClubRepository {
                 return $query->where('title', 'like', '%' . $search . '%')
                     ->orWhere('alias_title','like','%' . $search . '%');
             })
-            ->with('sport','country')
             ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
             ->paginate($request->get('rowsPerPage', 25));
     }
 
     /**
-     * Get the club.
-     * @param Club $club
-     * @return Club
+     * Get the sports.
+     * @return Collection
      */
-    public function show(Club $club) :Club
+    public function index() :Collection
     {
-        return Club::query()
-                ->with('sport','country')
-                ->where('id', $club->id)
+        return Sport::all();
+    }
+
+    /**
+     * Get the sport.
+     * @param Sport $sport
+     * @return Sport
+     */
+    public function show(Sport $sport) :Sport
+    {
+        return Sport::query()
+                ->where('id', $sport->id)
                 ->first();
     }
 
     /**
-     * Store the club.
-     * @param ClubRequest $request
+     * Store the sport.
+     * @param SportRequest $request
      * @return JsonResponse
      * @throws \Exception
      */
-    public function store(ClubRequest $request) :JsonResponse
+    public function store(SportRequest $request) :JsonResponse
     {
         $this->checkLevelAccess();
 
-        $club = Club::create([
+        $sport = Sport::create([
             'alias_id'      => $request->input('alias_id'),
             'alias_title'   => $request->input('alias_title'),
             'title'         => $request->input('title'),
             'image'         => $request->input('image'),
-            'country_id'    => $request->input('country_id'),
-            'sport_id'      => $request->input('sport_id'),
             'user_id'       => Auth::user()->id,
             'status'        => $request->input('status'),
         ]);
 
-        if ($club) {
+        if ($sport) {
             return response()->json([
                 'status' => 1,
                 'message' => __('site.The operation has been successfully')
@@ -95,28 +101,26 @@ class ClubRepository implements IClubRepository {
     }
 
     /**
-     * Update the club.
-     * @param ClubUpdateRequest $request
-     * @param Club $club
+     * Update the sport.
+     * @param SportUpdateRequest $request
+     * @param Sport $sport
      * @return JsonResponse
      * @throws \Exception
      */
-    public function update(ClubUpdateRequest $request, Club $club) :JsonResponse
+    public function update(SportUpdateRequest $request, Sport $sport) :JsonResponse
     {
-        $this->checkLevelAccess(Auth::user()->id == $club->user_id);
+        $this->checkLevelAccess(Auth::user()->id == $sport->user_id);
 
-        $club = $club->update([
+        $sport = $sport->update([
             'alias_id'      => $request->input('alias_id'),
             'alias_title'   => $request->input('alias_title'),
             'title'         => $request->input('title'),
             'image'         => $request->input('image'),
-            'country_id'    => $request->input('country_id'),
-            'sport_id'      => $request->input('sport_id'),
             'user_id'       => auth()->user()->id,
             'status'        => $request->input('status'),
         ]);
 
-        if ($club) {
+        if ($sport) {
             return response()->json([
                 'status' => 1,
                 'message' => __('site.The operation has been successfully')
@@ -127,18 +131,18 @@ class ClubRepository implements IClubRepository {
     }
 
     /**
-    * Delete the club.
+    * Delete the sport.
     * @param UpdatePasswordRequest $request
-    * @param Club $club
+    * @param Sport $sport
     * @return JsonResponse
     */
-   public function destroy(Club $club) :JsonResponse
+   public function destroy(Sport $sport) :JsonResponse
    {
-        $this->checkLevelAccess(Auth::user()->id == $club->user_id);
+        $this->checkLevelAccess(Auth::user()->id == $sport->user_id);
 
-        $club->delete();
+        $sport->delete();
 
-        if ($club) {
+        if ($sport) {
             return response()->json([
                 'status' => 1,
                 'message' => __('site.The operation has been successfully')
