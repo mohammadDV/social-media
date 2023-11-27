@@ -9,8 +9,6 @@ use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Sport;
 use App\Repositories\Contracts\ISportRepository;
 use App\Repositories\traits\GlobalFunc;
-use App\Services\File\FileService;
-use App\Services\Image\ImageService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -20,15 +18,6 @@ use Illuminate\Support\Facades\Auth;
 class SportRepository implements ISportRepository {
 
     use GlobalFunc;
-
-    /**
-     * @param ImageService $imageService
-     * @param FileService $fileService
-     */
-    public function __construct(protected ImageService $imageService, protected FileService $fileService)
-    {
-
-    }
 
     /**
      * Get the sports pagination.
