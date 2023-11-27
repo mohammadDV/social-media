@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Profile\LiveController;
 use App\Http\Controllers\Api\Profile\AdvertiseController;
 use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\ClubController;
@@ -61,6 +62,16 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::post('/', [CountryController::class, 'store'])->name('profile.country.store');
         Route::post('/{country}', [CountryController::class, 'update'])->name('profile.country.update');
         Route::delete('/{country}', [CountryController::class, 'destroy'])->name('profile.country.delete');
+    });
+
+    // lives
+    Route::prefix('lives')->group(function () {
+        Route::get('/index', [LiveController::class, 'index'])->name('profile.live');
+        Route::get('/', [LiveController::class, 'indexPaginate'])->name('profile.live.index');
+        Route::get('/{live}', [LiveController::class, 'show'])->name('profile.live.show');
+        Route::post('/', [LiveController::class, 'store'])->name('profile.live.store');
+        Route::post('/{live}', [LiveController::class, 'update'])->name('profile.live.update');
+        Route::delete('/{live}', [LiveController::class, 'destroy'])->name('profile.live.delete');
     });
 
     // clubs
