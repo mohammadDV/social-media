@@ -15,11 +15,17 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface IAdvertiseRepository  {
 
    /**
-     * Get the places.
-     * @param array %places
+     * Get the advertises.
+     * @param array $places
      * @return array
      */
     public function index(array $places) : array;
+
+   /**
+     * Get the places.
+     * @return array
+     */
+    public function getPlaces() : array;
 
     /**
      * Get the advertise pagination.

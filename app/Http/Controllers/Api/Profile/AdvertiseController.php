@@ -23,6 +23,14 @@ class AdvertiseController extends Controller
     }
 
     /**
+     * Get all places of advertises.
+     */
+    public function getPlaces(): JsonResponse
+    {
+        return response()->json($this->repository->getPlaces(), Response::HTTP_OK);
+    }
+
+    /**
      * Get all of advertise with pagination
      * @param TableRequest $request
      * @return JsonResponse
