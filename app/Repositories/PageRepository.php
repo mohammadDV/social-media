@@ -35,15 +35,17 @@ class PageRepository implements IPageRepository {
      */
     public function indexPaginate(TableRequest $request) :LengthAwarePaginator
     {
-        $search = $request->input('search') ?? null;
-        $count = $request->input('count') ?? 10;
 
+        $search = $request->get('query');
         return Page::query()
-            ->orderBy($request->get('column') ?? 'id', $request->get('sort') ?? 'desc')
-            ->when(!empty($search), function ($query) use($search) {
-                $query->where('title','like','%' . $search . '%');
+            ->when(Auth::user()->level != 3, function ($query) {
+                return $query->where('user_id', Auth::user()->id);
             })
-            ->paginate($count);
+            ->when(!empty($search), function ($query) use ($search) {
+                return $query->where('title', 'like', '%' . $search . '%');
+            })
+            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->paginate($request->get('rowsPerPage', 25));
     }
 
     /**

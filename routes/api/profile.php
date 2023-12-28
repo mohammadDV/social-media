@@ -90,8 +90,8 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::post('/', [LeagueController::class, 'store'])->name('profile.league.store');
         Route::post('/{league}', [LeagueController::class, 'update'])->name('profile.league.update');
         Route::delete('/{league}', [LeagueController::class, 'destroy'])->name('profile.league.delete');
-        Route::get('/clubs/{league}', [LeagueController::class, 'getClubs'])->name('profile.league.clubs');
-        Route::post('/clubs/{league}', [LeagueController::class, 'storeClubs'])->name('profile.league.clubs.store');
+        Route::get('/{league}/clubs', [LeagueController::class, 'getClubs'])->name('profile.league.clubs');
+        Route::post('/{league}/clubs', [LeagueController::class, 'storeClubs'])->name('profile.league.clubs.store');
     });
 
     // steps
@@ -115,6 +115,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
 
      // advertises
      Route::prefix('advertise')->group(function () {
+        Route::get('/places', [AdvertiseController::class, 'getPlaces'])->name('profile.advertise.places');
         Route::get('/', [AdvertiseController::class, 'indexPaginate'])->name('profile.advertise.index');
         Route::get('/{advertise}', [AdvertiseController::class, 'show'])->name('profile.advertise.show');
         Route::post('/', [AdvertiseController::class, 'store'])->name('profile.advertise.store');

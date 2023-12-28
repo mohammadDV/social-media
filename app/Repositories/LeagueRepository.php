@@ -46,11 +46,11 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
         $leagueRows = cache()->remember("league.all." . implode(".",$sports), now(),
             function () use($sports) {
             return League::Query()
-            ->with('sport')
-            ->whereIn('sport_id', $sports)
-            ->where('status',1)
-            ->orderBy('priority','ASC')
-            ->get();
+                ->with('sport')
+                ->whereIn('sport_id', $sports)
+                ->where('status',1)
+                ->orderBy('priority','ASC')
+                ->get();
         });
 
         $data       = [];
@@ -215,18 +215,11 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     {
         $this->checkLevelAccess();
 
-        $imageService   = new ImageService();
-        $imageResult    = null;
-        if ($request->hasFile('image')){
-            $imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'leagues');
-            $imageResult = $imageService->save($request->file('image'));
-        }
-
         $league = League::create([
             'alias_id'      => $request->input('alias_id'),
             'alias_title'   => $request->input('alias_title'),
             'title'         => $request->input('title'),
-            'image'         => $imageResult,
+            'image'         => $request->input('image'),
             'country_id'    => $request->input('country_id'),
             'sport_id'      => $request->input('sport_id'),
             'user_id'       => auth()->user()->id,

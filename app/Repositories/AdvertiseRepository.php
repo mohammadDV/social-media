@@ -20,31 +20,42 @@ class AdvertiseRepository implements IAdvertiseRepository {
     use GlobalFunc;
 
     /**
-     * @param ImageService $imageService
-     * @param FileService $fileService
-     */
-    public function __construct(protected ImageService $imageService, protected FileService $fileService)
-    {
-
-    }
-
-    /**
      * Get the places.
      * @return array
      */
     public function getPlaces() : array {
 
         return [
-            1   => __('site.Top main page'),
-            2   => __('site.Left main page'),
-            3   => __('site.Top ranking main page'),
-            4   => __('site.Top archive page'),
-            5   => __('site.Right archive page'),
-            6   => __('site.Top single page'),
-            7   => __('site.Right single page'),
-            8   => __('site.Top static page'),
-            9   => __('site.Top static page'),
-            10  => __('site.Right static page'),
+            [
+                'id' => 1 , 'title'  => __('site.Top main page')
+            ],
+            [
+                'id' => 2 , 'title'  => __('site.Left main page')
+            ],
+            [
+                'id' => 3 , 'title'  => __('site.Top ranking main page'),
+            ],
+            [
+                'id' => 4 , 'title'  =>__('site.Top archive page'),
+            ],
+            [
+                'id' => 5 , 'title'  => __('site.Right archive page'),
+            ],
+            [
+                'id' => 6 , 'title'  => __('site.Top single page'),
+            ],
+            [
+                'id' => 7 , 'title'  => __('site.Right single page'),
+            ],
+            [
+                'id' => 8 , 'title'  => __('site.Top static page'),
+            ],
+            [
+                'id' => 9 , 'title'  => __('site.Top static page'),
+            ],
+            [
+                'id' => 10 , 'title'  => __('site.Right static page'),
+            ]
         ];
     }
 
@@ -84,15 +95,16 @@ class AdvertiseRepository implements IAdvertiseRepository {
      */
     public function indexPaginate(TableRequest $request) :LengthAwarePaginator
     {
-        $search = $request->input('search') ?? null;
-        $count = $request->input('count') ?? 10;
-
+        $search = $request->get('query');
         return Advertise::query()
-            ->orderBy($request->get('column') ?? 'id', $request->get('sort') ?? 'desc')
-            ->when(!empty($search), function ($query) use($search) {
-                $query->where('title','like','%' . $search . '%');
+            ->when(Auth::user()->level != 3, function ($query) {
+                return $query->where('user_id', Auth::user()->id);
             })
-            ->paginate($count);
+            ->when(!empty($search), function ($query) use ($search) {
+                return $query->where('title', 'like', '%' . $search . '%');
+            })
+            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->paginate($request->get('rowsPerPage', 25));
     }
 
     /**
@@ -114,20 +126,9 @@ class AdvertiseRepository implements IAdvertiseRepository {
     {
         $this->checkLevelAccess();
 
-        $imageService   = new ImageService();
-        $imageResult    = null;
-        if ($request->hasFile('image')){
-            $imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'advertise');
-            $imageResult = $imageService->save($request->file('image'));
-        }
-
-        if (empty($imageResult)) {
-            throw new \Exception("Error for uploading the file");
-        }
-
         $advertise = Advertise::create([
             'title'         => $request->input('title'),
-            'image'         => $imageResult,
+            'image'         => $request->input('image'),
             'place_id'      => $request->input('place_id'),
             'link'          => $request->input('link'),
             'user_id'       => Auth::user()->id,
@@ -156,19 +157,9 @@ class AdvertiseRepository implements IAdvertiseRepository {
     {
         $this->checkLevelAccess(Auth::user()->id == $advertise->user_id);
 
-        $imageService   = new ImageService();
-        $imageResult    = $advertise->image;
-        if ($request->hasFile('image')){
-            $imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'advertise');
-            $imageResult = $imageService->save($request->file('image'));
-            if ($imageResult && !empty($advertise->image)){
-                $imageService->deleteImage($advertise->image);
-            }
-        }
-
         $advertise->update([
             'title'         => $request->input('title'),
-            'image'         => $imageResult,
+            'image'         => $request->input('image'),
             'place_id'      => $request->input('place_id'),
             'user_id'       => auth()->user()->id,
             'status'        => $request->input('status'),
