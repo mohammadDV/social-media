@@ -288,9 +288,19 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     * @param League $league
     * @return collectoin
     */
-   public function getClubs(League $league) :Collection
-   {
+    public function getClubs(League $league) :Collection
+    {
         return League::find($league->id)->clubs;
+    }
+
+    /**
+    * Get the steps of league.
+    * @param League $league
+    * @return collectoin
+    */
+    public function getAllSteps(League $league) :Collection
+    {
+        return League::find($league->id)->steps;
     }
 
     /**

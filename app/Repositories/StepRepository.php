@@ -123,6 +123,7 @@ class StepRepository extends MatchService implements IStepRepository {
             "title"     => $request->title,
             "current"   => $request->current,
             "priority"  => $request->priority,
+            "status"  => $request->status,
             "user_id"   => Auth::user()->id,
             "league_id" => $league->id,
         ]);
@@ -141,24 +142,25 @@ class StepRepository extends MatchService implements IStepRepository {
     /**
      * Update the step.
      * @param StepRequest $request
+     * @param League $league
      * @param Step $step
      * @return JsonResponse
      * @throws \Exception
      */
-    public function update(StepRequest $request, Step $step) :JsonResponse
+    public function update(StepRequest $request, League $league, Step $step) :JsonResponse
     {
         $this->checkLevelAccess(Auth::user()->id == $step->user_id);
 
         if($request->current == 1) {
             Step::query()
-                ->where('league_id', $step->league_id)
+                ->where('league_id', $league->id)
                 ->update([
                    'current' => 0
                 ]);
         } else {
             if (Step::query()
             ->whereNot('id', $step->id)
-            ->where('league_id', $step->league_id)
+            ->where('league_id', $league->id)
             ->where('current', 1)
             ->count() == 0) {
                 return response()->json([
@@ -172,6 +174,7 @@ class StepRepository extends MatchService implements IStepRepository {
             "title"     => $request->title,
             "current"   => $request->current,
             "priority"  => $request->priority,
+            "status"    => $request->status,
             "user_id"   => Auth::user()->id,
         ]);
 
