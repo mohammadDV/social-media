@@ -92,4 +92,14 @@ class LeagueController extends Controller
     {
         return response()->json($this->repository->getClubs($league), Response::HTTP_OK);
     }
+
+     /**
+    * Get the steps of league.
+    * @param League $league
+    * @return JsonResponse
+    */
+    public function getAllSteps(League $league) :JsonResponse
+    {
+        return response()->json($this->repository->getAllSteps($league), Response::HTTP_OK);
+    }
 }

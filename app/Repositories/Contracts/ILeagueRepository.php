@@ -86,4 +86,11 @@ interface ILeagueRepository  {
     */
    public function getClubs(League $league) :Collection;
 
+    /**
+    * Get the steps of league.
+    * @param League $league
+    * @return collectoin
+    */
+    public function getAllSteps(League $league) :Collection;
+
 }

@@ -23,7 +23,8 @@ class StepRequest extends BaseRequest
         return [
             'title' => 'required|string:min:5',
             'priority' => 'required|integer|min:0|max:100',
-            'current' => 'required|integer|in:0,1'
+            'current' => 'required|integer|in:0,1',
+            'status' => 'required|integer|in:0,1',
         ];
     }
 }

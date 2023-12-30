@@ -15,6 +15,11 @@ class League extends Model
         return $this->belongsToMany(Club::class)->withPivot('points', 'games_count')->orderBy('points', 'desc');
     }
 
+    public function steps()
+    {
+        return $this->hasMany(Step::class)->orderBy('priority', 'asc');
+    }
+
     public function sport() {
         return $this->belongsTo(Sport::class);
     }

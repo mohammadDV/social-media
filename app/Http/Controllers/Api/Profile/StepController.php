@@ -47,12 +47,13 @@ class StepController extends Controller
     /**
      * Update the step.
      * @param StepRequest $request
+     * @param League $league
      * @param Step $step
      * @return JsonResponse
      */
-    public function update(StepRequest $request, Step $step) :JsonResponse
+    public function update(StepRequest $request, League $league, Step $step) :JsonResponse
     {
-        return $this->repository->update($request, $step);
+        return $this->repository->update($request, $league, $step);
     }
 
     /**

@@ -93,14 +93,15 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::delete('/{league}', [LeagueController::class, 'destroy'])->name('profile.league.delete');
         Route::get('/{league}/clubs', [LeagueController::class, 'getClubs'])->name('profile.league.clubs');
         Route::post('/{league}/clubs', [LeagueController::class, 'storeClubs'])->name('profile.league.clubs.store');
+        Route::get('/{league}/steps', [LeagueController::class, 'getAllSteps'])->name('profile.league.steps');
+        Route::post('/{league}/steps/', [StepController::class, 'store'])->name('profile.step.store');
+        Route::post('/{league}/steps/{step}', [StepController::class, 'update'])->name('profile.step.update');
     });
 
     // steps
     Route::prefix('steps')->group(function () {
         Route::get('/{step}', [StepController::class, 'getStepInfo'])->name('profile.step');
         Route::get('/create/{league}', [StepController::class, 'create'])->name('profile.step.create');
-        Route::post('/{league}', [StepController::class, 'store'])->name('profile.step.store');
-        Route::patch('/{step}', [StepController::class, 'update'])->name('profile.step.update');
         Route::delete('/{step}', [StepController::class, 'destroy'])->name('profile.step.destroy');
         Route::get('/clubs/{step}', [StepController::class, 'getClubs'])->name('profile.step.clubs');
         Route::post('/clubs/{step}', [StepController::class, 'storeClubs'])->name('profile.step.clubs.store');
