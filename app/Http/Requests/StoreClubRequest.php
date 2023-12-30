@@ -21,9 +21,12 @@ class StoreClubRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'clubs.*.id' => 'required|integer|exists:clubs,id',
+            'clubs.*.club_id' => 'required|integer|exists:clubs,id',
             'clubs.*.points' => 'required|integer|min:0',
             'clubs.*.games_count' => 'required|integer|min:0'
+            // 'club_id' => 'required|integer|exists:clubs,id',
+            // 'points' => 'required|integer|min:0',
+            // 'games_count' => 'required|integer|min:0'
         ];
     }
 }

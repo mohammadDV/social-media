@@ -12,4 +12,5 @@ class ClubLeague extends Model
     protected $guarded = [];
     protected $table = "club_league";
     public $timestamps = false;
+
 }

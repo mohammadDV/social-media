@@ -6,21 +6,18 @@ use App\Http\Requests\LeagueRequest;
 use App\Http\Requests\LeagueUpdateRequest;
 use App\Http\Requests\StoreClubRequest;
 use App\Http\Requests\TableRequest;
-use App\Models\ClubLeague;
+use App\Models\Club;
 use App\Services\Image\ImageService;
 use App\Services\MatchService;
 use App\Models\League;
-use App\Models\Step;
 use App\Repositories\Contracts\ILeagueRepository;
 use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Client\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class LeagueRepository extends MatchService implements ILeagueRepository {
 
@@ -304,34 +301,63 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     */
     public function storeClubs(StoreClubRequest $request, League $league) :JsonResponse
     {
+        // $club = Club::findOrfail($request->input('club_id'));
 
-        return DB::transaction(function () use ($request,$league) {
+        // $club->leagues()->sync($league, [
+        //     'points' => $request->input('points'),
+        //     'games_count' => $request->input('games_count'),
+        // ]);
 
-            $clubs = $request->input('clubs');
+        $league->clubs()->sync($request->all());
+        // $club->leagues()->sync([
+        //     $league->id => [
+        //         'points' => $request->input('points'),
+        //         'games_count' => $request->input('games_count'),
+        //     ],
+        // ]);
 
-            // Delete all of clubs
-            ClubLeague::query()
-                ->where("league_id", $league->id)
-                ->delete();
-
-            // Add all of clubs
-
-            foreach ($clubs as $club) {
-                ClubLeague::create([
-                    "club_id"       => $club["id"],
-                    "points"        => $club["points"],
-                    "games_count"   => $club["games_count"],
-                    // "user_id"   => auth()->user()->id,
-                    "league_id"     => $league->id,
-                ]);
-            }
+            // Add clubs
+            // ClubLeague::updateOrCreate([
+                // "club_id"       => $request->input('club_id'),
+                // "user_id"   => auth()->user()->id,
+            //     "league_id"     => $league->id,
+            // ], [
+            //     "points"        => $request->input('points'),
+            //     "games_count"   => $request->input('games_count'),
+            // ]);
 
             return response()->json([
                 'status' => 1,
                 'message' => __('site.Clubs has been stored')
             ], Response::HTTP_OK);
 
-        });
+        // return DB::transaction(function () use ($request,$league) {
+
+        //     $clubs = $request->input('clubs');
+
+        //     // Delete all of clubs
+        //     ClubLeague::query()
+        //         ->where("league_id", $league->id)
+        //         ->delete();
+
+        //     // Add all of clubs
+
+        //     foreach ($clubs as $club) {
+        //         ClubLeague::create([
+        //             "club_id"       => $club["id"],
+        //             "points"        => $club["points"],
+        //             "games_count"   => $club["games_count"],
+        //             // "user_id"   => auth()->user()->id,
+        //             "league_id"     => $league->id,
+        //         ]);
+        //     }
+
+        //     return response()->json([
+        //         'status' => 1,
+        //         'message' => __('site.Clubs has been stored')
+        //     ], Response::HTTP_OK);
+
+        // });
 
 
     }

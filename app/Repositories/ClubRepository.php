@@ -7,6 +7,8 @@ use App\Http\Requests\ClubUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Club;
+use App\Models\Country;
+use App\Models\Sport;
 use App\Repositories\Contracts\IClubRepository;
 use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
@@ -14,6 +16,7 @@ use App\Services\Image\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class ClubRepository implements IClubRepository {
@@ -28,6 +31,30 @@ class ClubRepository implements IClubRepository {
     {
 
     }
+
+    /**
+     * Get the clubs.
+     * @param Sport|null $sport
+     * @param Country|null $country
+     * @return Collection
+     */
+    public function index(Sport|null $sport, Country|null $country) :Collection
+    {
+        return Club::query()
+            ->when(Auth::user()->level != 3, function ($query) {
+                return $query->where('user_id', Auth::user()->id);
+            })
+            ->when(!empty($sport->id), function ($query) use ($sport) {
+                return $query->where('sport_id', $sport->id);
+            })
+            ->when(!empty($country->id), function ($query) use ($country) {
+                return $query->where('country_id', $country->id);
+            })
+            ->with('sport','country')
+            ->orderBy('title', 'ASC')
+            ->get();
+    }
+
 
     /**
      * Get the clubs pagination.

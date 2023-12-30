@@ -7,6 +7,9 @@ use App\Http\Requests\ClubUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Club;
+use App\Models\Country;
+use App\Models\Sport;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -21,6 +24,14 @@ interface IClubRepository  {
      * @return LengthAwarePaginator
      */
     public function indexPaginate(TableRequest $request) :LengthAwarePaginator;
+
+     /**
+     * Get the clubs.
+     * @param Sport|null $sport
+     * @param Country|null $country
+     * @return Collection
+     */
+    public function index(Sport|null $sport, Country|null $country) :Collection;
 
     /**
      * Get the club.

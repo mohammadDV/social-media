@@ -12,7 +12,7 @@ class League extends Model
 
     public function clubs()
     {
-        return $this->belongsToMany(Club::class);
+        return $this->belongsToMany(Club::class)->withPivot('points', 'games_count')->orderBy('points', 'desc');
     }
 
     public function sport() {
