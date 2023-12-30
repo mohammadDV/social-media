@@ -76,6 +76,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
 
     // clubs
     Route::prefix('clubs')->group(function () {
+        Route::get('/all/{sport?}/{country?}', [ClubController::class, 'index'])->name('profile.club.all');
         Route::get('/', [ClubController::class, 'indexPaginate'])->name('profile.club.index');
         Route::get('/{club}', [ClubController::class, 'show'])->name('profile.club.show');
         Route::post('/', [ClubController::class, 'store'])->name('profile.club.store');

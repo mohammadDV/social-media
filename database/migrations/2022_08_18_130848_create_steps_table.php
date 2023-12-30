@@ -23,6 +23,7 @@ class CreateStepsTable extends Migration
             $table->bigInteger("priority")->default(0)->index();
             $table->tinyInteger("current")->default(0)->index();
             $table->tinyInteger("show_table")->default(1);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

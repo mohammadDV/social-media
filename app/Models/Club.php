@@ -10,6 +10,10 @@ class Club extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function leagues()
+    {
+        return $this->belongsToMany(League::class)->withPivot('points', 'games_count')->orderBy('points', 'desc');
+    }
 
     public function country(){
         return $this->belongsTo(Country::class);

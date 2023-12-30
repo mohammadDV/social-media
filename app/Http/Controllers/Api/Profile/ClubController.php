@@ -7,6 +7,8 @@ use App\Http\Requests\ClubRequest;
 use App\Http\Requests\ClubUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Club;
+use App\Models\Country;
+use App\Models\Sport;
 use App\Repositories\Contracts\IClubRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -19,6 +21,17 @@ class ClubController extends Controller
     public function __construct(protected  IClubRepository $repository)
     {
         //
+    }
+
+    /**
+     * Get all of clubs with pagination
+     * @param Sport $sport
+     * @param Country $country
+     * @return JsonResponse
+     */
+    public function index(?Sport $sport, ?Country $country): JsonResponse
+    {
+        return response()->json($this->repository->index($sport, $country), Response::HTTP_OK);
     }
 
     /**
