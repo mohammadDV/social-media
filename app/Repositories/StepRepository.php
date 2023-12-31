@@ -32,14 +32,15 @@ class StepRepository extends MatchService implements IStepRepository {
     }
 
     /**
-     * Get the leagues.
-     * @param $sports
-     * @return array
+     * Get the step.
+     * @param Step $step
+     * @return Step
      */
-    public function index(array $sports) :array
+    public function show(Step $step) :Step
     {
-        return [];
-
+        return Step::query()
+            ->where('id', $step->id)
+            ->with('league')->first();
     }
 
     /**
@@ -200,6 +201,16 @@ class StepRepository extends MatchService implements IStepRepository {
    }
 
     /**
+    * Get the clubs of step.
+    * @param Step $step
+    * @return collectoin
+    */
+   public function getAllClubs(Step $step) :Collection
+   {
+        return Step::find($step->id)->clubs;
+   }
+
+    /**
     * Store the club to the league.
     * @param StoreClubRequest $request
     * @param League $league
@@ -207,33 +218,11 @@ class StepRepository extends MatchService implements IStepRepository {
     */
     public function storeClubs(StoreClubRequest $request, Step $step) :JsonResponse
     {
-
-        return DB::transaction(function () use ($request,$step) {
-
-            $clubs = $request->input('clubs');
-
-            // Delete all of clubs
-            ClubStep::query()
-                ->where("step_id", $step->id)
-                ->delete();
-
-            // Add all of clubs
-
-            foreach ($clubs as $club) {
-                ClubStep::create([
-                    "club_id"       => $club["id"],
-                    "points"        => $club["points"],
-                    "games_count"   => $club["games_count"],
-                    // "user_id"   => auth()->user()->id,
-                    "step_id"     => $step->id,
-                ]);
-            }
-
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.Clubs has been stored')
-            ], Response::HTTP_OK);
-
-        });
+        $step->clubs()->sync($request->all());
+        
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.Clubs has been stored')
+        ], Response::HTTP_OK);
     }
 }

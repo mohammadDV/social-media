@@ -311,64 +311,11 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     */
     public function storeClubs(StoreClubRequest $request, League $league) :JsonResponse
     {
-        // $club = Club::findOrfail($request->input('club_id'));
-
-        // $club->leagues()->sync($league, [
-        //     'points' => $request->input('points'),
-        //     'games_count' => $request->input('games_count'),
-        // ]);
-
         $league->clubs()->sync($request->all());
-        // $club->leagues()->sync([
-        //     $league->id => [
-        //         'points' => $request->input('points'),
-        //         'games_count' => $request->input('games_count'),
-        //     ],
-        // ]);
 
-            // Add clubs
-            // ClubLeague::updateOrCreate([
-                // "club_id"       => $request->input('club_id'),
-                // "user_id"   => auth()->user()->id,
-            //     "league_id"     => $league->id,
-            // ], [
-            //     "points"        => $request->input('points'),
-            //     "games_count"   => $request->input('games_count'),
-            // ]);
-
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.Clubs has been stored')
-            ], Response::HTTP_OK);
-
-        // return DB::transaction(function () use ($request,$league) {
-
-        //     $clubs = $request->input('clubs');
-
-        //     // Delete all of clubs
-        //     ClubLeague::query()
-        //         ->where("league_id", $league->id)
-        //         ->delete();
-
-        //     // Add all of clubs
-
-        //     foreach ($clubs as $club) {
-        //         ClubLeague::create([
-        //             "club_id"       => $club["id"],
-        //             "points"        => $club["points"],
-        //             "games_count"   => $club["games_count"],
-        //             // "user_id"   => auth()->user()->id,
-        //             "league_id"     => $league->id,
-        //         ]);
-        //     }
-
-        //     return response()->json([
-        //         'status' => 1,
-        //         'message' => __('site.Clubs has been stored')
-        //     ], Response::HTTP_OK);
-
-        // });
-
-
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.Clubs has been stored')
+        ], Response::HTTP_OK);
     }
 }
