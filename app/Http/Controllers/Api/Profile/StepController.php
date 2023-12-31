@@ -28,6 +28,16 @@ class StepController extends Controller
      * @param Step $step
      * @return JsonResponse
      */
+    public function show(Step $step) :JsonResponse
+    {
+        return response()->json($this->repository->show($step), Response::HTTP_OK);
+    }
+
+    /**
+     * Get the step.
+     * @param Step $step
+     * @return JsonResponse
+     */
     public function getStepInfo(Step $step) :JsonResponse
     {
         return response()->json($this->repository->getStepInfo($step), Response::HTTP_OK);
@@ -81,8 +91,8 @@ class StepController extends Controller
     * @param Step $step
     * @return JsonResponse
     */
-    public function getClubs(Step $step) :JsonResponse
+    public function getAllClubs(Step $step) :JsonResponse
     {
-        return response()->json($this->repository->getClubs($step), Response::HTTP_OK);
+        return response()->json($this->repository->getAllClubs($step), Response::HTTP_OK);
     }
 }

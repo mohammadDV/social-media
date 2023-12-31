@@ -26,6 +26,13 @@ interface IStepRepository  {
     public function getStepInfo(Step $step) :array;
 
     /**
+     * Get the step.
+     * @param Step $step
+     * @return Step
+     */
+    public function show(Step $step) :Step;
+
+    /**
      * Store the step.
      * @param StepRequest $request
      * @param League $league
@@ -63,6 +70,6 @@ interface IStepRepository  {
     * @param Step $step
     * @return collectoin
     */
-//    public function getClubs(Step $step) :Collection;
+   public function getAllClubs(Step $step) :Collection;
 
 }

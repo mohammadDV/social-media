@@ -100,11 +100,12 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
 
     // steps
     Route::prefix('steps')->group(function () {
-        Route::get('/{step}', [StepController::class, 'getStepInfo'])->name('profile.step');
+        Route::get('/{step}', [StepController::class, 'show'])->name('profile.step.show');
+        Route::get('/{step}/info', [StepController::class, 'getStepInfo'])->name('profile.step.info');
         Route::get('/create/{league}', [StepController::class, 'create'])->name('profile.step.create');
         Route::delete('/{step}', [StepController::class, 'destroy'])->name('profile.step.destroy');
-        Route::get('/clubs/{step}', [StepController::class, 'getClubs'])->name('profile.step.clubs');
-        Route::post('/clubs/{step}', [StepController::class, 'storeClubs'])->name('profile.step.clubs.store');
+        Route::get('/{step}/clubs', [StepController::class, 'getAllClubs'])->name('profile.step.clubs');
+        Route::post('/{step}/clubs', [StepController::class, 'storeClubs'])->name('profile.step.clubs.store');
     });
 
     // matches
