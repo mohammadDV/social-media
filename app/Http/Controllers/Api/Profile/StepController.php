@@ -95,4 +95,14 @@ class StepController extends Controller
     {
         return response()->json($this->repository->getAllClubs($step), Response::HTTP_OK);
     }
+
+     /**
+    * Get the matches of step.
+    * @param Step $step
+    * @return JsonResponse
+    */
+    public function getAllMatches(Step $step) :JsonResponse
+    {
+        return response()->json($this->repository->getAllMatches($step), Response::HTTP_OK);
+    }
 }

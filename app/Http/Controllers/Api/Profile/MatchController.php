@@ -45,12 +45,13 @@ class MatchController extends Controller
     /**
      * Update the match.
      * @param MatchRequest $request
+     * @param Step $step
      * @param Matches $matches
      * @return JsonResponse
      */
-    public function update(MatchRequest $request, Matches $matches) :JsonResponse
+    public function update(MatchRequest $request, Step $step, Matches $matches) :JsonResponse
     {
-        return $this->repository->update($request, $matches);
+        return $this->repository->update($request, $step, $matches);
     }
 
     /**

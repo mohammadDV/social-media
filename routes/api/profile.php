@@ -106,14 +106,18 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::delete('/{step}', [StepController::class, 'destroy'])->name('profile.step.destroy');
         Route::get('/{step}/clubs', [StepController::class, 'getAllClubs'])->name('profile.step.clubs');
         Route::post('/{step}/clubs', [StepController::class, 'storeClubs'])->name('profile.step.clubs.store');
+        Route::get('/{step}/matches', [StepController::class, 'getAllMatches'])->name('profile.step.matches');
+        Route::post('/{step}/matches', [MatchController::class, 'store'])->name('profile.match.store');
+        Route::post('/{step}/matches/{matches}', [MatchController::class, 'update'])->name('profile.match.update');
+
     });
 
     // matches
     Route::prefix('matches')->group(function () {
         Route::get('/{matches}', [MatchController::class, 'show'])->name('profile.match.show');
-        Route::patch('/{matches}', [MatchController::class, 'update'])->name('profile.match.update');
+        // Route::patch('/{matches}', [MatchController::class, 'update'])->name('profile.match.update');
         Route::delete('/{matches}', [MatchController::class, 'destroy'])->name('profile.match.destroy');
-        Route::post('/{step}', [MatchController::class, 'store'])->name('profile.match.store');
+        // Route::post('/{step}', [MatchController::class, 'store'])->name('profile.match.store');
     });
 
      // advertises

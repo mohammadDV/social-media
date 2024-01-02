@@ -23,8 +23,8 @@ class MatchRequest extends BaseRequest
         return [
             'home_id' => 'required|integer|exists:clubs,id',
             'away_id' => 'required|integer|exists:clubs,id',
-            'hsc' => 'required|integer',
-            'asc' => 'required|integer',
+            'hsc' => 'required|string',
+            'asc' => 'required|string',
             'link' => !empty($this->get('link')) ?  'required|string|max:255' : 'sometimes',
             'date' => 'required|string|max:100',
             'hour' => 'required|string|max:50',
