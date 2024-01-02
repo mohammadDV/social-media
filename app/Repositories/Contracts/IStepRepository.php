@@ -72,4 +72,11 @@ interface IStepRepository  {
     */
    public function getAllClubs(Step $step) :Collection;
 
+    /**
+    * Get the matches of step.
+    * @param Step $step
+    * @return collectoin
+    */
+   public function getAllMatches(Step $step) :Collection;
+
 }

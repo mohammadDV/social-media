@@ -211,6 +211,16 @@ class StepRepository extends MatchService implements IStepRepository {
    }
 
     /**
+    * Get the matches of step.
+    * @param Step $step
+    * @return collectoin
+    */
+   public function getAllMatches(Step $step) :Collection
+   {
+        return Step::find($step->id)->matches;
+   }
+
+    /**
     * Store the club to the league.
     * @param StoreClubRequest $request
     * @param League $league
@@ -219,7 +229,7 @@ class StepRepository extends MatchService implements IStepRepository {
     public function storeClubs(StoreClubRequest $request, Step $step) :JsonResponse
     {
         $step->clubs()->sync($request->all());
-        
+
         return response()->json([
             'status' => 1,
             'message' => __('site.Clubs has been stored')

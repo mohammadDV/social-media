@@ -55,7 +55,8 @@ class MatchService {
             $result[$key]['date']       = $item->date;
             $result[$key]['priority']   = $item->priority;
             $result[$key]['hour']       = $item->hour;
-            $result[$key]['status']     = $item->statusName();
+            $result[$key]['status']     = $item->status;
+            $result[$key]['status_name'] = $item->statusName();
             $result[$key]['home_id']    = $item->home_id;
             $result[$key]['home']       = $clubs[$item->home_id]->title;
             $result[$key]['home_image'] = $clubs[$item->home_id]->image;

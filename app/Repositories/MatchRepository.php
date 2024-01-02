@@ -84,11 +84,12 @@ class MatchRepository extends MatchService implements IMatchRepository {
     /**
      * Update the match.
      * @param MatchRequest $request
+     * @param Step $step
      * @param Matches $match
      * @return JsonResponse
      * @throws \Exception
      */
-    public function update(MatchRequest $request, Matches $match) :JsonResponse
+    public function update(MatchRequest $request, Step $step, Matches $match) :JsonResponse
     {
         $this->checkLevelAccess(Auth::user()->id == $match->user_id);
 

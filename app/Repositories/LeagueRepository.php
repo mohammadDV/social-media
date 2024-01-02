@@ -85,11 +85,12 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     {
 
         $data['steps']       = $this->getSteps($league->id ?? 0);
+
         $data['matches']    = $this->getMatches($data['steps']['current']->id ?? 0);
         if($league->type == 1){
             $data['clubs']      = $this->getClubs($league);
         }else{
-            $data['clubs']      = $this->getTournamentClubs($data['step']['current']->id ?? 0);
+            $data['clubs']      = $this->getTournamentClubs($data['steps']['current']->id ?? 0);
         }
 
         return $data;
@@ -248,21 +249,11 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     {
         $this->checkLevelAccess(Auth::user()->id == $league->user_id);
 
-        $imageService   = new ImageService();
-        $imageResult    = $league->image;
-        if ($request->hasFile('image')){
-            $imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'leagues');
-            $imageResult = $imageService->save($request->file('image'));
-            if ($imageResult && !empty($league->image)){
-                $imageService->deleteImage($league->image);
-            }
-        }
-
         $league = $league->update([
             'alias_id'      => $request->input('alias_id'),
             'alias_title'   => $request->input('alias_title'),
             'title'         => $request->input('title'),
-            'image'         => $imageResult,
+            'image'         => $request->input('image'),
             'country_id'    => $request->input('country_id'),
             'sport_id'      => $request->input('sport_id'),
             'user_id'       => auth()->user()->id,
