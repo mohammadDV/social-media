@@ -67,17 +67,10 @@ class PageRepository implements IPageRepository {
     {
         $this->checkLevelAccess();
 
-        $imageService   = new ImageService();
-        $imageResult    = null;
-        if ($request->hasFile('image')){
-            $imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'pages');
-            $imageResult = $imageService->save($request->file('image'));
-        }
-
         $page = Page::create([
             'title'         => $request->input('title'),
             'content'       => $request->input('content'),
-            'image'         => $imageResult,
+            'image'         => $request->input('image'),
             'user_id'       => Auth::user()->id,
             'status'        => $request->input('status'),
             'priority'      => $request->input('priority')
@@ -105,20 +98,10 @@ class PageRepository implements IPageRepository {
     {
         $this->checkLevelAccess(Auth::user()->id == $page->user_id);
 
-        $imageService   = new ImageService();
-        $imageResult    = $page->image;
-        if ($request->hasFile('image')){
-            $imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'pages');
-            $imageResult = $imageService->save($request->file('image'));
-            if ($imageResult && !empty($page->image)){
-                $imageService->deleteImage($page->image);
-            }
-        }
-
         $page->update([
             'title'         => $request->input('title'),
             'content'       => $request->input('content'),
-            'image'         => $imageResult,
+            'image'         => $request->input('image'),
             'user_id'       => auth()->user()->id,
             'status'        => $request->input('status'),
             'priority'      => $request->input('priority'),
