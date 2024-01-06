@@ -206,6 +206,7 @@ return array(
     'The operation has been successfully'   => 'عملیات با موفقیت انجام گردید.',
     'Image,video, Maximum file size : 10M'                      => 'تصویر، ویدئو یا صوت. حداکثر حجم: 10 مگابایت',
     'What are you have in your mind? write it and get your followers involved'          => 'در ذهن شما چه می‌گذرد؟ چیزی بنویسید و دنبال کنندگان خود را نیز درگیر آن کنید...',
+    'You have already selected your favorite clubs. Please remove previous selections to replace it.'          => 'شما در حال حاضر باشگاه های موردعلاقه خود را انتخاب کرده اید. لطفا برای جایگزین کردن آن انتخاب های قبلی را حذف کنید.',
 );
 
 

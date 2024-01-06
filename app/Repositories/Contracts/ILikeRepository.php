@@ -2,17 +2,11 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Http\Requests\StoreCommentRequest;
-use App\Models\Comment;
-use App\Models\Post;
-use App\Models\Status;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
  /**
- * Interface ICommentRepository.
+ * Interface ILikeRepository.
  */
 interface ILikeRepository  {
 

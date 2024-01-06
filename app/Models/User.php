@@ -115,7 +115,7 @@ class User extends Authenticatable
 
     public function clubs()
     {
-        return $this->belongsToMany(Club::class, 'favorite_clubs','user_id', 'club_id');
+        return $this->belongsToMany(Club::class, 'favorite_clubs','user_id', 'club_id')->with('sport', 'country');
     }
 
     public function getFullNameAttribute()

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\Social\CommentController;
+use App\Http\Controllers\Api\Social\FavoriteController;
 use App\Http\Controllers\Api\Social\FollowController;
 use App\Http\Controllers\Api\Social\LikeController;
 use App\Http\Controllers\Api\Social\MemberController;
@@ -34,5 +35,12 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
         Route::post('/all', [LikeController::class, 'getLikes'])->name('social.like.get.all');
         Route::post('/count', [LikeController::class, 'getLikeCount'])->name('social.like.get.count');
         Route::post('/', [LikeController::class, 'store'])->name('social.like.store');
+    });
+
+    // Favorite
+    Route::prefix('favorite')->group(function () {
+        Route::get('/clubs', [FavoriteController::class, 'getClubs'])->name('social.favorite.clubs');
+        Route::post('/clubs/search', [FavoriteController::class, 'search'])->name('social.favorite.clubs.search');
+        Route::post('/clubs/{club}', [FavoriteController::class, 'storeClub'])->name('social.favorite.clubs.store');
     });
 });
