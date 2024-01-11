@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Http\Requests\SearchRequest;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -20,16 +21,18 @@ interface IFollowRepository  {
     /**
      * Get the followers
      * @param int $userId
+     * @param SearchRequest $request
      * @return LengthAwarePaginator
      */
-    public function getFollowers(int $userId) :LengthAwarePaginator;
+    public function getFollowers(int $userId, SearchRequest $request) :LengthAwarePaginator;
 
     /**
      * Get the followings
      * @param int $userId
+     * @param SearchRequest $request
      * @return LengthAwarePaginator
      */
-    public function getFollowings(int $userId) :LengthAwarePaginator;/**
+    public function getFollowings(int $userId, SearchRequest $request) :LengthAwarePaginator;/**
 
     * Store the follow
     * @param User $user

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\SearchRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Follow;
 use App\Models\Live;
@@ -49,9 +50,10 @@ class FollowRepository implements IFollowRepository {
     /**
      * Get the followers
      * @param int $userId
+     * @param SearchRequest $request
      * @return LengthAwarePaginator
      */
-    public function getFollowers(int $userId) :LengthAwarePaginator
+    public function getFollowers(int $userId, SearchRequest $request) :LengthAwarePaginator
     {
         return Follow::query()
             ->with('user')
@@ -62,14 +64,22 @@ class FollowRepository implements IFollowRepository {
     /**
      * Get the followers
      * @param int $userId
+     * @param SearchRequest $request
      * @return LengthAwarePaginator
      */
-    public function getFollowings(int $userId) :LengthAwarePaginator
+    public function getFollowings(int $userId, SearchRequest $request) :LengthAwarePaginator
     {
-        return Follow::query()
-            ->with('user')
-            ->where('follower_id', $userId)
-            ->paginate(10);
+        return User::query()
+            ->whereHas('followers', function ($query) use ($userId) {
+                $query->where('follower_id', $userId);
+            })
+            ->when(!empty($request->search) , function ($query) use ($request) {
+                $query->where('first_name', "like", "%" . $request->search . "%");
+                $query->orWhere('last_name', "like", "%" . $request->search . "%");
+                $query->orWhere('nickname', "like", "%" . $request->search . "%");
+            })
+            ->with('following')
+            ->paginate(12);
     }
 
     /**
@@ -97,6 +107,9 @@ class FollowRepository implements IFollowRepository {
 
         return [
             'follow' => $active,
+            'status' => 1,
+            'active' => $active,
+            'message' => __('site.The operation has been successfully')
         ];
     }
 }
