@@ -2,11 +2,13 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Http\Requests\SearchRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -52,5 +54,12 @@ interface IUserRepository  {
     * @return JsonResponse
     */
    public function updatePassword(UpdatePasswordRequest $request, User $user) :JsonResponse;
+
+    /**
+    * Search users.
+    * @param LengthAwarePaginator $request
+    * @return LengthAwarePaginator|array
+    */
+   public function search(SearchRequest $request) :LengthAwarePaginator|array;
 
 }

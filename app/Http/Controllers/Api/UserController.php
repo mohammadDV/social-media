@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\SearchRequest;
+use App\Repositories\Contracts\IUserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -11,6 +13,14 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    /**
+     * Constructor of UserController.
+     */
+    public function __construct(protected  IUserRepository $repository)
+    {
+        //
+    }
+
     /**
      * Handle an incoming authentication request.
      */
@@ -31,5 +41,14 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return response()->noContent();
+    }
+
+    /**
+     * Search users.
+     * @param SearchRequest $request
+     */
+    public function search(SearchRequest $request): JsonResponse
+    {
+        return response()->json($this->repository->search($request));
     }
 }

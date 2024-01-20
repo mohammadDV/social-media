@@ -24,7 +24,7 @@ class FavoriteRepository implements IFavoriteRepository {
      */
     public function getClubs(?User $user) :Collection
     {
-        return $user ? $user->clubs : Auth::user()->clubs;
+        return !empty($user->id) ? $user->clubs : Auth::user()->clubs;
     }
 
     /**

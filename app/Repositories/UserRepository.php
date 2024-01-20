@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\SearchRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
@@ -179,4 +180,30 @@ class UserRepository implements IUserRepository {
 
         throw new \Exception();
     }
+
+    /**
+    * Search users.
+    * @param SearchRequest $request
+    * @return LengthAwarePaginator|array
+    */
+   public function search(SearchRequest $request) :LengthAwarePaginator|array
+   {
+        $search = $request->get('search');
+
+        if (empty($search)) {
+            return [];
+        }
+
+        return User::query()
+            ->where('level', '!=', 3)
+            ->where('status', 1)
+            ->where(function ($query) use ($search) {
+                return $query->where('first_name', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%')
+                    ->orWhere('nickname', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            })
+            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->paginate($request->get('rowsPerPage', 50));
+   }
 }
