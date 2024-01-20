@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Social\FollowController;
 use App\Http\Controllers\Api\Social\LikeController;
 use App\Http\Controllers\Api\Social\MemberController;
 use App\Http\Controllers\Api\social\StatusController;
+use App\Http\Controllers\Api\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -45,4 +46,11 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
         Route::post('/clubs/search', [FavoriteController::class, 'search'])->name('social.favorite.clubs.search');
         Route::post('/clubs/{club}', [FavoriteController::class, 'storeClub'])->name('social.favorite.clubs.store');
     });
+
+    // user
+    Route::prefix('user')->group(function () {
+        Route::post('/search', [UserController::class, 'search'])->name('social.search.user');
+    });
+
+
 });

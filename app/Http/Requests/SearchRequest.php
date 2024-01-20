@@ -21,7 +21,8 @@ class SearchRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'search' => !empty($this->get('search')) ? 'required|string' : 'sometimes'
+            'search' => !empty($this->get('search')) ? 'required|string' : 'sometimes',
+            'page' => !empty($this->get('page')) ? 'required|integer' : 'sometimes'
         ];
     }
 }
