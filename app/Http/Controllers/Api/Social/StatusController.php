@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Social;
 
 use App\Http\Controllers\Controller;
+use App\Models\Status;
 use App\Models\User;
 use App\Repositories\Contracts\IStatusRepository;
 use Illuminate\Http\JsonResponse;
@@ -26,5 +27,15 @@ class StatusController extends Controller
     public function index(?User $user): JsonResponse
     {
         return response()->json($this->repository->index($user), Response::HTTP_OK);
+    }
+
+    /**
+     * Get the status info
+     * @param ?User $user
+     * @return JsonResponse
+     */
+    public function getInfo(Status $status): JsonResponse
+    {
+        return response()->json($this->repository->getInfo($status), Response::HTTP_OK);
     }
 }

@@ -27,7 +27,7 @@ interface IStatusRepository  {
      * @param Status $status
      * @return StatusResource
      */
-    // public function getStatusInfo(Status $status) :StatusResource;
+    public function getInfo(Status $status);
 
     /**
      * Get all statuses.

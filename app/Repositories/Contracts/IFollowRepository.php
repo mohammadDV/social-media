@@ -19,6 +19,13 @@ interface IFollowRepository  {
     public function index(int $userId) :array;
 
     /**
+     * Specify whether to be a follower or not.
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function isFollower(User $user): array;
+
+    /**
      * Get the followers
      * @param int $userId
      * @param SearchRequest $request

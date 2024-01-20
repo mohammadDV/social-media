@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LikeStoreRequest;
 use App\Http\Requests\SearchClubRequest;
 use App\Models\Club;
+use App\Models\User;
 use App\Repositories\Contracts\IFavoriteRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
@@ -23,11 +24,12 @@ class FavoriteController extends Controller
 
     /**
      * Get favorite clubs of the user
+     * @param ?User $user
      * @return JsonResponse
      */
-    public function getClubs(): JsonResponse
+    public function getClubs(?User $user): JsonResponse
     {
-        return response()->json($this->repository->getClubs(), Response::HTTP_OK);
+        return response()->json($this->repository->getClubs($user), Response::HTTP_OK);
     }
 
     /**

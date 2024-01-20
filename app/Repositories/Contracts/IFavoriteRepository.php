@@ -4,6 +4,7 @@ namespace App\Repositories\Contracts;
 
 use App\Http\Requests\SearchClubRequest;
 use App\Models\Club;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -15,9 +16,10 @@ interface IFavoriteRepository  {
 
     /**
      * Get favorite clubs of the user
+     * @param ?User $user
      * @return Collection
      */
-    public function getClubs() :Collection;
+    public function getClubs(?User $user) :Collection;
 
     /**
      * Store club of the user
