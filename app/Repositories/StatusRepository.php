@@ -38,16 +38,29 @@ class StatusRepository implements IStatusRepository {
     public function index(?User $user) :LengthAwarePaginator
     {
         // ->addMinutes('1'),
-        return cache()->remember("status.all" . !empty($user) ? $user?->id : '', now(),
-            function () use($user){
-            return Status::query()
-                ->when(!empty($user->id), function ($query) use($user) {
-                    return $query->where('user_id', $user->id);
-                })
-                ->with(['likes','user'])
-                ->where('status',1)
-                ->orderBy('id', 'DESC')->paginate(3);
-        });
+        // return cache()->remember("status.all" . !empty($user) ? $user?->id : '', now(),
+        return Status::query()
+            ->when(!empty($user->id), function ($query) use($user) {
+                return $query->where('user_id', $user->id);
+            })
+            ->with(['likes','user'])
+            ->where('status',1)
+            ->orderBy('id', 'DESC')
+            ->paginate(2);
+    }
+
+     /**
+     * Get the status info.
+     * @param Status $status
+     * @return StatusResource
+     */
+    public function getInfo(Status $status)
+    {
+        return Status::query()
+            ->with(['likes','user'])
+            ->where('id', $status->id)
+            ->where('status',1)
+            ->first();
     }
 
 

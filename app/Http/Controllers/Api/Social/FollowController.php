@@ -31,6 +31,16 @@ class FollowController extends Controller
     }
 
     /**
+     * Specify whether to be a follower or not.
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function isFollower(User $user): JsonResponse
+    {
+        return response()->json($this->repository->isFollower($user), Response::HTTP_OK);
+    }
+
+    /**
      * Get the followers.
      * @param ?User $user
      * @param SearchRequest $request

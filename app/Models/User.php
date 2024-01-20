@@ -105,12 +105,12 @@ class User extends Authenticatable
 
     public function followers()
     {
-        return $this->hasMany(Follow::class);
+        return $this->hasMany(Follow::class)->orderBy('id', 'desc');
     }
 
     public function following()
     {
-        return $this->hasMany(Follow::class,'follower_id');
+        return $this->hasMany(Follow::class,'follower_id')->orderBy('id', 'desc');
     }
 
     public function clubs()

@@ -21,30 +21,65 @@ class FollowRepository implements IFollowRepository {
     public function index(int $userId) :array
     {
 
-        $data['followersCount'] = Follow::select('follower_id')->where('user_id', $userId)->count();
-        $followers = array_column(Follow::query()
-            ->select('follower_id')
+        $data['followersCount'] = Follow::select('follower_id')
             ->where('user_id', $userId)
-            ->limit(10)
-            ->orderBy('id', 'DESC')
-            ->get()
-            ->toArray(), 'follower_id');
+            ->orderBy('id', 'desc')
+            ->count();
 
-        $data['followers'] = UserResource::collection(User::whereIn('id', $followers)->where('status',1)->get());
+        $data['followers'] = UserResource::collection(
+            User::query()
+            ->where('status',1)
+            ->whereHas('following', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->limit(12)
+            ->get()
+        );
 
         $data['followingsCount'] = Follow::select('user_id')->where('follower_id', $userId)->count();
-        $followings = array_column(Follow::query()
-            ->select('user_id')
-            ->where('follower_id', $userId)
-            ->limit(10)
-            ->orderBy('id', 'DESC')
-            ->get()
-            ->toArray(), 'user_id');
+        // $followings = array_column(Follow::query()
+        //     ->select('user_id')
+        //     ->where('follower_id', $userId)
+        //     ->limit(10)
+        //     ->orderBy('id', 'DESC')
+        //     ->get()
+        //     ->toArray(), 'user_id');
 
-        $data['followings'] = UserResource::collection(User::whereIn('id', $followings)->where('status',1)->get());
+        $data['followings'] = UserResource::collection(
+            User::query()
+            ->where('status',1)
+            ->whereHas('followers', function ($query) use ($userId) {
+                $query->where('follower_id', $userId);
+            })
+            ->limit(12)
+            ->get()
+        );
 
         return $data;
 
+    }
+
+    /**
+     * Specify whether to be a follower or not.
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function isFollower(User $user): array
+    {
+        if (Auth::user()->id == $user->id) {
+            return [
+                'active' => 1,
+            ];
+        }
+
+        $follow = Follow::query()
+            ->where('user_id', $user->id)
+            ->where('follower_id', Auth::user()->id)
+            ->first();
+
+        return [
+            'active' => !empty($follow->user_id)
+        ];
     }
 
     /**
@@ -55,10 +90,19 @@ class FollowRepository implements IFollowRepository {
      */
     public function getFollowers(int $userId, SearchRequest $request) :LengthAwarePaginator
     {
-        return Follow::query()
-            ->with('user')
-            ->where('user_id', $userId)
-            ->paginate(10);
+
+        return User::query()
+            ->where('status',1)
+            ->whereHas('following', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->where(function ($query) use ($request) {
+                $query->where('first_name', "like", "%" . $request->search . "%")
+                    ->orWhere('last_name', "like", "%" . $request->search . "%")
+                    ->orWhere('nickname', "like", "%" . $request->search . "%");
+            })
+            ->with('followers')
+            ->paginate(12);
     }
 
     /**
@@ -70,13 +114,14 @@ class FollowRepository implements IFollowRepository {
     public function getFollowings(int $userId, SearchRequest $request) :LengthAwarePaginator
     {
         return User::query()
+            ->where('status',1)
             ->whereHas('followers', function ($query) use ($userId) {
                 $query->where('follower_id', $userId);
             })
-            ->when(!empty($request->search) , function ($query) use ($request) {
-                $query->where('first_name', "like", "%" . $request->search . "%");
-                $query->orWhere('last_name', "like", "%" . $request->search . "%");
-                $query->orWhere('nickname', "like", "%" . $request->search . "%");
+            ->where(function ($query) use ($request) {
+                $query->where('first_name', "like", "%" . $request->search . "%")
+                    ->orWhere('last_name', "like", "%" . $request->search . "%")
+                    ->orWhere('nickname', "like", "%" . $request->search . "%");
             })
             ->with('following')
             ->paginate(12);
@@ -89,6 +134,15 @@ class FollowRepository implements IFollowRepository {
      */
     public function store(User $user) :array
     {
+        if (Auth::user()->id == $user->id) {
+            return [
+                'follow' => 1,
+                'status' => 1,
+                'active' => 1,
+                'message' => __('site.The operation has been successfully')
+            ];
+        }
+
         $active = 1;
         $data   = Follow::query()
             ->where('follower_id', Auth::user()->id)

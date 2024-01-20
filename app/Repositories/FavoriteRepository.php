@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Requests\SearchClubRequest;
 use App\Models\Club;
 use App\Models\FavoriteClub;
+use App\Models\User;
 use App\Repositories\Contracts\IFavoriteRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -18,11 +19,12 @@ class FavoriteRepository implements IFavoriteRepository {
 
     /**
      * Get favorite clubs of the user
+     * @param ?User $user
      * @return Collection
      */
-    public function getClubs() :Collection
+    public function getClubs(?User $user) :Collection
     {
-        return Auth::user()->clubs;
+        return $user ? $user->clubs : Auth::user()->clubs;
     }
 
     /**
