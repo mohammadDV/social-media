@@ -6,8 +6,10 @@ use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\ClubController;
 use App\Http\Controllers\Api\Profile\CountryController;
 use App\Http\Controllers\Api\Profile\LeagueController;
+use App\Http\Controllers\Api\Profile\NotificationController;
 use App\Http\Controllers\Api\Profile\PageController;
 use App\Http\Controllers\Api\Profile\PostController;
+use App\Http\Controllers\Api\Profile\RpcController;
 use App\Http\Controllers\Api\Profile\SportController;
 use App\Http\Controllers\Api\Profile\StatusController;
 use App\Http\Controllers\Api\Profile\StepController;
@@ -137,6 +139,16 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::post('/', [PageController::class, 'store'])->name('profile.page.store');
         Route::post('/{page}', [PageController::class, 'update'])->name('profile.page.update');
         Route::delete('/{page}', [PageController::class, 'destroy'])->name('profile.page.delete');
+    });
+
+    // notifications
+    Route::prefix('notifications')->group(function () {
+        Route::get('/{user?}', [NotificationController::class, 'indexPaginate'])->name('profile.page.index');
+    });
+
+    // rpc
+    Route::prefix('rpc')->group(function () {
+        Route::get('/', [RpcController::class, 'index'])->name('profile.rpc.index');
     });
 
 });

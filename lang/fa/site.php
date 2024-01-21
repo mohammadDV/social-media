@@ -207,6 +207,13 @@ return array(
     'Image,video, Maximum file size : 10M'                      => 'تصویر، ویدئو یا صوت. حداکثر حجم: 10 مگابایت',
     'What are you have in your mind? write it and get your followers involved'          => 'در ذهن شما چه می‌گذرد؟ چیزی بنویسید و دنبال کنندگان خود را نیز درگیر آن کنید...',
     'You have already selected your favorite clubs. Please remove previous selections to replace it.'          => 'شما در حال حاضر باشگاه های موردعلاقه خود را انتخاب کرده اید. لطفا برای جایگزین کردن آن انتخاب های قبلی را حذف کنید.',
+    'Someone sent a request to you.'          => ':someone برای شما درخواست فالو ارسال کرده است.',
+    'Someone sent a replay to your comment.'          => ':someone برای نظر شما پاسخی ثبت کرده است.',
+    'Someone sent a comment to your status.'          => ':someone برای استتوس شما یک پیام ثبت کرده است.',
+    'Someone sent a comment to your post.'          => ':someone برای پست شما یک پیام ثبت کرده است.',
+    'Someone liked your comment.'          => ':someone کامنت شما را لایک کرده است.',
+    'Someone liked your post.'          => ':someone پست شما را لایک کرده است.',
+    'Someone liked your status.'          => ':someone استتوس شما را لایک کرده است.',
 );
 
 

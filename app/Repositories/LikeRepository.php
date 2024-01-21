@@ -2,13 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Like;
+use App\Models\Notification;
+use App\Models\Post;
 use App\Models\Status;
+use App\Models\User;
 use App\Repositories\Contracts\ILikeRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -68,6 +69,48 @@ class LikeRepository implements ILikeRepository {
                 "likeable_id"       => $id,
                 "likeable_type"     => $model::class,
             ]);
+
+
+            if ($model->user_id != Auth::user()->id) {
+
+                switch ($model::class) {
+                    case Comment::class;
+                        $path = 'comment';
+                        $link = '/profile/' . $model->commentable_id;
+                        $message = __('site.Someone liked your comment.', ['someone' => Auth::user()->nickname]);
+                    break;
+                    case Status::class;
+                        $path = 'status';
+                        $link = '/profile/' . $model->id;
+                        $message = __('site.Someone liked your status.', ['someone' => Auth::user()->nickname]);
+                    break;
+                    case Post::class;
+                        $path = 'post';
+                        $link = '/news/' . $model->id . '/' . $model->slug;
+                        $message = __('site.Someone liked your post.', ['someone' => Auth::user()->nickname]);
+                    break;
+                    default;
+                        $link = '';
+                }
+
+                if (!empty($link)) {
+                    cache()->remember(
+                        'notification.like.' . $path . Auth::user()->id . '.' . $model->id,
+                        now()->addMinutes(1),
+                        function () use($model, $link, $message) {
+                            // Add notification
+                            return Notification::create([
+                                'message' => $message,
+                                'link' => $link,
+                                'user_id' => $model->user_id,
+                                'model_id' => Auth::user()->id,
+                                'model_type' => User::class,
+                            ]);
+                        });
+                }
+            }
+
+
         }
 
         $model->refresh();

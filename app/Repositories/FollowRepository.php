@@ -6,6 +6,7 @@ use App\Http\Requests\SearchRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Follow;
 use App\Models\Live;
+use App\Models\Notification;
 use App\Models\User;
 use App\Repositories\Contracts\IFollowRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -37,13 +38,6 @@ class FollowRepository implements IFollowRepository {
         );
 
         $data['followingsCount'] = Follow::select('user_id')->where('follower_id', $userId)->count();
-        // $followings = array_column(Follow::query()
-        //     ->select('user_id')
-        //     ->where('follower_id', $userId)
-        //     ->limit(10)
-        //     ->orderBy('id', 'DESC')
-        //     ->get()
-        //     ->toArray(), 'user_id');
 
         $data['followings'] = UserResource::collection(
             User::query()
@@ -157,6 +151,22 @@ class FollowRepository implements IFollowRepository {
                 "follower_id" => Auth::user()->id,
                 "user_id" => $user->id,
             ]);
+
+            cache()->remember(
+                'notification.follow.user' . Auth::user()->id . '.' . $user->id,
+                now()->addMinutes(1),
+                function () use($user) {
+                    // Add notification
+                    return Notification::create([
+                        'message' => __('site.Someone sent a request to you.', ['someone' => Auth::user()->nickname]),
+                        'link' => '/member/' . Auth::user()->id,
+                        'user_id' => $user->id,
+                        'model_id' => Auth::user()->id,
+                        'model_type' => User::class,
+                        'has_email' => 1,
+                    ]);
+                });
+
         }
 
         return [
