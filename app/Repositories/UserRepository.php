@@ -60,7 +60,7 @@ class UserRepository implements IUserRepository {
      * @param int $id
      * @return UserResource
      */
-    public function show(int $id) :UserResource
+    public function show(int $id = 0) :UserResource
     {
         return new UserResource(User::query()
             ->where('id', !empty($id) ? $id : Auth::user()->id)

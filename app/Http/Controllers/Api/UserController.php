@@ -51,4 +51,14 @@ class UserController extends Controller
     {
         return response()->json($this->repository->search($request));
     }
+
+    /**
+     * Get the user.
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function show() :JsonResponse
+    {
+        return response()->json($this->repository->show(), Response::HTTP_OK);
+    }
 }
