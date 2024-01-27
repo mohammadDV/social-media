@@ -29,6 +29,8 @@ class UserResource extends JsonResource
             'point' => $this->point,
             'status' => $this->status,
             'created_at' => $this->created_at,
+            'roles' => $this->getRoleNames(),
+            'permissions' => $this->getPermissionRoleNames(),
             'clubs' => new ClubResource($this->whenLoaded('clubs')),
         ];
     }

@@ -50,6 +50,7 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
     // user
     Route::prefix('user')->group(function () {
         Route::post('/search', [UserController::class, 'search'])->name('social.search.user');
+        Route::get('/info', [UserController::class, 'show'])->name('social.user.show');
     });
 
 
