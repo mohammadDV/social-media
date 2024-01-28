@@ -33,12 +33,12 @@ class UserController extends Controller
 
     /**
      * Get the user.
-     * @param int $id
+     * @param ?User $user
      * @return JsonResponse
      */
-    public function show($id = 0) :JsonResponse
+    public function show(?User $user) :JsonResponse
     {
-        return response()->json($this->repository->show($id), Response::HTTP_OK);
+        return response()->json($this->repository->show($user), Response::HTTP_OK);
     }
 
     /**

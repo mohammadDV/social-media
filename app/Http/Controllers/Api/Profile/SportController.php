@@ -32,15 +32,6 @@ class SportController extends Controller
     }
 
     /**
-     * Get all of sports
-     * @return JsonResponse
-     */
-    public function index(): JsonResponse
-    {
-        return response()->json($this->repository->index(), Response::HTTP_OK);
-    }
-
-    /**
      * Get the sport.
      * @param
      * @return JsonResponse

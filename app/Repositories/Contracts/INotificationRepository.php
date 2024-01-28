@@ -16,10 +16,9 @@ interface INotificationRepository  {
     /**
      * Get the notification pagination.
      * @param TableRequest $request
-     * @param ?User $user
      * @return LengthAwarePaginator
      */
-    public function indexPaginate(TableRequest $request, ?User $user) :LengthAwarePaginator;
+    public function indexPaginate(TableRequest $request) :LengthAwarePaginator;
 
     /**
      * Get the notification info.

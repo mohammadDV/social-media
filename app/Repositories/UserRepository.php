@@ -57,13 +57,13 @@ class UserRepository implements IUserRepository {
 
     /**
      * Get the user.
-     * @param int $id
+     * @param ?User $user
      * @return UserResource
      */
-    public function show(int $id = 0) :UserResource
+    public function show(?User $user) :UserResource
     {
         return new UserResource(User::query()
-            ->where('id', !empty($id) ? $id : Auth::user()->id)
+            ->where('id', !empty($user->id) ? $user->id : Auth::user()->id)
             ->with('clubs')
             ->first());
     }

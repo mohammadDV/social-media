@@ -30,6 +30,22 @@ class AddPermissions extends Command
      */
     public function handle()
     {
+        $userPerm = [
+            'status_show',
+            'status_store',
+            'status_update',
+            'status_delete',
+        ];
+        $authorPerm = [
+            'status_show',
+            'status_store',
+            'status_update',
+            'status_delete',
+            'post_show',
+            'post_store',
+            'post_update',
+            'post_delete',
+        ];
         $permissions = [
             'post_show',
             'post_store',
@@ -113,7 +129,7 @@ class AddPermissions extends Command
         $admin = Role::updateOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $author = Role::updateOrCreate(['name' => 'author', 'guard_name' => 'web']);
         $operator = Role::updateOrCreate(['name' => 'operator', 'guard_name' => 'web']);
-        $role = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
+        $user = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
 
         // Loop through the array and create permissions
         foreach ($permissions as $permission) {
@@ -122,6 +138,8 @@ class AddPermissions extends Command
 
         if ($admin) {
             $admin->syncPermissions($permissions);
+            $user->syncPermissions($userPerm);
+            $author->syncPermissions($authorPerm);
         }
 
         User::find(1)->assignRole(['admin']);
