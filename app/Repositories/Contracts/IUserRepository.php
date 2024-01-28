@@ -27,10 +27,10 @@ interface IUserRepository  {
 
     /**
      * Get the user.
-     * @param int $id
+     * @param ?User $user
      * @return UserResource
      */
-    public function show(int $id = 0) :UserResource;
+    public function show(?User $user) :UserResource;
 
     /**
      * Store the user.

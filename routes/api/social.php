@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\Social\CommentController;
+use App\Http\Controllers\Api\Social\CountryController;
 use App\Http\Controllers\Api\Social\FavoriteController;
 use App\Http\Controllers\Api\Social\FollowController;
 use App\Http\Controllers\Api\Social\LikeController;
 use App\Http\Controllers\Api\Social\MemberController;
+use App\Http\Controllers\Api\Social\NotificationController;
+use App\Http\Controllers\Api\Social\SportController;
 use App\Http\Controllers\Api\social\StatusController;
 use App\Http\Controllers\Api\UserController;
 use App\Models\User;
@@ -50,7 +53,22 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
     // user
     Route::prefix('user')->group(function () {
         Route::post('/search', [UserController::class, 'search'])->name('social.search.user');
-        Route::get('/info', [UserController::class, 'show'])->name('social.user.show');
+        Route::get('/info/{user?}', [UserController::class, 'show'])->name('social.user.show');
+    });
+
+    // sport
+    Route::prefix('sport')->group(function () {
+        Route::get('/index', [SportController::class, 'index'])->name('social.sport.index');
+    });
+
+    // country
+    Route::prefix('country')->group(function () {
+        Route::get('/index', [CountryController::class, 'index'])->name('social.country.index');
+    });
+
+    // notifications
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'indexPaginate'])->name('profile.page.index');
     });
 
 

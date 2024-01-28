@@ -19,17 +19,13 @@ class NotificationRepository implements INotificationRepository {
     /**
      * Get the notification pagination.
      * @param TableRequest $request
-     * @param ?User $user
      * @return LengthAwarePaginator
      */
-    public function indexPaginate(TableRequest $request, ?User $user) :LengthAwarePaginator
+    public function indexPaginate(TableRequest $request) :LengthAwarePaginator
     {
-        if (empty($user->id)) {
-            $user = Auth::user();
-        }
 
         Notification::query()
-            ->where('user_id', $user->id)
+            ->where('user_id', Auth::user()->id)
             ->where('status', 0)
             ->where('type', Notification::STATUS_SIMPLE)
             ->update([
@@ -39,7 +35,7 @@ class NotificationRepository implements INotificationRepository {
 
         return Notification::query()
             ->with('model')
-            ->where('user_id', $user->id)
+            ->where('user_id', Auth::user()->id)
             ->orderBy('id', 'desc')
             ->paginate($request->get('rowsPerNotification', 2));
     }

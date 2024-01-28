@@ -2,9 +2,6 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Http\Requests\TableRequest;
-use App\Models\User;
-use Illuminate\Pagination\LengthAwarePaginator;
 
  /**
  * Interface IRpcRepository.

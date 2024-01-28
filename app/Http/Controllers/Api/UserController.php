@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\SearchRequest;
+use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -55,10 +56,11 @@ class UserController extends Controller
     /**
      * Get the user.
      * @param int $id
+     * @param ?User $user
      * @return JsonResponse
      */
-    public function show() :JsonResponse
+    public function show(?User $user) :JsonResponse
     {
-        return response()->json($this->repository->show(), Response::HTTP_OK);
+        return response()->json($this->repository->show($user), Response::HTTP_OK);
     }
 }

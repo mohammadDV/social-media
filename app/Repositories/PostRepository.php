@@ -184,7 +184,6 @@ class PostRepository implements IPostRepository {
     public function postPaginate(Request $request) :LengthAwarePaginator
     {
 
-
         $search = $request->get('query');
         return Post::query()
             ->when(Auth::user()->level != 3, function ($query) {

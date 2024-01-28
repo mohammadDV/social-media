@@ -40,7 +40,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
     // userInfo
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'indexPaginate'])->name('profile.users.pagination')->middleware('permission:user_show');
-        Route::get('/info/{id?}', [UserController::class, 'show'])->name('profile.user.show')->middleware('permission:user_show');
+        Route::get('/info/{user?}', [UserController::class, 'show'])->name('profile.user.show')->middleware('permission:user_show');
         Route::post('/', [UserController::class, 'store'])->name('profile.user.store')->middleware('permission:user_store');
         Route::post('/{user}', [UserController::class, 'update'])->name('profile.user.update')->middleware('permission:user_update');
         Route::patch('/password', [UserController::class, 'updatePassword'])->name('profile.user.password.update')->middleware('permission:user_update');
@@ -48,7 +48,6 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
 
     // sports
     Route::prefix('sports')->group(function () {
-        Route::get('/index', [SportController::class, 'index'])->name('profile.sport.index')->middleware('permission:sport_show');
         Route::get('/', [SportController::class, 'indexPaginate'])->name('profile.sport')->middleware('permission:sport_show');
         Route::get('/{sport}', [SportController::class, 'show'])->name('profile.sport.show')->middleware('permission:sport_show');
         Route::post('/', [SportController::class, 'store'])->name('profile.sport.store')->middleware('permission:sport_store');
@@ -58,7 +57,6 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
 
     // sports
     Route::prefix('countries')->group(function () {
-        Route::get('/index', [CountryController::class, 'index'])->name('profile.country')->middleware('permission:country_show');
         Route::get('/', [CountryController::class, 'indexPaginate'])->name('profile.country.index')->middleware('permission:country_show');
         Route::get('/{country}', [CountryController::class, 'show'])->name('profile.country.show')->middleware('permission:country_show');
         Route::post('/', [CountryController::class, 'store'])->name('profile.country.store')->middleware('permission:country_store');
@@ -142,9 +140,9 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
     });
 
     // notifications
-    Route::prefix('notifications')->group(function () {
-        Route::get('/{user?}', [NotificationController::class, 'indexPaginate'])->name('profile.page.index')->middleware('permission:notification_show');
-    });
+    // Route::prefix('notifications')->group(function () {
+    //     Route::get('/{user?}', [NotificationController::class, 'indexPaginate'])->name('profile.page.index')->middleware('permission:notification_show');
+    // });
 
     // rpc
     Route::prefix('rpc')->group(function () {
