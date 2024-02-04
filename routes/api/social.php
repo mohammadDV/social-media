@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\Social\TicketController;
 use App\Http\Controllers\Api\Social\CommentController;
 use App\Http\Controllers\Api\Social\CountryController;
 use App\Http\Controllers\Api\Social\FavoriteController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Api\Social\MemberController;
 use App\Http\Controllers\Api\Social\NotificationController;
 use App\Http\Controllers\Api\Social\SportController;
 use App\Http\Controllers\Api\social\StatusController;
+use App\Http\Controllers\Api\Social\TicketSubjectController;
 use App\Http\Controllers\Api\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +66,11 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
     // country
     Route::prefix('country')->group(function () {
         Route::get('/index', [CountryController::class, 'index'])->name('social.country.index');
+    });
+
+    // ticket subjects
+    Route::prefix('ticket-subjects')->group(function () {
+        Route::get('/index', [TicketSubjectController::class, 'index'])->name('social.ticket-subjects.index');
     });
 
     // notifications

@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\Profile\RpcController;
 use App\Http\Controllers\Api\Profile\SportController;
 use App\Http\Controllers\Api\Profile\StatusController;
 use App\Http\Controllers\Api\Profile\StepController;
+use App\Http\Controllers\Api\Profile\TicketController;
+use App\Http\Controllers\Api\Profile\TicketSubjectController;
 use App\Http\Controllers\Api\Profile\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,7 +57,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::delete('/{sport}', [SportController::class, 'destroy'])->name('profile.sport.delete')->middleware('permission:sport_delete');
     });
 
-    // sports
+    // countries
     Route::prefix('countries')->group(function () {
         Route::get('/', [CountryController::class, 'indexPaginate'])->name('profile.country.index')->middleware('permission:country_show');
         Route::get('/{country}', [CountryController::class, 'show'])->name('profile.country.show')->middleware('permission:country_show');
@@ -147,6 +149,24 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
     // rpc
     Route::prefix('rpc')->group(function () {
         Route::get('/', [RpcController::class, 'index'])->name('profile.rpc.index');
+    });
+
+    // tickets
+    Route::prefix('tickets')->group(function () {
+        Route::get('/', [TicketController::class, 'indexPaginate'])->name('profile.ticket.index')->middleware('permission:ticket_show');
+        Route::get('/{ticket}', [ClubController::class, 'show'])->name('profile.ticket.show')->middleware('permission:ticket_show');
+        Route::post('/', [TicketController::class, 'store'])->name('profile.ticket.store')->middleware('permission:ticket_store');
+        // Route::post('/{club}', [ClubController::class, 'update'])->name('profile.ticket.update')->middleware('permission:ticket_update');
+        // Route::delete('/{club}', [ClubController::class, 'destroy'])->name('profile.ticket.delete')->middleware('permission:ticket_delete');
+    });
+
+    // ticket subjects
+    Route::prefix('ticket-subjects')->group(function () {
+        Route::get('/', [TicketSubjectController::class, 'indexPaginate'])->name('profile.ticket-subject.index')->middleware('permission:subject_show');
+        Route::get('/{ticketSubject}', [TicketSubjectController::class, 'show'])->name('profile.ticket-subject.show')->middleware('permission:subject_show');
+        Route::post('/', [TicketSubjectController::class, 'store'])->name('profile.ticket-subject.store')->middleware('permission:subject_store');
+        Route::post('/{ticketSubject}', [TicketSubjectController::class, 'update'])->name('profile.ticket-subject.update')->middleware('permission:subject_update');
+        Route::delete('/{ticketSubject}', [TicketSubjectController::class, 'destroy'])->name('profile.ticket-subject.delete')->middleware('permission:subject_delete');
     });
 
 });

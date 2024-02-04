@@ -35,6 +35,8 @@ class AddPermissions extends Command
             'status_store',
             'status_update',
             'status_delete',
+            'ticket_show',
+            'ticket_store',
         ];
         $authorPerm = [
             'status_show',
@@ -45,6 +47,16 @@ class AddPermissions extends Command
             'post_store',
             'post_update',
             'post_delete',
+            'ticket_show',
+            'ticket_store',
+        ];
+        $operatorPerm = [
+            'ticket_show',
+            'ticket_replay',
+            'subject_store',
+            'subject_show',
+            'subject_update',
+            'subject_delete',
         ];
         $permissions = [
             'post_show',
@@ -123,6 +135,13 @@ class AddPermissions extends Command
             'like_store',
             'follow_show',
             'follow_store',
+            'ticket_show',
+            'ticket_store',
+            'ticket_replay',
+            'subject_store',
+            'subject_show',
+            'subject_update',
+            'subject_delete',
         ];
 
         // Add the lite and normal roles
@@ -140,6 +159,7 @@ class AddPermissions extends Command
             $admin->syncPermissions($permissions);
             $user->syncPermissions($userPerm);
             $author->syncPermissions($authorPerm);
+            $operator->syncPermissions($operatorPerm);
         }
 
         User::find(1)->assignRole(['admin']);
