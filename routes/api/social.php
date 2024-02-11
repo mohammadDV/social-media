@@ -9,9 +9,8 @@ use App\Http\Controllers\Api\Social\LikeController;
 use App\Http\Controllers\Api\Social\MemberController;
 use App\Http\Controllers\Api\Social\NotificationController;
 use App\Http\Controllers\Api\Social\SportController;
-use App\Http\Controllers\Api\social\StatusController;
+use App\Http\Controllers\Api\Social\StatusController;
 use App\Http\Controllers\Api\UserController;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 

@@ -28,6 +28,16 @@ class ValidationController extends Controller
     }
 
     /**
+     * Get the base requests namespace
+     *
+     * @return string               The base requests namespace
+     */
+    protected function requestsAuthNamespace() : string
+    {
+        return '\\App\Http\\Requests\\Auth\\';
+    }
+
+    /**
      * Get all of lives.
      */
     public function index(string $requestName, Request $request)
@@ -45,6 +55,10 @@ class ValidationController extends Controller
     {
         // get the RequestValidator belongin to the requested class
         $requestNameFull = $this->requestsNamespace()  . $requestName;
+
+        if (!class_exists($requestNameFull)) {
+            $requestNameFull = $this->requestsAuthNamespace()  . $requestName;
+        }
 
         $requestClass = new $requestNameFull;
 

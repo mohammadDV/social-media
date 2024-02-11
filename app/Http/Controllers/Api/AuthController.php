@@ -44,13 +44,15 @@ class AuthController extends Controller
     public function register(RegisterRequest $request): Response
     {
         $user = User::create([
-            'first_name'    => $request->name,
-            'nickname'    => $request->name,
-            'role_id'       => 1,
-            'status'        => 1,
+            'first_name' => $request->name,
+            'nickname' => $request->name,
+            'role_id' => 1,
+            'status' => 1,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
+
+        $user->assignRole(['user']);
 
         $token = $user->createToken('myapptokens')->plainTextToken;
 
