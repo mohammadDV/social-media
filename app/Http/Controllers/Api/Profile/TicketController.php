@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SportRequest;
 use App\Http\Requests\SportUpdateRequest;
 use App\Http\Requests\TableRequest;
+use App\Http\Requests\TicketMessageRequest;
 use App\Http\Requests\TicketRequest;
 use App\Models\Ticket;
 use App\Repositories\Contracts\ITicketRepository;
@@ -33,7 +34,7 @@ class TicketController extends Controller
     }
 
     /**
-     * Get the sport.
+     * Get the ticket.
      * @param
      * @return JsonResponse
      */
@@ -52,24 +53,25 @@ class TicketController extends Controller
         return $this->repository->store($request);
     }
 
-    /**
-     * Update the sport.
-     * @param SportUpdateRequest $request
-     * @param Sport $sport
+     /**
+     * Store the message of ticket.
+     * @param TicketMessageRequest $request
+     * @param Ticket $ticket
      * @return JsonResponse
+     * @throws \Exception
      */
-    public function update(SportUpdateRequest $request, Sport $sport) :JsonResponse
+    public function storeMessage(TicketMessageRequest $request, Ticket $ticket) :JsonResponse
     {
-        return $this->repository->update($request, $sport);
+        return $this->repository->storeMessage($request, $ticket);
     }
 
     /**
-     * Delete the sport.
-     * @param Sport $sport
+     * Delete the ticket.
+     * @param Ticket $ticket
      * @return JsonResponse
      */
-    public function destroy(Sport $sport) :JsonResponse
+    public function destroy(Ticket $ticket)
     {
-        return $this->repository->destroy($sport);
+        // return $this->repository->destroy($ticket);
     }
 }

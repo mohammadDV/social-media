@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Http\Requests\FileRequest;
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\VideoRequest;
 
@@ -23,5 +24,12 @@ interface IFileRepository  {
      * @return array
      */
     public function uploadVideo(VideoRequest $request);
+
+    /**
+     * Upload the file
+     * @param FileRequest $request
+     * @return array
+     */
+    public function uploadFile(FileRequest $request);
 
 }

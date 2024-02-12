@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FileRequest;
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\VideoRequest;
 use App\Repositories\Contracts\IFileRepository;
@@ -35,6 +36,14 @@ class FileController extends Controller
     public function uploadVideo(VideoRequest $request): JsonResponse
     {
         return response()->json($this->repository->uploadVideo($request), Response::HTTP_OK);
+    }
+    /**
+     * Upload the video.
+     * @param FileRequest $request
+     */
+    public function uploadFile(FileRequest $request): JsonResponse
+    {
+        return response()->json($this->repository->uploadFile($request), Response::HTTP_OK);
     }
 
 }

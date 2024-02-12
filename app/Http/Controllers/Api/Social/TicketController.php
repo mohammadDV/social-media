@@ -26,14 +26,4 @@ class SportController extends Controller
     {
         return response()->json($this->repository->index(), Response::HTTP_OK);
     }
-
-    /**
-     * Store the ticket.
-     * @param TicketRequest $request
-     * @return JsonResponse
-     */
-    public function store(TicketRequest $request) :JsonResponse
-    {
-        return $this->repository->store($request);
-    }
 }
