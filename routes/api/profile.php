@@ -154,9 +154,9 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
     // tickets
     Route::prefix('tickets')->group(function () {
         Route::get('/', [TicketController::class, 'indexPaginate'])->name('profile.ticket.index')->middleware('permission:ticket_show');
-        Route::get('/{ticket}', [ClubController::class, 'show'])->name('profile.ticket.show')->middleware('permission:ticket_show');
+        Route::get('/{ticket}', [TicketController::class, 'show'])->name('profile.ticket.show')->middleware('permission:ticket_show');
         Route::post('/', [TicketController::class, 'store'])->name('profile.ticket.store')->middleware('permission:ticket_store');
-        // Route::post('/{club}', [ClubController::class, 'update'])->name('profile.ticket.update')->middleware('permission:ticket_update');
+        Route::post('/{ticket}', [TicketController::class, 'storeMessage'])->name('profile.ticket.store.message')->middleware('permission:ticket_store');
         // Route::delete('/{club}', [ClubController::class, 'destroy'])->name('profile.ticket.delete')->middleware('permission:ticket_delete');
     });
 

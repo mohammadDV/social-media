@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\FileRequest;
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\VideoRequest;
 use App\Repositories\Contracts\IFileRepository;
@@ -66,6 +67,36 @@ class FileRepository implements IFileRepository {
             return [
                 'status' => !empty($videoResult),
                 'url' => $videoResult
+            ];
+        }
+
+        return [
+            'status' => false,
+            'url' => ''
+        ];
+
+    }
+
+    /**
+     * Upload the video
+     * @param FileRequest $request
+     * @return array
+     */
+    public function uploadFile(FileRequest $request)
+    {
+
+        if ($request->hasFile('file')) {
+
+            $this->fileService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $request->input('dir', 'default'));
+            $fileResult = $this->fileService->moveToStorage($request->file('file'));
+
+            if (!$fileResult){
+                throw new \Exception(__('site.Error in save data'));
+            }
+
+            return [
+                'status' => !empty($fileResult),
+                'url' => $fileResult
             ];
         }
 

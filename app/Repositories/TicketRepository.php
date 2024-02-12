@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\SportUpdateRequest;
 use App\Http\Requests\TableRequest;
+use App\Http\Requests\TicketMessageRequest;
 use App\Http\Requests\TicketRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Sport;
@@ -50,6 +51,7 @@ class TicketRepository implements ITicketRepository {
     {
         return Ticket::query()
                 ->with('subject')
+                ->with('messages')
                 ->where('id', $ticket->id)
                 ->first();
     }
@@ -86,26 +88,24 @@ class TicketRepository implements ITicketRepository {
     }
 
     /**
-     * Update the sport.
-     * @param SportUpdateRequest $request
-     * @param Sport $sport
+     * Store the message of ticket.
+     * @param TicketMessageRequest $request
+     * @param Ticket $ticket
      * @return JsonResponse
      * @throws \Exception
      */
-    public function update(SportUpdateRequest $request, Sport $sport) :JsonResponse
+    public function storeMessage(TicketMessageRequest $request, Ticket $ticket) :JsonResponse
     {
-        $this->checkLevelAccess(Auth::user()->id == $sport->user_id);
+        $this->checkLevelAccess(Auth::user()->id == $ticket->user_id);
 
-        $sport = $sport->update([
-            'alias_id'      => $request->input('alias_id'),
-            'alias_title'   => $request->input('alias_title'),
-            'title'         => $request->input('title'),
-            'image'         => $request->input('image'),
-            'user_id'       => auth()->user()->id,
-            'status'        => $request->input('status'),
+        $message = TicketMessage::create([
+            'ticket_id'    => $ticket->id,
+            'file'         => $request->input('file', null),
+            'message'      => $request->input('message'),
+            'user_id'      => Auth::user()->id,
         ]);
 
-        if ($sport) {
+        if ($message) {
             return response()->json([
                 'status' => 1,
                 'message' => __('site.The operation has been successfully')

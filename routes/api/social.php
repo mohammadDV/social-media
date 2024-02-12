@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum', 'auth'])->group(function() {
     Route::post('/upload-image', [FileController::class, 'uploadImage'])->name('site.upload-image');
     Route::post('/upload-video', [FileController::class, 'uploadVideo'])->name('site.upload-video');
+    Route::post('/upload-file', [FileController::class, 'uploadFile'])->name('site.upload-file');
     Route::get('/statuses/{user?}', [StatusController::class, 'index'])->name('site.statuses.index');
     Route::get('/status/preview/{status}', [StatusController::class, 'getInfo'])->name('site.statuses.info');
     Route::get('/follow-info/{user?}', [FollowController::class, 'index'])->name('site.follow-info');
