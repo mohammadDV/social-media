@@ -9,6 +9,9 @@ class Ticket extends Model
 {
     use HasFactory;
 
+    CONST STATUS_ACTIVE = 'active';
+    CONST STATUS_CLOSED = 'closed';
+
     protected $guarded = [];
 
     public function subject() {

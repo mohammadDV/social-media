@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class TicketRequest extends BaseRequest
+class TicketStatusRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,9 +20,7 @@ class TicketRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'subject_id' => ['required','exists:ticket_subjects,id'],
-            'message' => ['required','string','min:3','max:255'],
-            'file' => !empty($this->get('file')) ? ['required','string'] : ['sometimes'],
+            'status' => ['required','in:active,closed'],
         ];
     }
 }

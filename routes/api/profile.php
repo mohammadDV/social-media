@@ -157,7 +157,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::get('/{ticket}', [TicketController::class, 'show'])->name('profile.ticket.show')->middleware('permission:ticket_show');
         Route::post('/', [TicketController::class, 'store'])->name('profile.ticket.store')->middleware('permission:ticket_store');
         Route::post('/{ticket}', [TicketController::class, 'storeMessage'])->name('profile.ticket.store.message')->middleware('permission:ticket_store');
-        // Route::delete('/{club}', [ClubController::class, 'destroy'])->name('profile.ticket.delete')->middleware('permission:ticket_delete');
+        Route::post('/status/{ticket}', [TicketController::class, 'changeStatus'])->name('profile.ticket.change-status')->middleware('permission:ticket_store');
     });
 
     // ticket subjects
