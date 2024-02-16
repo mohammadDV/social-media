@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Api\Profile;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SportRequest;
-use App\Http\Requests\SportUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\TicketMessageRequest;
 use App\Http\Requests\TicketRequest;
+use App\Http\Requests\TicketStatusRequest;
 use App\Models\Ticket;
 use App\Repositories\Contracts\ITicketRepository;
 use Illuminate\Http\JsonResponse;
@@ -51,6 +50,17 @@ class TicketController extends Controller
     public function store(TicketRequest $request) :JsonResponse
     {
         return $this->repository->store($request);
+    }
+
+    /**
+     * Change status of the ticket
+     * @param TicketStatusRequest $request
+     * @param Ticket $ticket
+     * @return JsonResponse
+     */
+    public function changeStatus(TicketStatusRequest $request, Ticket $ticket) :JsonResponse
+    {
+        return $this->repository->changeStatus($request, $ticket);
     }
 
      /**
