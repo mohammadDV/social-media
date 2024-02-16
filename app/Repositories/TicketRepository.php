@@ -13,6 +13,7 @@ use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Repositories\Contracts\ITicketRepository;
 use App\Repositories\traits\GlobalFunc;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -65,6 +66,37 @@ class TicketRepository implements ITicketRepository {
      */
     public function store(TicketRequest $request) :JsonResponse
     {
+
+        $query = Ticket::query()
+            ->where('user_id', Auth::user()->id)
+            ->where('status', Ticket::STATUS_ACTIVE)
+            ->orderBy('id', 'desc');
+
+        $createdAt = Carbon::parse($query->first()->created_at);
+
+        // Check if created_at is more than 5 minutes ago
+        if ($createdAt->diffInMinutes(Carbon::now()) < 5) {
+            return response()->json([
+                'status' => 0,
+                'message' => __('site.You are not allowed to resend messages. Please try again in 5 minutes.')
+            ], Response::HTTP_CREATED);
+        }
+
+        // Check if created_at is more than 5 minutes ago
+        if ($query->count() > 2) {
+            return response()->json([
+                'status' => 0,
+                'message' => __('site.You are not allowed to send new tickets because you have 3 active tickets.')
+            ], Response::HTTP_CREATED);
+        }
+
+        // Check if created_at is more than 5 minutes ago
+        if ($createdAt->diffInMinutes(Carbon::now()) < 5) {
+            return response()->json([
+                'status' => 0,
+                'message' => __('site.You are not allowed to resend messages. Please try again in 5 minutes.')
+            ], Response::HTTP_CREATED);
+        }
 
         $ticket = Ticket::create([
             'subject_id'    => $request->input('subject_id'),
@@ -129,6 +161,18 @@ class TicketRepository implements ITicketRepository {
     public function storeMessage(TicketMessageRequest $request, Ticket $ticket) :JsonResponse
     {
         $this->checkLevelAccess(Auth::user()->id == $ticket->user_id);
+
+        $exist = TicketMessage::query()
+                    ->where('ticket_id', $ticket->id)
+                    ->orderBy('id', 'desc')
+                    ->first();
+
+        if ($exist->user_id == Auth::user()->id && Auth::user()->level != 3) {
+            return response()->json([
+                'status' => 0,
+                'message' => __('site.You are not allowed to resend messages. Please wait until the operator answers.')
+            ], Response::HTTP_OK);
+        }
 
         $message = TicketMessage::create([
             'ticket_id'    => $ticket->id,

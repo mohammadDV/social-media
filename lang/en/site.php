@@ -214,6 +214,9 @@ return array(
     'Someone liked your comment.'          => ':someone کامنت شما را لایک کرده است.',
     'Someone liked your post.'          => ':someone پست شما را لایک کرده است.',
     'Someone liked your status.'          => ':someone استتوس شما را لایک کرده است.',
+    'You are not allowed to resend messages. Please wait until the operator answers.'          => 'شما مجاز به ارسال پیام مجدد نمیباشید. لطفا تا پاسخ اپراتور صبر کنید.',
+    'You are not allowed to resend messages. Please try again in 5 minutes.'          => 'شما مجاز به ارسال پیام مجدد نمی باشید. لطفا ۵ دقیقه بعد مجدد تلاش کنید.',
+    'You are not allowed to send new tickets because you have 3 active tickets.'          => 'شما به علت داشتن ۳ تیکت فعال مجاز به ارسال تیکت جدید نمی باشید.',
 );
 
 
