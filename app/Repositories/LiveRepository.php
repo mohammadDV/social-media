@@ -34,7 +34,6 @@ class LiveRepository implements ILiveRepository {
             $lives[slug($live->date)][] = [
                 "title"     => $live->title,
                 "teams"     => $live->teams,
-                "hour"      => $live->hour,
                 "date"      => $live->date,
                 "link"      => $live->link,
                 "info"      => $live->info,
@@ -92,7 +91,6 @@ class LiveRepository implements ILiveRepository {
             'title'      => $request->input('title'),
             'teams'      => $request->input('teams'),
             'date'       => $request->input('date'),
-            'hour'       => $request->input('hour'),
             'link'       => $request->input('link'),
             'info'       => $request->input('info'),
             'priority'   => $request->input('priority'),
@@ -125,7 +123,6 @@ class LiveRepository implements ILiveRepository {
             'title'      => $request->input('title'),
             'teams'      => $request->input('teams'),
             'date'       => $request->input('date'),
-            'hour'       => $request->input('hour'),
             'link'       => $request->input('link'),
             'info'       => $request->input('info'),
             'priority'   => $request->input('priority'),

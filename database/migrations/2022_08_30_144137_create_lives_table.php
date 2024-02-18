@@ -18,7 +18,6 @@ class CreateLivesTable extends Migration
             $table->string('title');
             $table->string('teams');
             $table->string('date');
-            $table->string('hour');
             $table->string('link')->nullable();
             $table->string('info')->nullable();
             $table->tinyInteger('status')->default(0);

@@ -28,7 +28,7 @@ class LeagueRequest extends BaseRequest
             'image' => ['required','string'],
             'status' => ['required', 'integer','in:0,1'],
             'type' => ['required', 'integer','in:1,2'],
-            'priority' => !empty($this->get('priority')) ? ['required', 'integer','in:1,2'] : 'sometimes'
+            'priority' => !empty($this->get('priority')) ? ['required', 'integer','max:1000'] : 'sometimes'
         ];
     }
 }

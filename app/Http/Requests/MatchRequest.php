@@ -26,9 +26,8 @@ class MatchRequest extends BaseRequest
             'hsc' => 'required|string',
             'asc' => 'required|string',
             'link' => !empty($this->get('link')) ?  'required|string|max:255' : 'sometimes',
-            'date' => 'required|string|max:100',
-            'hour' => 'required|string|max:50',
-            'priority' => 'required|integer|min:0|max:100'
+            'date' => 'required|string|max:200',
+            'priority' => 'required|integer|min:0|max:1000'
         ];
     }
 }

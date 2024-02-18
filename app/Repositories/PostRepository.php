@@ -13,6 +13,7 @@ use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -28,6 +29,7 @@ class PostRepository implements IPostRepository {
     protected $count            = 100;
     protected $latestCount      = 50;
     protected $spVideoCount     = 10;
+    protected $categoryCount    = 20;
     protected $spPostCount      = 5;
     protected $ignoreCategories = [7]; // 1 = writers,  5 = Football analysis , 6 = Non-football analysis, 7 = newspaper
 
@@ -68,7 +70,6 @@ class PostRepository implements IPostRepository {
             function () use($categoryIds, $count) {
             return Post::whereIn('category_id', $categoryIds)->where('status',1)->latest()->take($count)->get();
         });
-        // $posts = [];
 
         $data['posts']          = [];
         $data['videos']         = [];
@@ -82,9 +83,32 @@ class PostRepository implements IPostRepository {
             if($post->type === 1){
                 if($post->special === 1 && count($data['specialVideos']) < $this->spVideoCount) { $data['specialVideos'][] = $post; }
                 $data['videos'][] = $post;
-            }else{
+            } else {
                 if($post->special === 1 && count($data['specialPosts']) < $this->spPostCount) { $data['specialPosts'][] = $post; }
                 $data['posts'][$post->category_id][] = $post;
+            }
+        }
+
+        // Get special posts
+        if (count($data['specialPosts']) < $this->spPostCount) {
+            $data['specialPosts'] = $this->getSpecialPosts();
+        }
+
+        // Get special videos
+        if (count($data['specialVideos']) < $this->spVideoCount) {
+            $data['specialVideos'] = $this->getSpecialVideos();
+        }
+
+        $categoryIds = [1,2,3,4,5,6,7];
+
+        foreach ($categoryIds as $categoryId) {
+            if (count($data['posts'][$categoryId]) < $this->categoryCount) {
+                $posts = Post::query()
+                    ->where('category_id', $categoryId)
+                    ->where('status',1)
+                    ->latest()
+                    ->take($this->categoryCount)
+                    ->get();
             }
         }
 
@@ -93,12 +117,46 @@ class PostRepository implements IPostRepository {
     }
 
     /**
+     * Get special videos
+     * @return Collection
+     */
+    private function getSpecialVideos() : Collection
+    {
+        return Post::query()
+                ->where('status',1)
+                ->where('type',1)
+                ->where('special',1)
+                ->latest()
+                ->take($this->spVideoCount)
+                ->get();
+    }
+
+    /**
+     * Get special posts
+     * @return Collection
+     */
+    private function getSpecialPosts() : Collection
+    {
+        return Post::query()
+                ->whereIn('category_id', [1, 2, 3, 4])
+                ->where('status',1)
+                ->latest()
+                ->take($this->spPostCount)
+                ->get();
+    }
+
+    /**
      * Get the popular posts.
      * @return array
      */
     private function getPopular() : object
     {
-        return Post::where('status',1)->whereNotIN('category_id',$this->ignoreCategories)->orderBy('view','DESC')->take($this->latestCount)->get();
+        return Post::query()
+            ->where('status',1)
+            ->whereNotIN('category_id',$this->ignoreCategories)
+            ->orderBy('view','DESC')
+            ->take($this->latestCount)
+            ->get();
     }
 
     /**
@@ -107,17 +165,15 @@ class PostRepository implements IPostRepository {
      */
     private function getChallenged() : object
     {
-        $inventories = Post::selectRaw('posts.*,COUNT(*) as comments')->Join('comments', function($q) {
-            $q->on('posts.id', '=', 'comments.commentable_id');
-        });
-        return $inventories->where([
-            ['comments.commentable_type', Post::class],
-            ['posts.status', 1],
-        ])
-        ->groupBy('comments.commentable_id')
-        ->orderBy('comments', 'DESC')
-        ->limit($this->latestCount)
-        ->get();
+
+        return Post::query()
+            ->where('status', 1)
+            ->whereHas('comments')
+            ->withCount('comments')
+            ->orderBy('comments_count', 'desc')
+            ->limit($this->latestCount)
+            ->get();
+
     }
 
      /**

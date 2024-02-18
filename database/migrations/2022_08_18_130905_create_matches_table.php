@@ -25,7 +25,6 @@ class CreateMatchesTable extends Migration
             $table->string('link')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->string('date');
-            $table->string('hour');
             $table->bigInteger("step_id")->unsigned()->index();
             $table->foreign('step_id')->references('id')->on('steps')->onDelete('cascade');
             $table->bigInteger("user_id")->unsigned()->index();
