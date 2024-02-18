@@ -114,7 +114,7 @@ class StepRepository extends MatchService implements IStepRepository {
             ->where('league_id', $league->id)
             ->count() == 0) {
                 return response()->json([
-                    'status' => 1,
+                    'status' => 0,
                     'message' => __('site.You should have an active step')
                 ], Response::HTTP_BAD_REQUEST);
             }
@@ -165,7 +165,7 @@ class StepRepository extends MatchService implements IStepRepository {
             ->where('current', 1)
             ->count() == 0) {
                 return response()->json([
-                    'status' => 1,
+                    'status' => 0,
                     'message' => __('site.You should have an active step')
                 ], Response::HTTP_BAD_REQUEST);
             }

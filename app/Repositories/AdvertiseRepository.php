@@ -70,19 +70,19 @@ class AdvertiseRepository implements IAdvertiseRepository {
         $advertise = cache()->remember("advertise.all", now(), function () use($places) {
             return Advertise::query()
                 ->where('status', 1)
-                ->whereIn('place_id',$places)
+                ->whereIn('place_id', $places)
                 ->get();
         });
 
         $result = [];
 
-        foreach($advertise ?? [] as $key => $item) {
-            $result[$item->place_id][$key]['id']         = $item->id;
-            $result[$item->place_id][$key]['place_id']   = $item->place_id;
-            $result[$item->place_id][$key]['title']      = $item->title;
-            $result[$item->place_id][$key]['link']       = $item->link;
-            $result[$item->place_id][$key]['status']     = $item->status;
-            $result[$item->place_id][$key]['image']      = !empty($item->image) ? asset($item->image) : asset('/assets/site/images/user-icon.png');
+        foreach($advertise ?? [] as $item) {
+            $result[intval($item->place_id)][] = [
+                'id' => $item->id,
+                'title' => $item->title,
+                'link' => $item->link,
+                'image' => $item->image
+            ];
         }
 
         return $result;

@@ -54,7 +54,6 @@ class MatchService {
             $result[$key]['link']       = $item->link;
             $result[$key]['date']       = $item->date;
             $result[$key]['priority']   = $item->priority;
-            $result[$key]['hour']       = $item->hour;
             $result[$key]['status']     = $item->status;
             $result[$key]['status_name'] = $item->statusName();
             $result[$key]['home_id']    = $item->home_id;
@@ -245,7 +244,6 @@ class MatchService {
             $links      = $request->input('link');
             // $statuses   = $request->input('status');
             $dates      = $request->input('date');
-            $hours      = $request->input('hour');
             $priorities = $request->input('priority');
             $matches    = Matches::Where('step_id',$step->id)->get();
             foreach($matches ?? [] as $key => $match){
@@ -264,7 +262,6 @@ class MatchService {
                         "link"      => clear($links[$ID]),
                         // "status"    => clear($statuses[$ID]),
                         "date"      => clear($dates[$ID]),
-                        "hour"      => clear($hours[$ID]),
                         "priority"  => clear($priorities[$ID]),
                         "user_id"   => auth()->user()->id,
                     ]);
@@ -283,7 +280,6 @@ class MatchService {
                         "link"      => clear($links[$key]),
                         "status"    => 1,
                         "date"      => clear($dates[$key]),
-                        "hour"      => clear($hours[$key]),
                         "priority"  => clear($priorities[$key]),
                         "user_id"   => auth()->user()->id,
                         "step_id"   => $step->id,

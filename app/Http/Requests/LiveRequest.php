@@ -24,7 +24,6 @@ class LiveRequest extends BaseRequest
             'title' => ['required','string','min:5','max:255'],
             'teams' => ['required','string','min:5','max:255'],
             'date' => ['required','string','min:5','max:255'],
-            'hour' => ['required','string','min:5','max:255'],
             'info' => !empty($this->get('info')) ? ['required','string','min:5','max:255'] : ['sometimes'],
             'link' => !empty($this->get('link')) ? ['required','string','min:5','max:255'] : ['sometimes'],
             'status' => ['required','min:0','max:1'],
