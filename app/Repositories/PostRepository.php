@@ -49,12 +49,12 @@ class PostRepository implements IPostRepository {
      */
     public function show(Post $post) {
 
-        $this->checkLevelAccess($post->user_id == Auth::user()->id);
+        // $this->checkLevelAccess($post->user_id == Auth::user()->id);
 
-        return Post::query()
-            ->where('id', $post->id)
-            ->with('tags')
-            ->first();
+        // return Post::query()
+        //     ->where('id', $post->id)
+        //     ->with('tags')
+        //     ->first();
     }
 
     /**
@@ -183,7 +183,9 @@ class PostRepository implements IPostRepository {
      */
     public function getPostInfo(Post $post) :PostResource
     {
-        $post = Post::with('category' ,'comments.user', 'comments.parents')->find($post->id);
+        $post = Post::query()
+            ->with('tags', 'category' , 'comments.user', 'comments.parents')
+            ->find($post->id);
         return new PostResource($post);
     }
 

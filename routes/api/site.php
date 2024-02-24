@@ -19,6 +19,7 @@ Route::get('/lives', [LiveController::class, 'index'])->name('site.lives.index')
 Route::get('/advertise', [AdvertiseController::class, 'index'])->name('site.advertise.index');
 Route::get('/active-categories', [CategoryController::class, 'getActives'])->name('site.active-categories');
 Route::get('/tags-random', [TagController::class, 'getRandom'])->name('site.tags-random');
+Route::get('/tag/{tag}', [TagController::class, 'index'])->name('site.tags-random');
 Route::post('/search', [PostController::class, 'search'])->name('site.posts.search');
 
 // Route::middleware(['auth:sanctum'])->post('/logout', [AuthController::class, 'logout'])
