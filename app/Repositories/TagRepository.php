@@ -2,9 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\PostResource;
+use App\Models\Post;
 use App\Models\Tag;
 use App\Repositories\Contracts\ITagRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TagRepository implements ITagRepository {
 
@@ -20,5 +23,26 @@ class TagRepository implements ITagRepository {
                 ->limit(15)
                 ->get();
         });
+    }
+
+    /**
+     * Get all contents that has this tag
+     * @param Tag $tag
+     * @return AnonymousResourceCollection
+     */
+    public function index(Tag $tag) :AnonymousResourceCollection
+    {
+        // ->addMinutes('1'),
+        $posts = Post::query()
+            ->with('tags')
+            ->where('status', '=', 1)
+            ->whereHas('tags', function ($query) use ($tag) {
+                $query->where('id', $tag->id);
+            })
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+
+        return PostResource::collection($posts);
+
     }
 }
