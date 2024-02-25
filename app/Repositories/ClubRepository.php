@@ -8,11 +8,15 @@ use App\Http\Requests\TableRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Club;
 use App\Models\Country;
+use App\Models\League;
+use App\Models\Matches;
+use App\Models\Post;
 use App\Models\Sport;
 use App\Repositories\Contracts\IClubRepository;
 use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -75,6 +79,61 @@ class ClubRepository implements IClubRepository {
             ->with('sport','country')
             ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
             ->paginate($request->get('rowsPerPage', 25));
+    }
+
+    /**
+     * Get the club info.
+     * @param Club $club
+     * @return Club
+     * @throws Exception
+     */
+    public function getInfo(Club $club) {
+
+        if ($club->status != 1) {
+            throw new Exception;
+        }
+
+        $result['info'] = $club;
+        $result['posts'] = Post::query()
+            ->where('status', 1)
+            ->whereHas('tags', function ($query) use($club){
+                $query->where('title', trim($club->title));
+            })
+            ->limit(6)
+            ->get();
+
+        $result['videos'] = Post::query()
+            ->where('status', 1)
+            ->where('type', 1)
+            ->whereHas('tags', function ($query) use($club){
+                $query->where('title', trim($club->title));
+            })
+            ->limit(6)
+            ->get();
+
+        $league = League::query()
+            ->with('clubs')
+            ->where('status', 1)
+            ->where('type', 1)
+            ->whereHas('clubs', function ($query) use($club){
+                $query->where('id', $club->id);
+            })
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $result['clubs'] = $league->clubs;
+
+        $result['matches'] = Matches::query()
+            ->where('status', 1)
+            ->where(function ($query) use($club) {
+                $query->where('home_id', $club->id)
+                ->orWhere('away_id', $club->id);
+            })
+            ->orderBy('date', 'desc')
+            ->limit(6)
+            ->get();
+
+        return $result;
     }
 
     /**

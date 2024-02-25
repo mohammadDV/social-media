@@ -34,6 +34,13 @@ interface IClubRepository  {
     public function index(Sport|null $sport, Country|null $country) :Collection;
 
     /**
+     * Get the club info.
+     * @param Club $club
+     * @return Club
+     */
+    public function getInfo(Club $club);
+
+    /**
      * Get the club.
      * @param Club $club
      * @return Club

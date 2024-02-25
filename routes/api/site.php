@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AdvertiseController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ClubController;
 use App\Http\Controllers\Api\LeagueController;
 use App\Http\Controllers\Api\LiveController;
 use App\Http\Controllers\Api\PostController;
@@ -20,6 +21,7 @@ Route::get('/advertise', [AdvertiseController::class, 'index'])->name('site.adve
 Route::get('/active-categories', [CategoryController::class, 'getActives'])->name('site.active-categories');
 Route::get('/tags-random', [TagController::class, 'getRandom'])->name('site.tags-random');
 Route::get('/tag/{tag}', [TagController::class, 'index'])->name('site.tags-random');
+Route::get('/club/{club}', [ClubController::class, 'getInfo'])->name('site.club-info');
 Route::post('/search', [PostController::class, 'search'])->name('site.posts.search');
 
 // Route::middleware(['auth:sanctum'])->post('/logout', [AuthController::class, 'logout'])
