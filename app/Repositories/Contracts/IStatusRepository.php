@@ -23,6 +23,13 @@ interface IStatusRepository  {
     public function index(?User $user) :LengthAwarePaginator;
 
     /**
+     * Get the status.
+     * @param ?User $user
+     * @return LengthAwarePaginator
+     */
+    public function getAllPerUser(User $user) :LengthAwarePaginator;
+
+    /**
      * Get the status info.
      * @param Status $status
      * @return StatusResource

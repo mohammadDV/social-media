@@ -21,7 +21,7 @@ class StatusUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'content' => ['required','string','min:5'],
+            'text' => ['required','string','min:5'],
             'file' => !empty($this->get('file')) ? ['string'] : ['sometimes'],
             'status' => ['required','min:0','max:1']
         ];
