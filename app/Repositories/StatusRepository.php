@@ -43,8 +43,22 @@ class StatusRepository implements IStatusRepository {
             ->when(!empty($user->id), function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             })
-            ->with(['likes','user'])
-            ->where('status',1)
+            ->with(['likes', 'user'])
+            ->where('status', 1)
+            ->orderBy('id', 'DESC')
+            ->paginate(2);
+    }
+
+    /**
+     * Get the status.
+     * @param ?User $user
+     * @return LengthAwarePaginator
+     */
+    public function getAllPerUser(User $user) :LengthAwarePaginator
+    {
+        return Status::query()
+            ->where('user_id', $user->id)
+            ->with(['likes', 'user'])
             ->orderBy('id', 'DESC')
             ->paginate(2);
     }
@@ -59,7 +73,7 @@ class StatusRepository implements IStatusRepository {
         return Status::query()
             ->with(['likes','user'])
             ->where('id', $status->id)
-            ->where('status',1)
+            ->where('status', 1)
             ->first();
     }
 
@@ -99,7 +113,7 @@ class StatusRepository implements IStatusRepository {
         $imageResult = $request->get('file');
 
         Auth::user()->statuses()->create([
-            'text'        => $request->input('content'),
+            'text'        => $request->input('text'),
             'file'        => $imageResult ?? null,
             'status'      => $request->input('status',0)
         ]);
@@ -123,24 +137,13 @@ class StatusRepository implements IStatusRepository {
 
         $this->checkLevelAccess($status->user_id == Auth::user()->id);
 
-        $videoResult = $status->file;
-        if ($request->hasFile('file')){
-            $this->fileService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'file' . DIRECTORY_SEPARATOR . 'status');
-            $videoResult = $this->fileService->moveToPublic($request->file('file'));
-            if (!$videoResult){
-                throw new \Exception(__('site.Error in save data'));
-            }
-        }
-
-        if (!empty($status->file) && !empty($videoResult)){
-            $this->fileService->deleteFile($status->file);
-        }
+        $imageResult = $request->get('file');
 
         DB::beginTransaction();
         try {
             $status->update([
-                'text'       => $request->input('content'),
-                'file'        => $videoResult,
+                'text'       => $request->input('text'),
+                'file'        => $imageResult ?? null,
                 'status'      => $request->input('status'),
             ]);
             DB::commit();

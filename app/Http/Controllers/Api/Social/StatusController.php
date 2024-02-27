@@ -30,6 +30,16 @@ class StatusController extends Controller
     }
 
     /**
+     * Get all of statuses
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function getAllPerUser(User $user): JsonResponse
+    {
+        return response()->json($this->repository->getAllPerUser($user), Response::HTTP_OK);
+    }
+
+    /**
      * Get the status info
      * @param ?User $user
      * @return JsonResponse

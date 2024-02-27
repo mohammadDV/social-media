@@ -21,6 +21,7 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
     Route::post('/upload-video', [FileController::class, 'uploadVideo'])->name('site.upload-video');
     Route::post('/upload-file', [FileController::class, 'uploadFile'])->name('site.upload-file');
     Route::get('/statuses/{user?}', [StatusController::class, 'index'])->name('site.statuses.index');
+    Route::get('/status/all/{user}', [StatusController::class, 'getAllPerUser'])->name('site.statuses.all-per-user');
     Route::get('/status/preview/{status}', [StatusController::class, 'getInfo'])->name('site.statuses.info');
     Route::get('/follow-info/{user?}', [FollowController::class, 'index'])->name('site.follow-info');
     Route::get('/followers/{user?}', [FollowController::class, 'getFollowers'])->name('site.followers');
