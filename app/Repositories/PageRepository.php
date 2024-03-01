@@ -10,6 +10,7 @@ use App\Repositories\Contracts\IPageRepository;
 use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -46,6 +47,33 @@ class PageRepository implements IPageRepository {
             })
             ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
             ->paginate($request->get('rowsPerPage', 25));
+    }
+
+
+    /**
+     * Get active pages.
+     * @return Collection
+     */
+    public function getActivePages() :Collection
+    {
+        return Page::query()
+            ->where('status', 1)
+            ->orderBy('priority', 'asc')
+            ->get();
+    }
+
+    /**
+     * Get the active page.
+     * @param string $slug
+     * @return Page|null
+     */
+    public function getActivePage(string $slug) :Page|null
+    {
+        return Page::query()
+            ->where('status', 1)
+            ->where('slug', trim($slug))
+            ->orderBy('priority', 'asc')
+            ->first();
     }
 
     /**

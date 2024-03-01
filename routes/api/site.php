@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ClubController;
 use App\Http\Controllers\Api\LeagueController;
 use App\Http\Controllers\Api\LiveController;
+use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\TagController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,8 @@ Route::get('/tags-random', [TagController::class, 'getRandom'])->name('site.tags
 Route::get('/tag/{tag}', [TagController::class, 'index'])->name('site.tags-random');
 Route::get('/club/{club}', [ClubController::class, 'getInfo'])->name('site.club-info');
 Route::post('/search', [PostController::class, 'search'])->name('site.posts.search');
+Route::get('/pages', [PageController::class, 'getActivePages'])->name('site.active-pages.search');
+Route::get('/page/{slug}', [PageController::class, 'getActivePage'])->name('site.active-page.search');
 
 // Route::middleware(['auth:sanctum'])->post('/logout', [AuthController::class, 'logout'])
 //                 ->middleware('auth')
