@@ -6,6 +6,7 @@ use App\Http\Requests\PageRequest;
 use App\Http\Requests\PageUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Page;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -20,6 +21,19 @@ interface IPageRepository  {
      * @return LengthAwarePaginator
      */
     public function indexPaginate(TableRequest $request) :LengthAwarePaginator;
+
+    /**
+     * Get active pages.
+     * @return Collection
+     */
+    public function getActivePages() :Collection;
+
+    /**
+     * Get the active page.
+     * @param string $slug
+     * @return Page|null
+     */
+    public function getActivePage(string $slug) :Page|null;
 
     /**
      * Get the page info.

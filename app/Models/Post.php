@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory,SoftDeletes, Sluggable;
+    use HasFactory, SoftDeletes, Sluggable;
 
     public function sluggable() : array
     {

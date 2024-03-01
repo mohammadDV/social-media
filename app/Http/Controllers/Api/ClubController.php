@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 class ClubController extends Controller
 {
     /**
-     * Constructor of ILiveRepository.
+     * Constructor of ClubController.
      */
     public function __construct(protected IClubRepository $repository)
     {
@@ -19,7 +19,7 @@ class ClubController extends Controller
     }
 
     /**
-     * Get all of lives.
+     * Get the club info.
      * @param Club $club
      */
     public function getInfo(Club $club): JsonResponse
