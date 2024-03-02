@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Club;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\traits\GlobalFunc;
@@ -194,7 +195,7 @@ class UserRepository implements IUserRepository {
             return [];
         }
 
-        return User::query()
+        $data['users'] = User::query()
             ->where('level', '!=', 3)
             ->where('status', 1)
             ->where(function ($query) use ($search) {
@@ -203,7 +204,20 @@ class UserRepository implements IUserRepository {
                     ->orWhere('nickname', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');
             })
-            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
-            ->paginate($request->get('rowsPerPage', 50));
+            ->orderBy('id', 'desc')
+            ->limit(20)
+            ->get();
+
+        $data['clubs'] = Club::query()
+            ->where('status', 1)
+            ->where(function ($query) use ($search) {
+                return $query->where('title', 'like', '%' . $search . '%');
+            })
+            ->with('sport')
+            ->orderBy('id', 'desc')
+            ->limit(10)
+            ->get();
+
+        return $data;
    }
 }

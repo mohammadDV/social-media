@@ -51,4 +51,12 @@ class PostController extends Controller
     {
         return response()->json($this->repository->search($request->input('search', '')), Response::HTTP_OK);
     }
+
+    /**
+     * Get all of post per category.
+     */
+    public function searchPostTag(Request $request): JsonResponse
+    {
+        return response()->json($this->repository->searchPostTag($request->input('search')), Response::HTTP_OK);
+    }
 }

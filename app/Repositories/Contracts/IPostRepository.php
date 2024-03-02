@@ -48,10 +48,17 @@ interface IPostRepository  {
 
     /**
      * Get searched posts.
-     * @param search $category
+     * @param search $search
      * @return AnonymousResourceCollection
      */
     public function search(string $search) :AnonymousResourceCollection;
+
+    /**
+     * Get searched posts.
+     * @param search $search
+     * @return array
+     */
+    public function searchPostTag(string $search) :array;
 
     /**
      * Get all posts.
