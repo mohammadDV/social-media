@@ -235,6 +235,37 @@ class PostRepository implements IPostRepository {
     }
 
     /**
+     * Get searched posts.
+     * @param search $category
+     * @return array
+     */
+    public function searchPostTag(string $search) :array
+    {
+        $data['posts'] = PostResource::collection(Post::query()
+            ->where('status', '=', 1)
+            ->where(function ($query) use ($search) {
+                $query->where('title', "like", "%" . $search . "%");
+                $query->orWhere('pre_title', "like", "%" . $search . "%");
+                $query->orWhere('content', "like", "%" . $search . "%");
+                $query->orWhere('summary', "like", "%" . $search . "%");
+            })
+            ->orderBy('id', 'DESC')
+            ->limit(6)
+            ->get());
+
+        $data['tags'] = Tag::query()
+            ->where(function ($query) use ($search) {
+                $query->where('title', "like", "%" . $search . "%");
+            })
+            ->orderBy('id', 'DESC')
+            ->limit(10)
+            ->get();
+
+        return $data;
+
+    }
+
+    /**
      * Get all posts.
      * @param Request $request
      * @return LengthAwarePaginator

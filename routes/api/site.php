@@ -24,6 +24,7 @@ Route::get('/tags-random', [TagController::class, 'getRandom'])->name('site.tags
 Route::get('/tag/{tag}', [TagController::class, 'index'])->name('site.tags-random');
 Route::get('/club/{club}', [ClubController::class, 'getInfo'])->name('site.club-info');
 Route::post('/search', [PostController::class, 'search'])->name('site.posts.search');
+Route::post('/search-post-tag', [PostController::class, 'searchPostTag'])->name('site.post-tag.search');
 Route::get('/pages', [PageController::class, 'getActivePages'])->name('site.active-pages.search');
 Route::get('/page/{slug}', [PageController::class, 'getActivePage'])->name('site.active-page.search');
 
