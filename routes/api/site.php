@@ -23,6 +23,7 @@ Route::get('/active-categories', [CategoryController::class, 'getActives'])->nam
 Route::get('/tags-random', [TagController::class, 'getRandom'])->name('site.tags-random');
 Route::get('/tag/{tag}', [TagController::class, 'index'])->name('site.tags-random');
 Route::get('/club/{club}', [ClubController::class, 'getInfo'])->name('site.club-info');
+Route::post('/club/{club}/followers', [ClubController::class, 'getFollowers'])->name('site.club-followers');
 Route::post('/search', [PostController::class, 'search'])->name('site.posts.search');
 Route::post('/search-post-tag', [PostController::class, 'searchPostTag'])->name('site.post-tag.search');
 Route::get('/pages', [PageController::class, 'getActivePages'])->name('site.active-pages.search');

@@ -12,6 +12,7 @@ use App\Models\League;
 use App\Models\Matches;
 use App\Models\Post;
 use App\Models\Sport;
+use App\Models\User;
 use App\Repositories\Contracts\IClubRepository;
 use App\Repositories\traits\GlobalFunc;
 use App\Services\File\FileService;
@@ -59,7 +60,6 @@ class ClubRepository implements IClubRepository {
             ->get();
     }
 
-
     /**
      * Get the clubs pagination.
      * @param TableRequest $request
@@ -82,6 +82,26 @@ class ClubRepository implements IClubRepository {
     }
 
     /**
+     * Get the clubs followers pagination.
+     * @param TableRequest $request
+     * @param Club $club
+     * @return LengthAwarePaginator
+     */
+    public function getFollowers(TableRequest $request, Club $club) :LengthAwarePaginator
+    {
+        $search = $request->get('query');
+        return User::query()
+            ->with('clubs')
+            ->where('status', 1)
+            ->where('level', '!=', 3)
+            ->whereHas('clubs', function ($query) use($club) {
+                return $query->where('club_id', $club->id);
+            })
+            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->paginate($request->get('rowsPerPage', 20));
+    }
+
+    /**
      * Get the club info.
      * @param Club $club
      * @return Club
@@ -93,7 +113,7 @@ class ClubRepository implements IClubRepository {
             throw new Exception;
         }
 
-        $result['info'] = $club;
+        $result['info'] = $club->with('sport')->first();
         $result['posts'] = Post::query()
             ->where('status', 1)
             ->whereHas('tags', function ($query) use($club){
@@ -124,7 +144,8 @@ class ClubRepository implements IClubRepository {
         $result['clubs'] = $league->clubs;
 
         $result['matches'] = Matches::query()
-            ->where('status', 1)
+            ->with('teamHome', 'teamAway', 'step')
+            ->where('status', 2)
             ->where(function ($query) use($club) {
                 $query->where('home_id', $club->id)
                 ->orWhere('away_id', $club->id);

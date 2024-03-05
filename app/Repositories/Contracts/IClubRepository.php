@@ -41,6 +41,14 @@ interface IClubRepository  {
     public function getInfo(Club $club);
 
     /**
+     * Get the clubs followers pagination.
+     * @param TableRequest $request
+     * @param Club $club
+     * @return LengthAwarePaginator
+     */
+    public function getFollowers(TableRequest $request, Club $club) :LengthAwarePaginator;
+
+    /**
      * Get the club.
      * @param Club $club
      * @return Club

@@ -17,6 +17,7 @@ class CreateClubsTable extends Migration
             $table->id();
             $table->bigInteger('alias_id')->nullable();
             $table->string('title');
+            $table->string('color')->nullable();
             $table->string('alias_title')->nullable();
             $table->bigInteger('sport_id')->unsigned()->index();
             // $table->foreign('sport_id')->references('id')->on('sports')->onDelete('cascade');

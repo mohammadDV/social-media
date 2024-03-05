@@ -39,5 +39,10 @@ class Matches extends Model
         return $this->belongsTo(Club::class, 'away_id');
     }
 
+    public function step() {
+        return $this->belongsTo(Step::class)->with('league');
+    }
+
+
 
 }
