@@ -2,14 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Http\Requests\TableRequest;
 use App\Models\Notification;
-use App\Models\User;
 use App\Repositories\Contracts\IRpcRepository;
 use App\Repositories\traits\GlobalFunc;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class RpcRepository implements IRpcRepository {
@@ -22,13 +17,16 @@ class RpcRepository implements IRpcRepository {
      */
     public function index() :array
     {
-        $notifCount = Notification::query()
+        $notifications = Notification::query()
+            ->with('model')
             ->where('user_id', Auth::user()->id)
             ->where('status', 0)
-            ->count();
+            ->latest()
+            ->limit(5)
+            ->get();
 
         return [
-            'notification_count' => $notifCount
+            'notifications' => $notifications
         ];
 
     }

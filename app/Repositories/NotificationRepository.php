@@ -37,7 +37,7 @@ class NotificationRepository implements INotificationRepository {
             ->with('model')
             ->where('user_id', Auth::user()->id)
             ->orderBy('id', 'desc')
-            ->paginate($request->get('rowsPerNotification', 2));
+            ->paginate($request->get('rowsPerNotification', 25));
     }
 
     /**
