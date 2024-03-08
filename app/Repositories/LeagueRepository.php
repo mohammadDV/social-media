@@ -155,8 +155,7 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
      */
     public function indexPaginate(TableRequest $request) :LengthAwarePaginator
     {
-        $search = $request->input('search') ?? null;
-        $count = $request->input('count') ?? 10;
+        $search = $request->get('query');
 
         return League::query()
             ->with('sport','country')
@@ -165,7 +164,8 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
                 $query->where('title','like','%' . $search . '%')
                 ->orWhere('alias_title','like','%' . $search . '%');
             })
-            ->paginate($count);
+            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->paginate($request->get('rowsPerPage', 25));
     }
 
     /**
