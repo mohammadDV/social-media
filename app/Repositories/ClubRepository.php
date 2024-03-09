@@ -113,11 +113,24 @@ class ClubRepository implements IClubRepository {
             throw new Exception;
         }
 
-        $result['info'] = $club->with('sport')->first();
+        $club = CLub::query()
+            ->with('sport')
+            ->where('id', $club->id)
+            ->first();
+
+        $tag = trim($club->title);
+
+        if ($club?->sport_id != 1) {
+            $tag = trim($club?->sport?->title . ' ' . $club->title);
+        }
+
+        $result['info'] = $club;
+
         $result['posts'] = Post::query()
             ->where('status', 1)
-            ->whereHas('tags', function ($query) use($club){
-                $query->where('title', trim($club->title));
+            ->where('type', '!=', 1)
+            ->whereHas('tags', function ($query) use($tag){
+                $query->where('title', $tag);
             })
             ->limit(6)
             ->get();
@@ -125,8 +138,8 @@ class ClubRepository implements IClubRepository {
         $result['videos'] = Post::query()
             ->where('status', 1)
             ->where('type', 1)
-            ->whereHas('tags', function ($query) use($club){
-                $query->where('title', trim($club->title));
+            ->whereHas('tags', function ($query) use($tag){
+                $query->where('title', $tag);
             })
             ->limit(6)
             ->get();
@@ -141,7 +154,7 @@ class ClubRepository implements IClubRepository {
             ->orderBy('id', 'desc')
             ->first();
 
-        $result['clubs'] = $league->clubs;
+        $result['clubs'] = $league?->clubs;
 
         $result['matches'] = Matches::query()
             ->with('teamHome', 'teamAway', 'step')

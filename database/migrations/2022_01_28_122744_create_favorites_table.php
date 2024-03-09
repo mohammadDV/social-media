@@ -15,8 +15,8 @@ class CreateFavoritesTable extends Migration
     {
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger("post_id")->unsigned()->index();
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->bigInteger('favoritable_id')->unsigned();
+            $table->string('favoritable_type');
             $table->bigInteger("user_id")->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

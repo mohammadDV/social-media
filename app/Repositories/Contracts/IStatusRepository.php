@@ -30,6 +30,20 @@ interface IStatusRepository  {
     public function getAllPerUser(User $user) :LengthAwarePaginator;
 
     /**
+     * Get favorites.
+     * @param User $user
+     * @return LengthAwarePaginator
+     */
+    public function getFavorite(User $user) :LengthAwarePaginator;
+
+    /**
+     * Add the status to favorites.
+     * @param Status $status
+     * @return JsonResponse
+     */
+    public function addFavorite(Status $status) :JsonResponse;
+
+    /**
      * Get the status info.
      * @param Status $status
      * @return StatusResource

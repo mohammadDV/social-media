@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\StatusUpdateRequest;
+use App\Models\Favorite;
 use App\Models\Status;
 use App\Models\User;
 use App\Repositories\Contracts\IStatusRepository;
@@ -43,10 +44,10 @@ class StatusRepository implements IStatusRepository {
             ->when(!empty($user->id), function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             })
-            ->with(['likes', 'user'])
+            ->with(['likes', 'user', 'favorites'])
             ->where('status', 1)
             ->orderBy('id', 'DESC')
-            ->paginate(2);
+            ->paginate(10);
     }
 
     /**
@@ -58,9 +59,65 @@ class StatusRepository implements IStatusRepository {
     {
         return Status::query()
             ->where('user_id', $user->id)
-            ->with(['likes', 'user'])
+            ->with(['likes', 'user', 'favorites'])
             ->orderBy('id', 'DESC')
             ->paginate(2);
+    }
+
+    /**
+     * Get favorites.
+     * @param ?User $user
+     * @return LengthAwarePaginator
+     */
+    public function getFavorite(User $user) :LengthAwarePaginator
+    {
+        return Status::query()
+            ->whereHas('favorites', function($query) use($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->with(['likes', 'user', 'favorites'])
+            ->orderBy('id', 'DESC')
+            ->paginate(2);
+    }
+
+    /**
+     * Add the status to favorites.
+     * @param Status $status
+     * @return JsonResponse
+     */
+    public function addFavorite(Status $status) :JsonResponse
+    {
+
+        // if (empty($status->status)) {
+        //     throw new \Exception();
+        // }
+
+        $query = Favorite::query()
+            ->where('user_id', Auth::user()->id)
+            ->where('favoritable_id', $status->id)
+            ->where('favoritable_type', Status::class);
+
+        if ($query->count() > 0) {
+            $query->delete();
+
+            return response()->json([
+                'status' => 1,
+                'active' => 0,
+                'message' => __('site.The operation has been successfully')
+            ], 200);
+        }
+
+        Favorite::create([
+            'user_id' => Auth::user()->id,
+            'favoritable_id' => $status->id,
+            'favoritable_type' => Status::class,
+        ]);
+
+        return response()->json([
+            'status' => 1,
+            'active' => 1,
+            'message' => __('site.The operation has been successfully')
+        ], 200);
     }
 
      /**

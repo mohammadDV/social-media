@@ -113,11 +113,6 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function favorites()
-    {
-        return $this->hasMany(Favorite::class);
-    }
-
     public function followers()
     {
         return $this->hasMany(Follow::class)->orderBy('id', 'desc');
@@ -126,6 +121,11 @@ class User extends Authenticatable
     public function following()
     {
         return $this->hasMany(Follow::class,'follower_id')->orderBy('id', 'desc');
+    }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
     }
 
     public function clubs()
