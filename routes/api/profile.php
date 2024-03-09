@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Profile\StepController;
 use App\Http\Controllers\Api\Profile\TicketController;
 use App\Http\Controllers\Api\Profile\TicketSubjectController;
 use App\Http\Controllers\Api\Profile\UserController;
+use App\Http\Controllers\Api\Profile\VideoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -30,6 +31,17 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::delete('/{post}', [PostController::class, 'destroy'])->name('profile.post.delete')->middleware('permission:post_delete');
         Route::delete('/delete/{id}', [PostController::class, 'realDestroy'])->name('profile.post.real.delete')->middleware('permission:post_delete');
     });
+
+    // video
+    Route::prefix('videos')->group(function () {
+        Route::get('/index', [VideoController::class, 'index'])->name('profile.video.index')->middleware('permission:video_show');
+        Route::get('/{video}', [VideoController::class, 'show'])->name('profile.video.show')->middleware('permission:video_show');
+        Route::get('/', [VideoController::class, 'indexPaginate'])->name('profile.video.paginate')->middleware('permission:video_show');
+        Route::post('/', [VideoController::class, 'store'])->name('profile.video.store')->middleware('permission:video_store');
+        Route::post('/{video}', [VideoController::class, 'update'])->name('profile.video.update')->middleware('permission:video_update');
+        Route::delete('/{video}', [VideoController::class, 'destroy'])->name('profile.video.delete')->middleware('permission:video_delete');
+    });
+
     // Status
     Route::prefix('status')->group(function () {
         Route::get('/', [StatusController::class, 'index'])->name('profile.status.index')->middleware('permission:status_show');
@@ -41,7 +53,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
 
     // userInfo
     Route::prefix('users')->group(function () {
-        Route::get('/', [UserController::class, 'indexPaginate'])->name('profile.users.pagination')->middleware('permission:user_show');
+        Route::get('/', [UserController::class, 'indexPaginate'])->name('profile.users.paginate')->middleware('permission:user_show');
         Route::get('/info/{user?}', [UserController::class, 'show'])->name('profile.user.show')->middleware('permission:user_show');
         Route::post('/', [UserController::class, 'store'])->name('profile.user.store')->middleware('permission:user_store');
         Route::post('/{user}', [UserController::class, 'update'])->name('profile.user.update')->middleware('permission:user_update');

@@ -27,6 +27,7 @@ class PostResource extends JsonResource
             'type' => $this->type,
             'special' => $this->special,
             'video' => $this->video,
+            'advertise' => $this->whenLoaded('advertise'),
             'created_at' => $this->created_at,
             'comments' => CommentResource::collection($this->comments),
             'tags' => TagResource::collection($this->whenLoaded('tags')),

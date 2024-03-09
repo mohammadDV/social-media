@@ -22,7 +22,6 @@ class Post extends Model
 
 
     protected $dates        = ['deleted_at'];
-//    protected $dateFormat   = 'U';
     protected $guarded      = ['id'];
     protected $casts        = ['image' => 'array'];
 
@@ -46,9 +45,14 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function Category()
+    public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function advertise()
+    {
+        return $this->belongsTo(Video::class, 'video_id');
     }
 
     public function favorites()
