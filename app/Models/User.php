@@ -98,6 +98,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+
     public function statuses()
     {
         return $this->hasMany(Status::class);

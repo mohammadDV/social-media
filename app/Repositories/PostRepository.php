@@ -4,15 +4,12 @@ namespace App\Repositories;
 
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\PostUpdateRequest;
-use App\Http\Resources\CategoryResource;
 use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\traits\GlobalFunc;
-use App\Services\File\FileService;
-use App\Services\Image\ImageService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,27 +31,18 @@ class PostRepository implements IPostRepository {
     protected $ignoreCategories = [7]; // 1 = writers,  5 = Football analysis , 6 = Non-football analysis, 7 = newspaper
 
     /**
-     * @param ImageService $imageService
-     * @param FileService $fileService
-     */
-    public function __construct(protected ImageService $imageService, protected FileService $fileService)
-    {
-
-    }
-
-    /**
      * Get the post.
      * @param Post $post
      * @return array
      */
     public function show(Post $post) {
 
-        // $this->checkLevelAccess($post->user_id == Auth::user()->id);
+        $this->checkLevelAccess($post->user_id == Auth::user()->id);
 
-        // return Post::query()
-        //     ->where('id', $post->id)
-        //     ->with('tags')
-        //     ->first();
+        return Post::query()
+            ->where('id', $post->id)
+            ->with('tags')
+            ->first();
     }
 
     /**
@@ -184,7 +172,7 @@ class PostRepository implements IPostRepository {
     public function getPostInfo(Post $post) :PostResource
     {
         $post = Post::query()
-            ->with('tags', 'category' , 'comments.user', 'comments.parents')
+            ->with('tags', 'category' , 'comments.user', 'comments.parents', 'advertise')
             ->find($post->id);
         return new PostResource($post);
     }
@@ -304,6 +292,7 @@ class PostRepository implements IPostRepository {
             'summary'     => $request->input('summary'),
             'image'       => $request->input('image', null),
             'video'       => $request->input('type') == 1 ? $request->input('video', null) : null,
+            'video_id'       => $request->input('type') == 1 ? $request->input('video_id') : null,
             'type'        => $request->input('type',0),
             'category_id' => $request->input('category_id'),
             'status'      => $request->input('status'),
@@ -343,11 +332,6 @@ class PostRepository implements IPostRepository {
 
         $this->checkLevelAccess($post->user_id == Auth::user()->id);
 
-        if (empty($request->get('type')) && !empty($videoResult)){
-            $this->fileService->deleteFile($videoResult);
-            $videoResult = null;
-        }
-
         DB::beginTransaction();
         try {
             $post->update([
@@ -357,6 +341,7 @@ class PostRepository implements IPostRepository {
                 'summary'     => $request->input('summary'),
                 'image'       => $request->input('image', null),
                 'video'       => $request->input('type') == 1 ? $request->input('video', null) : null,
+                'video_id'    => $request->input('type') == 1 ? $request->input('video_id') : null,
                 'type'        => $request->input('type',0),
                 'category_id' => $request->input('category_id'),
                 'status'      => $request->input('status'),

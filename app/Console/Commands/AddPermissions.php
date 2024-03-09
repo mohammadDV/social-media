@@ -57,6 +57,10 @@ class AddPermissions extends Command
             'subject_show',
             'subject_update',
             'subject_delete',
+            'video_store',
+            'video_show',
+            'video_update',
+            'video_delete',
         ];
         $permissions = [
             'post_show',
@@ -142,6 +146,10 @@ class AddPermissions extends Command
             'subject_show',
             'subject_update',
             'subject_delete',
+            'video_store',
+            'video_show',
+            'video_update',
+            'video_delete',
         ];
 
         // Add the lite and normal roles
