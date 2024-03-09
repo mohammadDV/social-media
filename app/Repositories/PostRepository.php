@@ -171,6 +171,9 @@ class PostRepository implements IPostRepository {
      */
     public function getPostInfo(Post $post) :PostResource
     {
+
+        $post->increment('view');
+
         $post = Post::query()
             ->with('tags', 'category' , 'comments.user', 'comments.parents', 'advertise')
             ->find($post->id);

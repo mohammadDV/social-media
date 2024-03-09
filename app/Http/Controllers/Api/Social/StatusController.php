@@ -40,6 +40,26 @@ class StatusController extends Controller
     }
 
     /**
+     * Get favorite of statuses
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function getFavorite(User $user): JsonResponse
+    {
+        return response()->json($this->repository->getFavorite($user), Response::HTTP_OK);
+    }
+
+    /**
+     * Add status to favorites
+     * @param Status $status
+     * @return JsonResponse
+     */
+    public function addFavorite(Status $status): JsonResponse
+    {
+        return $this->repository->addFavorite($status);
+    }
+
+    /**
      * Get the status info
      * @param ?User $user
      * @return JsonResponse

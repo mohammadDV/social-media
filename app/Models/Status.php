@@ -19,12 +19,17 @@ class Status extends Model
 
     public function comments()
     {
-        return $this->morphMany(Comment::class,"commentable",'commentable_type', 'commentable_id')->where('parent_id',0)->with(['likes','parents']);
+        return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id')->where('parent_id',0)->with(['likes','parents']);
     }
 
     public function likes()
     {
-        return $this->morphMany(Like::class,"likeable",'likeable_type', 'likeable_id')->with('user');
+        return $this->morphMany(Like::class, 'likeable', 'likeable_type', 'likeable_id')->with('user');
+    }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable', 'favoritable_type', 'favoritable_id');
     }
 
     public function user()
