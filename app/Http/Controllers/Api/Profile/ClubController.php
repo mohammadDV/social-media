@@ -76,6 +76,16 @@ class ClubController extends Controller
     }
 
     /**
+     * Does the user follow the club or not.
+     * @param Club $club
+     * @return JsonResponse
+     */
+    public function isActive(Club $club) :JsonResponse
+    {
+        return response()->json($this->repository->isActive($club), Response::HTTP_OK);
+    }
+
+    /**
      * Delete the club.
      * @param Club $club
      * @return JsonResponse
