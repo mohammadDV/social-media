@@ -37,6 +37,9 @@ class AddPermissions extends Command
             'status_delete',
             'ticket_show',
             'ticket_store',
+            'chat_store',
+            'chat_show',
+            'chat_delete',
         ];
         $authorPerm = [
             'status_show',
@@ -49,6 +52,9 @@ class AddPermissions extends Command
             'post_delete',
             'ticket_show',
             'ticket_store',
+            'chat_store',
+            'chat_show',
+            'chat_delete',
         ];
         $operatorPerm = [
             'ticket_show',
@@ -150,6 +156,9 @@ class AddPermissions extends Command
             'video_show',
             'video_update',
             'video_delete',
+            'chat_store',
+            'chat_show',
+            'chat_delete',
         ];
 
         // Add the lite and normal roles
