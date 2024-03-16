@@ -39,15 +39,6 @@ interface ITicketRepository  {
     public function changeStatus(TicketStatusRequest $request, Ticket $ticket) :JsonResponse;
 
     /**
-     * Store the message of ticket.
-     * @param TicketMessageRequest $request
-     * @param Ticket $ticket
-     * @return JsonResponse
-     * @throws \Exception
-     */
-    public function storeMessage(TicketMessageRequest $request, Ticket $ticket) :JsonResponse;
-
-    /**
      * Get the sport.
      * @param Ticket $ticket
      * @return Ticket

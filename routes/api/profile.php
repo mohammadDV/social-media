@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Profile\TicketController;
 use App\Http\Controllers\Api\Profile\TicketSubjectController;
 use App\Http\Controllers\Api\Profile\UserController;
 use App\Http\Controllers\Api\Profile\VideoController;
+use App\Http\Controllers\Api\Social\ChatController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -161,6 +162,16 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
     // rpc
     Route::prefix('rpc')->group(function () {
         Route::get('/', [RpcController::class, 'index'])->name('profile.rpc.index');
+    });
+
+    // chats
+    Route::prefix('chats')->group(function () {
+        Route::post('/', [ChatController::class, 'indexPaginate'])->name('profile.chat.index')->middleware('permission:chat_show');
+        Route::get('/{chat}', [ChatController::class, 'show'])->name('profile.chat.show')->middleware('permission:chat_show');
+        Route::get('/info/{chat}', [ChatController::class, 'chatInfo'])->name('profile.chat.info')->middleware('permission:chat_show');
+        Route::post('/{user}', [ChatController::class, 'store'])->name('profile.chat.store')->middleware('permission:chat_store');
+        Route::post('delete/{chat}', [ChatController::class, 'deleteMessages'])->name('profile.chat.delete.messages')->middleware('permission:chat_delete');
+        // Route::post('/status/{chat}', [ChatController::class, 'changeStatus'])->name('profile.chat.change-status')->middleware('permission:chat_store');
     });
 
     // tickets

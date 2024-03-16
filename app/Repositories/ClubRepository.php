@@ -12,6 +12,7 @@ use App\Models\League;
 use App\Models\Matches;
 use App\Models\Post;
 use App\Models\Sport;
+use App\Models\Tag;
 use App\Models\User;
 use App\Repositories\Contracts\IClubRepository;
 use App\Repositories\traits\GlobalFunc;
@@ -124,22 +125,24 @@ class ClubRepository implements IClubRepository {
             $tag = trim($club?->sport?->title . ' ' . $club->title);
         }
 
-        $result['info'] = $club;
+        $tag = Tag::firstOrCreate(['title' => $tag]);
 
-        $result['posts'] = Post::query()
+        $info = $club;
+
+        $posts = Post::query()
             ->where('status', 1)
-            ->where('type', '!=', 1)
+            ->where('type', 0)
             ->whereHas('tags', function ($query) use($tag){
-                $query->where('title', $tag);
+                $query->where('id', $tag->id);
             })
             ->limit(6)
             ->get();
 
-        $result['videos'] = Post::query()
+        $videos = Post::query()
             ->where('status', 1)
             ->where('type', 1)
             ->whereHas('tags', function ($query) use($tag){
-                $query->where('title', $tag);
+                $query->where('id', $tag->id);
             })
             ->limit(6)
             ->get();
@@ -154,9 +157,9 @@ class ClubRepository implements IClubRepository {
             ->orderBy('id', 'desc')
             ->first();
 
-        $result['clubs'] = $league?->clubs;
+        $clubs = $league?->clubs;
 
-        $result['matches'] = Matches::query()
+        $matches = Matches::query()
             ->with('teamHome', 'teamAway', 'step')
             ->where('status', 2)
             ->where(function ($query) use($club) {
@@ -167,7 +170,14 @@ class ClubRepository implements IClubRepository {
             ->limit(6)
             ->get();
 
-        return $result;
+        return [
+            'tag' => $tag,
+            'info' => $info,
+            'posts' => $posts,
+            'videos' => $videos,
+            'clubs' => $clubs,
+            'matches' => $matches,
+        ];
     }
 
     /**
