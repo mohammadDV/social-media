@@ -93,6 +93,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
     Route::prefix('clubs')->group(function () {
         Route::get('/all/{sport?}/{country?}', [ClubController::class, 'index'])->name('profile.club.all')->middleware('permission:club_show');
         Route::get('/', [ClubController::class, 'indexPaginate'])->name('profile.club.index')->middleware('permission:club_show');
+        Route::get('/active/{club}', [ClubController::class, 'isActive'])->name('profile.club.active');
         Route::get('/{club}', [ClubController::class, 'show'])->name('profile.club.show')->middleware('permission:club_show');
         Route::post('/', [ClubController::class, 'store'])->name('profile.club.store')->middleware('permission:club_store');
         Route::post('/{club}', [ClubController::class, 'update'])->name('profile.club.update')->middleware('permission:club_update');

@@ -73,6 +73,14 @@ interface IClubRepository  {
     public function update(ClubUpdateRequest $request, Club $club) :JsonResponse;
 
     /**
+     * Does the user follow the club or not.
+     * @param Club $club
+     * @return array
+     * @throws \Exception
+     */
+    public function isActive(Club $club) :array;
+
+    /**
     * Delete the club.
     * @param UpdatePasswordRequest $request
     * @param Club $club

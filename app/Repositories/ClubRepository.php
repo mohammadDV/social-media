@@ -8,6 +8,7 @@ use App\Http\Requests\TableRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Club;
 use App\Models\Country;
+use App\Models\FavoriteClub;
 use App\Models\League;
 use App\Models\Matches;
 use App\Models\Post;
@@ -103,12 +104,31 @@ class ClubRepository implements IClubRepository {
     }
 
     /**
+     * Does the user follow the club or not.
+     * @param Club $club
+     * @return array
+     * @throws \Exception
+     */
+    public function isActive(Club $club) :array
+    {
+        // var_dump(Auth::user()->id);
+        // dd();
+        return [
+            'active' => FavoriteClub::query()
+                ->where('user_id', Auth::check() ? Auth::user()?->id : 0)
+                ->where('club_id', $club->id)
+                ->count() == 1
+        ];
+    }
+
+    /**
      * Get the club info.
      * @param Club $club
      * @return Club
      * @throws Exception
      */
     public function getInfo(Club $club) {
+
 
         if ($club->status != 1) {
             throw new Exception;
@@ -187,6 +207,9 @@ class ClubRepository implements IClubRepository {
      */
     public function show(Club $club) :Club
     {
+
+        var_dump(Auth::user()->id);
+        dd();
         return Club::query()
                 ->with('sport','country')
                 ->where('id', $club->id)
