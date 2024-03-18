@@ -19,6 +19,7 @@ class CreateFollowsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('follower_id')->unsigned();
             $table->foreign('follower_id')->references('id')->on('users')->onDelete('cascade');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

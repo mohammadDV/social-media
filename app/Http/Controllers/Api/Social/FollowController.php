@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Social;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FollowChangeStatusRequest;
 use App\Http\Requests\SearchRequest;
 use App\Models\User;
 use App\Repositories\Contracts\IFollowRepository;
@@ -63,12 +64,23 @@ class FollowController extends Controller
     }
 
     /**
-     * Get the followings.
+     * Store the follow.
      * @param User $user
      * @return JsonResponse
      */
     public function store(User $user): JsonResponse
     {
         return response()->json($this->repository->store($user), Response::HTTP_OK);
+    }
+
+    /**
+     * Change status of the follow.
+     * @param User $user
+     * @param FollowChangeStatusRequest $request
+     * @return JsonResponse
+     */
+    public function changeFollowStatus(User $user, FollowChangeStatusRequest $request): JsonResponse
+    {
+        return response()->json($this->repository->changeFollowStatus($user, $request), Response::HTTP_OK);
     }
 }

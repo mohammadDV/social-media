@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Http\Resources\UserResource;
+use App\Models\Follow;
 use App\Models\Live;
 use App\Models\Post;
 use App\Models\User;
@@ -18,11 +19,12 @@ class MemberRepository implements IMemberRepository {
      */
     public function getNewMembers() :AnonymousResourceCollection
     {
-        $ingnoreUser = array_merge(array_column(Auth::user()->following->toArray(),'user_id'), [Auth::user()->id]);
-
         return UserResource::collection(User::query()
+            ->whereDoesntHave('followers', function($query) {
+                $query->where('follower_id', Auth::user()->id);
+            })
+            ->where('id', '<>', Auth::user()->id)
             ->with('clubs')
-            ->whereNotIn("id",$ingnoreUser)
             ->where('status',1)
             ->latest()
             ->limit(10)
@@ -41,7 +43,10 @@ class MemberRepository implements IMemberRepository {
             ->whereHas('clubs', function ($query) {
                 $query->whereIn('clubs.id', array_column(Auth::user()->clubs->toArray(), 'id'));
             })
-            ->whereNot("users.id", Auth::user()->id)
+            ->whereDoesntHave('followers', function($query) {
+                $query->where('follower_id', Auth::user()->id);
+            })
+            ->where('id', '<>', Auth::user()->id)
             ->where('status',1)
             ->limit(10)
             ->get());
