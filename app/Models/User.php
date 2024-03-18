@@ -33,6 +33,7 @@ class User extends Authenticatable
         'role_id',
         'status',
         'email',
+        'is_private',
         'password'
     ];
 
@@ -131,6 +132,11 @@ class User extends Authenticatable
     public function clubs()
     {
         return $this->belongsToMany(Club::class, 'favorite_clubs','user_id', 'club_id')->with('sport', 'country');
+    }
+
+    public function clubsLimited()
+    {
+        return $this->belongsToMany(Club::class, 'favorite_clubs','user_id', 'club_id')->limit(2);
     }
 
     public function getFullNameAttribute()

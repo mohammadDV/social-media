@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Http\Requests\FollowChangeStatusRequest;
 use App\Http\Requests\SearchRequest;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -46,5 +47,14 @@ interface IFollowRepository  {
     * @return array
     */
    public function store(User $user) :array;
+
+   /**
+     * Chaneg status of the follow
+     * @param User $user
+     * @param FollowChangeStatusRequest $request
+     * @return array
+     * @throws \Exception
+     */
+    public function changeFollowStatus(User $user, FollowChangeStatusRequest $request) :array;
 
 }

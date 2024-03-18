@@ -25,13 +25,16 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
     Route::get('/status/favorite/{user}', [StatusController::class, 'getFavorite'])->name('site.statuses.all-per-user');
     Route::post('/status/favorite/{status}', [StatusController::class, 'addFavorite'])->name('site.statuses.all-per-user');
     Route::get('/status/preview/{status}', [StatusController::class, 'getInfo'])->name('site.statuses.info');
+    Route::get('/new-members', [MemberController::class, 'getNewMembers'])->name('site.new-members');
+    Route::get('/congenial-members', [MemberController::class, 'getCongenialMembers'])->name('site.congenial-members');
+
+    // Follow
     Route::get('/follow-info/{user?}', [FollowController::class, 'index'])->name('site.follow-info');
     Route::get('/followers/{user?}', [FollowController::class, 'getFollowers'])->name('site.followers');
     Route::get('/followings/{user?}', [FollowController::class, 'getFollowings'])->name('site.followings');
+    Route::post('/follow-chaneg-status/{user}', [FollowController::class, 'changeFollowStatus'])->name('site.follow.change-status');
     Route::get('/is-follower/{user}', [FollowController::class, 'isFollower'])->name('site.is-follower');
     Route::post('/follow/{user}', [FollowController::class, 'store'])->name('site.follow.store');
-    Route::get('/new-members', [MemberController::class, 'getNewMembers'])->name('site.new-members');
-    Route::get('/congenial-members', [MemberController::class, 'getCongenialMembers'])->name('site.congenial-members');
 
     // Comment
     Route::prefix('comment')->group(function () {
@@ -51,6 +54,7 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
     // Favorite
     Route::prefix('favorite')->group(function () {
         Route::get('/clubs/{user?}', [FavoriteController::class, 'getClubs'])->name('social.favorite.clubs');
+        Route::get('/clubs-limited/{user?}', [FavoriteController::class, 'getClubsLimited'])->name('social.favorite.clubs-limited');
         Route::post('/clubs/search', [FavoriteController::class, 'search'])->name('social.favorite.clubs.search');
         Route::post('/clubs/{club}', [FavoriteController::class, 'storeClub'])->name('social.favorite.clubs.store');
     });

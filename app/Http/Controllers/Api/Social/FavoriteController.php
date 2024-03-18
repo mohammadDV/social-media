@@ -33,6 +33,16 @@ class FavoriteController extends Controller
     }
 
     /**
+     * Get favorite clubs of the user with limitation
+     * @param ?User $user
+     * @return JsonResponse
+     */
+    public function getClubsLimited(?User $user): JsonResponse
+    {
+        return response()->json($this->repository->getClubsLimited($user), Response::HTTP_OK);
+    }
+
+    /**
      * Store favorite club for the user
      * @param Club $request
      * @return JsonResponse

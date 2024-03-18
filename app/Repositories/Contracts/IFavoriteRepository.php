@@ -22,6 +22,13 @@ interface IFavoriteRepository  {
     public function getClubs(?User $user) :Collection;
 
     /**
+     * Get favorite clubs of the user with limitation
+     * @param ?User $user
+     * @return Collection
+     */
+    public function getClubsLimited(?User $user) :Collection;
+
+    /**
      * Store club of the user
      * @param Club $club
      * @return JsonResponse

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\FollowChangeStatusRequest;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Follow;
@@ -24,30 +25,39 @@ class FollowRepository implements IFollowRepository {
 
         $data['followersCount'] = Follow::select('follower_id')
             ->where('user_id', $userId)
+            ->where('status', Follow::STATUS_ACCEPTED)
             ->orderBy('id', 'desc')
             ->count();
 
-        $data['followers'] = UserResource::collection(
-            User::query()
-            ->where('status',1)
-            ->whereHas('following', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
+        $data['followers'] = Follow::query()
+            ->where('status', Follow::STATUS_ACCEPTED)
+            ->where('user_id', $userId)
+            ->with('follower')
+            ->whereHas('follower', function ($query) {
+                $query->where(function ($subQuery) {
+                    $subQuery->where('status', 1);
+                });
             })
             ->limit(12)
-            ->get()
-        );
+            ->get();
 
-        $data['followingsCount'] = Follow::select('user_id')->where('follower_id', $userId)->count();
+        $data['followingsCount'] = Follow::select('user_id')
+            ->where('status', Follow::STATUS_ACCEPTED)
+            ->where('follower_id', $userId)
+            ->where('status', Follow::STATUS_ACCEPTED)
+            ->count();
 
-        $data['followings'] = UserResource::collection(
-            User::query()
-            ->where('status',1)
-            ->whereHas('followers', function ($query) use ($userId) {
-                $query->where('follower_id', $userId);
+        $data['followings'] = Follow::query()
+            ->where('status', Follow::STATUS_ACCEPTED)
+            ->where('follower_id', $userId)
+            ->with('user')
+            ->whereHas('user', function ($query) {
+                $query->where(function ($subQuery) {
+                    $subQuery->where('status', 1);
+                });
             })
             ->limit(12)
-            ->get()
-        );
+            ->get();
 
         return $data;
 
@@ -85,17 +95,19 @@ class FollowRepository implements IFollowRepository {
     public function getFollowers(int $userId, SearchRequest $request) :LengthAwarePaginator
     {
 
-        return User::query()
-            ->where('status',1)
-            ->whereHas('following', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
+        return Follow::query()
+            ->where('user_id', $userId)
+            ->with('follower')
+            ->whereHas('follower', function ($query) use($request) {
+                $query->where(function ($subQuery) {
+                    $subQuery->where('status', 1);
+                });
+                $query->where(function ($subQuery) use($request) {
+                    $subQuery->where('first_name', "like", "%" . $request->search . "%")
+                        ->orWhere('last_name', "like", "%" . $request->search . "%")
+                        ->orWhere('nickname', "like", "%" . $request->search . "%");
+                });
             })
-            ->where(function ($query) use ($request) {
-                $query->where('first_name', "like", "%" . $request->search . "%")
-                    ->orWhere('last_name', "like", "%" . $request->search . "%")
-                    ->orWhere('nickname', "like", "%" . $request->search . "%");
-            })
-            ->with('followers')
             ->paginate(12);
     }
 
@@ -107,17 +119,20 @@ class FollowRepository implements IFollowRepository {
      */
     public function getFollowings(int $userId, SearchRequest $request) :LengthAwarePaginator
     {
-        return User::query()
-            ->where('status',1)
-            ->whereHas('followers', function ($query) use ($userId) {
-                $query->where('follower_id', $userId);
+        return Follow::query()
+            ->where('status', Follow::STATUS_ACCEPTED)
+            ->where('follower_id', $userId)
+            ->with('user')
+            ->whereHas('user', function ($query) use($request) {
+                $query->where(function ($subQuery) {
+                    $subQuery->where('status', 1);
+                });
+                $query->where(function ($subQuery) use($request) {
+                    $subQuery->where('first_name', "like", "%" . $request->search . "%")
+                        ->orWhere('last_name', "like", "%" . $request->search . "%")
+                        ->orWhere('nickname', "like", "%" . $request->search . "%");
+                });
             })
-            ->where(function ($query) use ($request) {
-                $query->where('first_name', "like", "%" . $request->search . "%")
-                    ->orWhere('last_name', "like", "%" . $request->search . "%")
-                    ->orWhere('nickname', "like", "%" . $request->search . "%");
-            })
-            ->with('following')
             ->paginate(12);
     }
 
@@ -138,15 +153,15 @@ class FollowRepository implements IFollowRepository {
         }
 
         $active = 1;
-        $data   = Follow::query()
+        $data = Follow::query()
             ->where('follower_id', Auth::user()->id)
-            ->where('user_id',$user->id)
+            ->where('user_id', $user->id)
             ->first();
 
-        if ($data){
+        if ($data) {
             $active = 0;
             $data->delete();
-        }else{
+        } else {
             $data = Follow::create([
                 "follower_id" => Auth::user()->id,
                 "user_id" => $user->id,
@@ -159,6 +174,68 @@ class FollowRepository implements IFollowRepository {
                     // Add notification
                     return Notification::create([
                         'message' => __('site.Someone sent a request to you.', ['someone' => Auth::user()->nickname]),
+                        'link' => '/profile/followers',
+                        'user_id' => $user->id,
+                        'model_id' => Auth::user()->id,
+                        'model_type' => User::class,
+                        'has_email' => 1,
+                    ]);
+                });
+
+        }
+
+        return [
+            'follow' => $active,
+            'status' => 1,
+            'active' => $active,
+            'message' => __('site.The operation has been successfully')
+        ];
+    }
+
+    /**
+     * Chaneg status of the follow
+     * @param User $user
+     * @param FollowChangeStatusRequest $request
+     * @return array
+     * @throws \Exception
+     */
+    public function changeFollowStatus(User $user, FollowChangeStatusRequest $request) :array
+    {
+        if (Auth::user()->id == $user->id) {
+            return [
+                'follow' => 1,
+                'status' => 1,
+                'active' => 1,
+                'message' => __('site.The operation has been successfully')
+            ];
+        }
+
+        $active = 1;
+
+        $data = Follow::query()
+            ->where('user_id', Auth::user()->id)
+            ->where('follower_id', $user->id)
+            ->first();
+
+        if (is_null($data)){
+            throw new \Exception('Not found the follow');
+        }
+
+        if ($request->status == Follow::STATUS_REJECTED) {
+            $active = 0;
+            $data->delete();
+        } else {
+            $data->update([
+                'status' => Follow::STATUS_ACCEPTED
+            ]);
+
+            cache()->remember(
+                'notification.follow.accepted' . Auth::user()->id . '.' . $user->id,
+                now()->addMinutes(1),
+                function () use($user) {
+                    // Add notification
+                    return Notification::create([
+                        'message' => __('site.Someone accepted your request.', ['someone' => Auth::user()->nickname]),
                         'link' => '/member/' . Auth::user()->id,
                         'user_id' => $user->id,
                         'model_id' => Auth::user()->id,

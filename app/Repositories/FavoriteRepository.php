@@ -28,6 +28,16 @@ class FavoriteRepository implements IFavoriteRepository {
     }
 
     /**
+     * Get favorite clubs of the user with limitation
+     * @param ?User $user
+     * @return Collection
+     */
+    public function getClubsLimited(?User $user) :Collection
+    {
+        return !empty($user->id) ? $user->clubsLimited : Auth::user()->clubsLimited;
+    }
+
+    /**
      * Store club of the user
      * @param Club $club
      * @return JsonResponse
