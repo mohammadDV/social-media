@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\StatusUpdateRequest;
 use App\Models\Favorite;
+use App\Models\Follow;
 use App\Models\Status;
 use App\Models\User;
 use App\Repositories\Contracts\IStatusRepository;
@@ -34,10 +35,18 @@ class StatusRepository implements IStatusRepository {
     /**
      * Get the status.
      * @param ?User $user
-     * @return LengthAwarePaginator
      */
-    public function index(?User $user) :LengthAwarePaginator
+    public function index(?User $user)
     {
+
+        if (Follow::query()
+            ->where('follower_id', Auth::user()->id)
+            ->where('user_id', $user->id)
+            ->where('status', Follow::STATUS_ACCEPTED)
+            ->count() == 0 && $user->is_private == 1 && Auth::user()->id != $user->id) {
+                return [];
+            }
+
         // ->addMinutes('1'),
         // return cache()->remember("status.all" . !empty($user) ? $user?->id : '', now(),
         return Status::query()

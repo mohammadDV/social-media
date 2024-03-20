@@ -27,7 +27,8 @@ class UpdateUserRequest extends BaseRequest
             'profile_photo_path' => !empty($this->get('profile_photo_path')) ? ['required', 'string'] : 'sometimes',
             'bg_photo_path' => !empty($this->get('bg_photo_path')) ? ['required', 'string'] : 'sometimes',
             'mobile' => !empty($this->get('mobile')) ? ['required', 'string', 'min:11', 'max:15'] : 'sometimes',
-            'status' => ['required','in:0,1']
+            'status' => ['required','in:0,1'],
+            'is_private' => ['required','bool']
         ];
     }
 }

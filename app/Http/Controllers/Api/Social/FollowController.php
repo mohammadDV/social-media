@@ -28,7 +28,7 @@ class FollowController extends Controller
      */
     public function index(?User $user): JsonResponse
     {
-        return response()->json($this->repository->index($user?->id ?? Auth::user()->id), Response::HTTP_OK);
+        return response()->json($this->repository->index($user?->id ? $user : Auth::user()), Response::HTTP_OK);
     }
 
     /**
@@ -49,7 +49,7 @@ class FollowController extends Controller
      */
     public function getFollowers(?User $user, SearchRequest $request): JsonResponse
     {
-        return response()->json($this->repository->getFollowers($user?->id ?? Auth::user()->id, $request), Response::HTTP_OK);
+        return response()->json($this->repository->getFollowers($user?->id ? $user : Auth::user(), $request), Response::HTTP_OK);
     }
 
     /**
@@ -60,7 +60,7 @@ class FollowController extends Controller
      */
     public function getFollowings(?User $user, SearchRequest $request): JsonResponse
     {
-        return response()->json($this->repository->getFollowings($user?->id ?? Auth::user()->id, $request), Response::HTTP_OK);
+        return response()->json($this->repository->getFollowings($user?->id ? $user : Auth::user(), $request), Response::HTTP_OK);
     }
 
     /**
