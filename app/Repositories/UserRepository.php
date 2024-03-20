@@ -165,6 +165,7 @@ class UserRepository implements IUserRepository {
             'last_name'             => $request->input('last_name'),
             'nickname'              => $request->input('nickname'),
             'status'                => $request->input('status'),
+            'is_private'            => $request->input('is_private'),
             'mobile'                => $request->input('mobile'),
             'national_code'         => $request->input('national_code'),
             'biography'             => $request->input('biography'),

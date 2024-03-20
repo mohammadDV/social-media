@@ -14,10 +14,10 @@ interface IFollowRepository  {
 
     /**
      * Get the followers and followings
-     * @param int $userId
+     * @param User $user
      * @return array
      */
-    public function index(int $userId) :array;
+    public function index(User $user) :array;
 
     /**
      * Specify whether to be a follower or not.
@@ -28,20 +28,19 @@ interface IFollowRepository  {
 
     /**
      * Get the followers
-     * @param int $userId
+     * @param User $user
      * @param SearchRequest $request
-     * @return LengthAwarePaginator
      */
-    public function getFollowers(int $userId, SearchRequest $request) :LengthAwarePaginator;
+    public function getFollowers(User $user, SearchRequest $request);
 
     /**
      * Get the followings
-     * @param int $userId
+     * @param User $user
      * @param SearchRequest $request
-     * @return LengthAwarePaginator
      */
-    public function getFollowings(int $userId, SearchRequest $request) :LengthAwarePaginator;/**
+    public function getFollowings(User $user, SearchRequest $request);
 
+    /**
     * Store the follow
     * @param User $user
     * @return array

@@ -28,6 +28,7 @@ class UserResource extends JsonResource
             'national_code' => $this->national_code,
             'point' => $this->point,
             'status' => $this->status,
+            'is_private' => $this->is_private == 1,
             'created_at' => $this->created_at,
             'is_admin' => $this->level == 3,
             'roles' => $this->getRoleNames(),

@@ -17,21 +17,29 @@ class FollowRepository implements IFollowRepository {
 
     /**
      * Get the followers and followings
-     * @param int $userId
+     * @param User $user
      * @return array
      */
-    public function index(int $userId) :array
+    public function index(User $user) :array
     {
 
+        $user->is_private = Follow::query()
+            ->where('follower_id', Auth::user()->id)
+            ->where('user_id', $user->id)
+            ->where('status', Follow::STATUS_ACCEPTED)
+            ->count() == 0 && $user->is_private == 1 && Auth::user()->id != $user->id ? true : false;
+
+        $data['info'] = $user;
+
         $data['followersCount'] = Follow::select('follower_id')
-            ->where('user_id', $userId)
+            ->where('user_id', $user->id)
             ->where('status', Follow::STATUS_ACCEPTED)
             ->orderBy('id', 'desc')
             ->count();
 
         $data['followers'] = Follow::query()
             ->where('status', Follow::STATUS_ACCEPTED)
-            ->where('user_id', $userId)
+            ->where('user_id', $user->id)
             ->with('follower')
             ->whereHas('follower', function ($query) {
                 $query->where(function ($subQuery) {
@@ -43,13 +51,13 @@ class FollowRepository implements IFollowRepository {
 
         $data['followingsCount'] = Follow::select('user_id')
             ->where('status', Follow::STATUS_ACCEPTED)
-            ->where('follower_id', $userId)
+            ->where('follower_id', $user->id)
             ->where('status', Follow::STATUS_ACCEPTED)
             ->count();
 
         $data['followings'] = Follow::query()
             ->where('status', Follow::STATUS_ACCEPTED)
-            ->where('follower_id', $userId)
+            ->where('follower_id', $user->id)
             ->with('user')
             ->whereHas('user', function ($query) {
                 $query->where(function ($subQuery) {
@@ -88,15 +96,22 @@ class FollowRepository implements IFollowRepository {
 
     /**
      * Get the followers
-     * @param int $userId
+     * @param User $user
      * @param SearchRequest $request
-     * @return LengthAwarePaginator
      */
-    public function getFollowers(int $userId, SearchRequest $request) :LengthAwarePaginator
+    public function getFollowers(User $user, SearchRequest $request)
     {
 
+        if (Follow::query()
+            ->where('follower_id', Auth::user()->id)
+            ->where('user_id', $user->id)
+            ->where('status', Follow::STATUS_ACCEPTED)
+            ->count() == 0 && $user->is_private == 1 && Auth::user()->id != $user->id) {
+                return [];
+            }
+
         return Follow::query()
-            ->where('user_id', $userId)
+            ->where('user_id', $user->id)
             ->with('follower')
             ->whereHas('follower', function ($query) use($request) {
                 $query->where(function ($subQuery) {
@@ -113,15 +128,22 @@ class FollowRepository implements IFollowRepository {
 
     /**
      * Get the followers
-     * @param int $userId
+     * @param User $user
      * @param SearchRequest $request
-     * @return LengthAwarePaginator
      */
-    public function getFollowings(int $userId, SearchRequest $request) :LengthAwarePaginator
+    public function getFollowings(User $user, SearchRequest $request)
     {
+        if (Follow::query()
+            ->where('follower_id', Auth::user()->id)
+            ->where('user_id', $user->id)
+            ->where('status', Follow::STATUS_ACCEPTED)
+            ->count() == 0 && $user->is_private == 1 && Auth::user()->id != $user->id) {
+                return [];
+            }
+
         return Follow::query()
             ->where('status', Follow::STATUS_ACCEPTED)
-            ->where('follower_id', $userId)
+            ->where('follower_id', $user->id)
             ->with('user')
             ->whereHas('user', function ($query) use($request) {
                 $query->where(function ($subQuery) {
