@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\Social\BlockController;
 use App\Http\Controllers\Api\Social\TicketController;
 use App\Http\Controllers\Api\Social\CommentController;
 use App\Http\Controllers\Api\Social\CountryController;
@@ -35,6 +36,10 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
     Route::post('/follow-chaneg-status/{user}', [FollowController::class, 'changeFollowStatus'])->name('site.follow.change-status');
     Route::get('/is-follower/{user}', [FollowController::class, 'isFollower'])->name('site.is-follower');
     Route::post('/follow/{user}', [FollowController::class, 'store'])->name('site.follow.store');
+
+    // Block
+    Route::get('/block-users', [BlockController::class, 'index'])->name('site.block-users');
+    Route::post('/block/{user}', [BlockController::class, 'store'])->name('site.block.store');
 
     // Comment
     Route::prefix('comment')->group(function () {

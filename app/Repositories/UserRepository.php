@@ -199,6 +199,9 @@ class UserRepository implements IUserRepository {
         $data['users'] = User::query()
             ->where('level', '!=', 3)
             ->where('status', 1)
+            ->whereDoesntHave('blocked', function ($query) {
+                $query->where('user_id', Auth::user()->id);
+            })
             ->where(function ($query) use ($search) {
                 return $query->where('first_name', 'like', '%' . $search . '%')
                     ->orWhere('last_name', 'like', '%' . $search . '%')

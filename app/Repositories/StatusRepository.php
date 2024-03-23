@@ -39,11 +39,11 @@ class StatusRepository implements IStatusRepository {
     public function index(?User $user)
     {
 
-        if (Follow::query()
+        if (!empty($user->id) && Follow::query()
             ->where('follower_id', Auth::user()->id)
             ->where('user_id', $user->id)
             ->where('status', Follow::STATUS_ACCEPTED)
-            ->count() == 0 && $user->is_private == 1 && Auth::user()->id != $user->id) {
+            ->count() == 0 && $user?->is_private == 1 && Auth::user()->id != $user->id) {
                 return [];
             }
 
@@ -52,6 +52,9 @@ class StatusRepository implements IStatusRepository {
         return Status::query()
             ->when(!empty($user->id), function ($query) use($user) {
                 return $query->where('user_id', $user->id);
+            })
+            ->whereDoesntHave('user.blocked', function($query) {
+                $query->where('user_id', Auth::user()->id);
             })
             ->with(['likes', 'user', 'favorites'])
             ->where('status', 1)

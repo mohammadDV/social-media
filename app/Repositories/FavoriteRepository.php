@@ -7,6 +7,7 @@ use App\Models\Club;
 use App\Models\FavoriteClub;
 use App\Models\User;
 use App\Repositories\Contracts\IFavoriteRepository;
+use App\Repositories\traits\GlobalFunc;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteRepository implements IFavoriteRepository {
 
+    use GlobalFunc;
 
     /**
      * Get favorite clubs of the user
@@ -24,6 +26,10 @@ class FavoriteRepository implements IFavoriteRepository {
      */
     public function getClubs(?User $user) :Collection
     {
+        if ($this->isUserBlocked($user)) {
+            return new Collection();
+        }
+
         return !empty($user->id) ? $user->clubs : Auth::user()->clubs;
     }
 

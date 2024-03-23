@@ -23,6 +23,9 @@ class MemberRepository implements IMemberRepository {
             ->whereDoesntHave('followers', function($query) {
                 $query->where('follower_id', Auth::user()->id);
             })
+            ->whereDoesntHave('blocked', function ($query) {
+                $query->where('user_id', Auth::user()->id);
+            })
             ->where('id', '<>', Auth::user()->id)
             ->with('clubs')
             ->where('status',1)
@@ -45,6 +48,9 @@ class MemberRepository implements IMemberRepository {
             })
             ->whereDoesntHave('followers', function($query) {
                 $query->where('follower_id', Auth::user()->id);
+            })
+            ->whereDoesntHave('blocked', function ($query) {
+                $query->where('user_id', Auth::user()->id);
             })
             ->where('id', '<>', Auth::user()->id)
             ->where('status',1)
