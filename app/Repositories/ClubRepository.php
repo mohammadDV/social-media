@@ -91,14 +91,16 @@ class ClubRepository implements IClubRepository {
      */
     public function getFollowers(TableRequest $request, Club $club) :LengthAwarePaginator
     {
-        $search = $request->get('query');
         return User::query()
             ->with('clubs')
             ->where('status', 1)
             ->where('level', '!=', 3)
             ->whereHas('clubs', function ($query) use($club) {
-                return $query->where('club_id', $club->id);
+                $query->where('club_id', $club->id);
             })
+            // ->whereDoesntHave('blocked', function($query) {
+            //     $query->where('user_id', Auth::user()->id);
+            // })
             ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
             ->paginate($request->get('rowsPerPage', 20));
     }
@@ -111,8 +113,6 @@ class ClubRepository implements IClubRepository {
      */
     public function isActive(Club $club) :array
     {
-        // var_dump(Auth::user()->id);
-        // dd();
         return [
             'active' => FavoriteClub::query()
                 ->where('user_id', Auth::check() ? Auth::user()?->id : 0)
@@ -207,9 +207,6 @@ class ClubRepository implements IClubRepository {
      */
     public function show(Club $club) :Club
     {
-
-        var_dump(Auth::user()->id);
-        dd();
         return Club::query()
                 ->with('sport','country')
                 ->where('id', $club->id)

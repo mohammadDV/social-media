@@ -4,16 +4,17 @@ namespace App\Repositories;
 
 use App\Http\Requests\FollowChangeStatusRequest;
 use App\Http\Requests\SearchRequest;
-use App\Http\Resources\UserResource;
+use App\Models\Block;
 use App\Models\Follow;
-use App\Models\Live;
 use App\Models\Notification;
 use App\Models\User;
 use App\Repositories\Contracts\IFollowRepository;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Repositories\traits\GlobalFunc;
 use Illuminate\Support\Facades\Auth;
 
 class FollowRepository implements IFollowRepository {
+
+    use GlobalFunc;
 
     /**
      * Get the followers and followings
@@ -22,6 +23,10 @@ class FollowRepository implements IFollowRepository {
      */
     public function index(User $user) :array
     {
+
+        if ($this->isUserBlocked($user)) {
+                return [];
+        }
 
         $user->is_private = Follow::query()
             ->where('follower_id', Auth::user()->id)
@@ -81,16 +86,24 @@ class FollowRepository implements IFollowRepository {
         if (Auth::user()->id == $user->id) {
             return [
                 'active' => 1,
+                'block' => 0,
+                'notfound' => 0,
             ];
         }
 
-        $follow = Follow::query()
-            ->where('user_id', $user->id)
-            ->where('follower_id', Auth::user()->id)
-            ->first();
-
         return [
-            'active' => !empty($follow->user_id)
+            'active' => Follow::query()
+                ->where('user_id', $user->id)
+                ->where('follower_id', Auth::user()->id)
+                ->count() == 1,
+            'block' => Block::query()
+                ->where('user_id', $user->id)
+                ->where('blocker_id', Auth::user()->id)
+                ->count() == 1,
+            'notfound' => Block::query()
+                ->where('user_id', Auth::user()->id)
+                ->where('blocker_id', $user->id)
+                ->count() == 1
         ];
     }
 
@@ -101,6 +114,10 @@ class FollowRepository implements IFollowRepository {
      */
     public function getFollowers(User $user, SearchRequest $request)
     {
+
+        if ($this->isUserBlocked($user)) {
+            return [];
+        }
 
         if (Follow::query()
             ->where('follower_id', Auth::user()->id)
@@ -133,6 +150,11 @@ class FollowRepository implements IFollowRepository {
      */
     public function getFollowings(User $user, SearchRequest $request)
     {
+
+        if ($this->isUserBlocked($user)) {
+            return [];
+        }
+
         if (Follow::query()
             ->where('follower_id', Auth::user()->id)
             ->where('user_id', $user->id)
@@ -170,6 +192,24 @@ class FollowRepository implements IFollowRepository {
                 'follow' => 1,
                 'status' => 1,
                 'active' => 1,
+                'message' => __('site.The operation has been successfully')
+            ];
+        }
+
+        if (Block::query()
+                ->where([
+                    ['blocker_id', $user->id],
+                    ['user_id', Auth::user()->id],
+                    ])
+                ->orWhere([
+                    ['blocker_id', Auth::user()->id],
+                    ['user_id', $user->id],
+                ])
+                ->count() > 0) {
+            return [
+                'follow' => 0,
+                'status' => 1,
+                'active' => 0,
                 'message' => __('site.The operation has been successfully')
             ];
         }
@@ -223,6 +263,10 @@ class FollowRepository implements IFollowRepository {
      */
     public function changeFollowStatus(User $user, FollowChangeStatusRequest $request) :array
     {
+        if ($this->isUserBlocked($user)) {
+            return [];
+        }
+
         if (Auth::user()->id == $user->id) {
             return [
                 'follow' => 1,

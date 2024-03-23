@@ -2,6 +2,8 @@
 
 namespace App\Repositories\traits;
 
+use App\Models\Block;
+use App\Models\User;
 use App\Services\Image\ImageService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +20,38 @@ trait GlobalFunc
         if (!$condition && Auth::user()->level != 3) {
             throw New \Exception('Unauthorized', 401);
         }
+    }
+
+    /**
+     * Check the user blocked or not.
+     * @param ?User $user
+     * @return bool
+     */
+    public function isUserBlocked(?User $user) :bool
+    {
+        return !empty($user->id) && Block::query()
+            ->where('user_id', Auth::user()->id)
+            ->where('blocker_id', $user->id)
+            ->count() > 0;
+    }
+
+    /**
+     * Check both users blocked or not.
+     * @param ?User $user
+     * @return bool
+     */
+    public function areBothBlocked(?User $user) :bool
+    {
+        return !empty($user->id) && Block::query()
+            ->where([
+                ['user_id', $user->id],
+                ['blocker_id', Auth::user()->id],
+            ])
+            ->orWhere([
+                ['user_id', Auth::user()->id],
+                ['blocker_id', $user->id],
+            ])
+            ->count() > 0;
     }
 
     /**

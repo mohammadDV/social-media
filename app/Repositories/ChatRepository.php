@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\ChatRequest;
-use App\Http\Requests\ChatStatusRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Models\Block;
 use App\Models\Sport;
 use App\Models\Chat;
 use App\Models\ChatMessage;
@@ -13,8 +13,6 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Repositories\Contracts\IChatRepository;
 use App\Repositories\traits\GlobalFunc;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -44,7 +42,7 @@ class ChatRepository implements IChatRepository {
                         ->orWhereNull('remover_id');
                 });
             }])
-            ->when(Auth::user()->level != 3, function ($query) {
+            ->where(function ($query) {
                 return $query->where('user_id', Auth::user()->id)
                     ->orWhere('target_id', Auth::user()->id);
             })
@@ -106,10 +104,21 @@ class ChatRepository implements IChatRepository {
     public function chatInfo(Chat $chat) :Chat
     {
         $this->checkLevelAccess(Auth::user()->id == $chat->user_id || Auth::user()->id == $chat->target_id);
-        return Chat::query()
+
+        $chat = Chat::query()
             ->with('user', 'target')
             ->where('id', $chat->id)
             ->first();
+
+        $user = Auth::user()->id == $chat->user_id ? $chat->target : $chat->user;
+        $chat->block = Block::query()
+            ->where('user_id', $user->id)
+            ->where('blocker_id', Auth::user()->id)
+            ->count() == 1;
+
+        $chat->banned = $this->areBothBlocked($user);
+
+        return $chat;
     }
 
     /**
@@ -152,6 +161,13 @@ class ChatRepository implements IChatRepository {
     public function store(ChatRequest $request, User $user) :JsonResponse
     {
 
+        if ($this->areBothBlocked($user)) {
+            return response()->json([
+                'status' => 0,
+                'message' => ''
+            ]);
+        }
+
         $chat = Chat::query()
             ->where([
                 ['user_id', Auth::user()->id],
@@ -163,17 +179,6 @@ class ChatRepository implements IChatRepository {
             ])
             ->orderBy('id', 'desc')
             ->first();
-
-
-        // $createdAt = Carbon::parse($query->first()->created_at);
-
-        // Check if created_at is more than 5 minutes ago
-        // if ($createdAt->diffInMinutes(Carbon::now()) < 5) {
-        //     return response()->json([
-        //         'status' => 0,
-        //         'message' => __('site.You are not allowed to resend messages. Please try again in 5 minutes.')
-        //     ], Response::HTTP_CREATED);
-        // }
 
         if (!$chat) {
             $chat = Chat::create([

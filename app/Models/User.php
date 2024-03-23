@@ -121,7 +121,17 @@ class User extends Authenticatable
 
     public function following()
     {
-        return $this->hasMany(Follow::class,'follower_id')->orderBy('id', 'desc');
+        return $this->hasMany(Follow::class, 'follower_id')->orderBy('id', 'desc');
+    }
+
+    public function blocks()
+    {
+        return $this->hasMany(Block::class)->orderBy('id', 'desc');
+    }
+
+    public function blocked()
+    {
+        return $this->hasMany(Block::class, 'blocker_id')->orderBy('id', 'desc');
     }
 
     public function favorites()
