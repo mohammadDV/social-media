@@ -53,6 +53,9 @@ class StatusRepository implements IStatusRepository {
             ->when(!empty($user->id), function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             })
+            ->when(empty($user->id) || $user->id != Auth::user()->id , function ($query) use($user) {
+                return $query->where('is_report', 0);
+            })
             ->whereDoesntHave('user.blocked', function($query) {
                 $query->where('user_id', Auth::user()->id);
             })
@@ -143,6 +146,7 @@ class StatusRepository implements IStatusRepository {
             ->with(['likes','user'])
             ->where('id', $status->id)
             ->where('status', 1)
+            ->where('is_report', 0)
             ->first();
     }
 
@@ -203,6 +207,13 @@ class StatusRepository implements IStatusRepository {
      */
     public function update(StatusUpdateRequest $request, Status $status) :JsonResponse
     {
+
+        if (!empty($status->is_report)) {
+            return response()->json([
+                'status' => 0,
+                'message' => __('site.This status is not changeable')
+            ], 200);
+        }
 
         $this->checkLevelAccess($status->user_id == Auth::user()->id);
 

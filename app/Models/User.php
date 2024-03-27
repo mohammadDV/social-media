@@ -34,6 +34,7 @@ class User extends Authenticatable
         'status',
         'email',
         'is_private',
+        'is_report',
         'password'
     ];
 

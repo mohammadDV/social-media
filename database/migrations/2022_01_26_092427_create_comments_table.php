@@ -23,6 +23,7 @@ class CreateCommentsTable extends Migration
             $table->tinyInteger('status')->default(0);
             $table->text('image')->nullable();
             $table->bigInteger('parent_id')->default(0);
+            $table->boolean('is_report')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

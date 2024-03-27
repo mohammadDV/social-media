@@ -14,13 +14,18 @@ class Comment extends Model
     protected $guarded      = [];
 
     protected $hidden = [
-        'commentable_type',
+        // 'commentable_type',
         // 'commentable_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function reports()
+    {
+        return $this->morphMany(Comment::class, 'model', 'model_type', 'model_id');
     }
 
     public function commentable()
@@ -33,6 +38,7 @@ class Comment extends Model
         return $this->hasMany(Comment::class, 'parent_id')
             ->with('user')
             ->with('likes.user')
+            ->where('is_report', 0)
             ->where('status', 1);
     }
 
