@@ -219,7 +219,11 @@ return array(
     'You should have an active step'          => 'شما باید یک دوره فعال داشته باشید.',
     'You are not allowed to resend messages. Please wait until the operator answers.'          => 'شما مجاز به ارسال پیام مجدد نمیباشید. لطفا تا پاسخ اپراتور صبر کنید.',
     'You are not allowed to resend messages. Please try again in 5 minutes.'          => 'شما مجاز به ارسال پیام مجدد نمی باشید. لطفا ۵ دقیقه بعد مجدد تلاش کنید.',
+    'You are not allowed to resend messages. Please try again in 2 minutes.'          => 'شما مجاز به ارسال پیام مجدد نمی باشید. لطفا ۲ دقیقه بعد مجدد تلاش کنید.',
     'You are not allowed to send new tickets because you have 3 active tickets.'          => 'شما به علت داشتن ۳ تیکت فعال مجاز به ارسال تیکت جدید نمی باشید.',
+    'Dear user. According to user reports, your media has been removed from public view due to violation of application rules. Please try to publish the content within the framework of the defined rules. Thank you for your cooperation.' => 'کاربر گرامی, :media شما با توجه به گزارش کاربران به علت نقض قوانین اپلیکیشن از دید عموم حذف شده است. لطفا دقت کنید که انتشار مطالب در چهارچوب قوانین تعریف شده باشد. با تشکر از همکاری شما.',
+    'Status post' => 'استتوس',
+    'This status is not changeable' => 'این استتوس قابلیت ویرایش را ندارد.',
 );
 
 

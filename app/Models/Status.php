@@ -10,7 +10,6 @@ class Status extends Model
 {
     use HasFactory,SoftDeletes;
     protected $dates        = ['deleted_at'];
-//    protected $dateFormat   = 'U';
     protected $guarded      = [];
 
     protected $casts = [
@@ -19,7 +18,10 @@ class Status extends Model
 
     public function comments()
     {
-        return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id')->where('parent_id',0)->with(['likes','parents']);
+        return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id')
+            ->where('parent_id', 0)
+            ->where('is_report', 0)
+            ->with(['likes','parents']);
     }
 
     public function likes()

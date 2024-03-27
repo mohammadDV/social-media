@@ -6,9 +6,9 @@ use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\ClubController;
 use App\Http\Controllers\Api\Profile\CountryController;
 use App\Http\Controllers\Api\Profile\LeagueController;
-use App\Http\Controllers\Api\Profile\NotificationController;
 use App\Http\Controllers\Api\Profile\PageController;
 use App\Http\Controllers\Api\Profile\PostController;
+use App\Http\Controllers\Api\Profile\ReportController;
 use App\Http\Controllers\Api\Profile\RpcController;
 use App\Http\Controllers\Api\Profile\SportController;
 use App\Http\Controllers\Api\Profile\StatusController;
@@ -87,6 +87,16 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::post('/', [LiveController::class, 'store'])->name('profile.live.store')->middleware('permission:live_store');
         Route::post('/{live}', [LiveController::class, 'update'])->name('profile.live.update')->middleware('permission:live_update');
         Route::delete('/{live}', [LiveController::class, 'destroy'])->name('profile.live.delete')->middleware('permission:live_delete');
+    });
+
+    // lives
+    Route::prefix('reports')->group(function () {
+        // Route::get('/index', [LiveController::class, 'index'])->name('profile.live')->middleware('permission:live_show');
+        Route::get('/', [ReportController::class, 'indexPaginate'])->name('profile.report.index')->middleware('permission:report_show');
+        Route::get('/{report}', [ReportController::class, 'show'])->name('profile.report.show')->middleware('permission:report_show');
+        Route::post('/', [ReportController::class, 'store'])->name('profile.report.store')->middleware('permission:report_store');
+        Route::post('/{report}', [ReportController::class, 'close'])->name('profile.report.close')->middleware('permission:report_update');
+        Route::delete('/{report}', [ReportController::class, 'destroy'])->name('profile.report.delete')->middleware('permission:report_delete');
     });
 
     // clubs

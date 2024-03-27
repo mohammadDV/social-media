@@ -27,6 +27,7 @@ class CommentRepository implements ICommentRepository {
     {
 
         $comments = Comment::query()
+            ->where('is_report', 0)
             ->where('parent_id', 0)
             ->where('commentable_id', $post->id)
             ->where('status', 1)
@@ -103,6 +104,7 @@ class CommentRepository implements ICommentRepository {
     public function getStatusComments(Status $status) :Collection
     {
         return Comment::query()
+            ->where('is_report', 0)
             ->where('parent_id', 0)
             ->where('commentable_id', $status->id)
             ->where('status', 1)

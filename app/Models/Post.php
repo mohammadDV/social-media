@@ -32,7 +32,9 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->morphMany(Comment::class,"Commentable",'commentable_type', 'commentable_id')->where('parent_id',0);
+        return $this->morphMany(Comment::class,"Commentable",'commentable_type', 'commentable_id')
+            ->where('parent_id', 0)
+            ->where('is_report', 0);
     }
 
     public function likes()

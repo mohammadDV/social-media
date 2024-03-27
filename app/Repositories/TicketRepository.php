@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Http\Requests\SportUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\TicketMessageRequest;
 use App\Http\Requests\TicketRequest;
@@ -75,10 +74,10 @@ class TicketRepository implements ITicketRepository {
         $createdAt = Carbon::parse($query->first()->created_at);
 
         // Check if created_at is more than 5 minutes ago
-        if ($createdAt->diffInMinutes(Carbon::now()) < 5) {
+        if ($createdAt->diffInMinutes(Carbon::now()) < config('times.ticket_time_min')) {
             return response()->json([
                 'status' => 0,
-                'message' => __('site.You are not allowed to resend messages. Please try again in 5 minutes.')
+                'message' => __('site.You are not allowed to resend messages. Please try again in 5 minutes.', ['number' => config('times.ticket_time_min')])
             ], Response::HTTP_CREATED);
         }
 
@@ -86,12 +85,12 @@ class TicketRepository implements ITicketRepository {
         if ($query->count() > 2) {
             return response()->json([
                 'status' => 0,
-                'message' => __('site.You are not allowed to send new tickets because you have 3 active tickets.')
+                'message' => __('site.You are not allowed to send new tickets because you have 3 active tickets.', ['number' => config('times.ticket_time_min')])
             ], Response::HTTP_CREATED);
         }
 
         // Check if created_at is more than 5 minutes ago
-        if ($createdAt->diffInMinutes(Carbon::now()) < 5) {
+        if ($createdAt->diffInMinutes(Carbon::now()) < config('times.ticket_time_min')) {
             return response()->json([
                 'status' => 0,
                 'message' => __('site.You are not allowed to resend messages. Please try again in 5 minutes.')
