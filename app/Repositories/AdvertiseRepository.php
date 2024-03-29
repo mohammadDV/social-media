@@ -2,14 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\AdvertiseFormRequest;
 use App\Http\Requests\AdvertiseRequest;
 use App\Http\Requests\AdvertiseUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Advertise;
+use App\Models\AdvertiseForm;
 use App\Repositories\Contracts\IAdvertiseRepository;
 use App\Repositories\traits\GlobalFunc;
-use App\Services\File\FileService;
-use App\Services\Image\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -108,6 +108,27 @@ class AdvertiseRepository implements IAdvertiseRepository {
     }
 
     /**
+     * Get the advertise form pagination.
+     * @param TableRequest $request
+     * @return LengthAwarePaginator
+     */
+    public function indexFormPaginate(TableRequest $request) :LengthAwarePaginator
+    {
+
+        $this->checkLevelAccess();
+
+        $search = $request->get('query');
+        return AdvertiseForm::query()
+            ->when(!empty($search), function ($query) use ($search) {
+                return $query->where('first_name', 'like', '%' . $search . '%')
+                    ->orWwhere('last_name', 'like', '%' . $search . '%')
+                    ->orWwhere('phone', 'like', '%' . $search . '%');
+            })
+            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->paginate($request->get('rowsPerPage', 25));
+    }
+
+    /**
      * Get the advertise info.
      * @param Advertise $advertise
      * @return Matches
@@ -197,4 +218,44 @@ class AdvertiseRepository implements IAdvertiseRepository {
 
         throw new \Exception();
    }
+
+    /**
+    * Delete the advertise form.
+    * @param AdvertiseForm $advertiseForm
+    * @return JsonResponse
+    */
+   public function destroyForm(AdvertiseForm $advertiseForm) :JsonResponse
+   {
+        $this->checkLevelAccess();
+
+        $advertiseForm->delete();
+
+        if ($advertiseForm) {
+            return response()->json([
+                'status' => 1,
+                'message' => __('site.The operation has been successfully')
+            ], Response::HTTP_OK);
+        }
+
+        throw new \Exception();
+   }
+
+   /**
+     * Submit form of advertise.
+     * @param AdvertiseFormRequest $request
+     */
+    public function advertiseForm(AdvertiseFormRequest $request) : array
+    {
+
+        $create = AdvertiseForm::create($request->all());
+
+        if ($create) {
+            return [
+                'status' => 1,
+                'message' => __('site.The operation has been successfully. We will call you as soon as possible.')
+            ];
+        }
+
+        throw new \Exception();
+    }
 }

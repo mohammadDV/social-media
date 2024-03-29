@@ -7,6 +7,7 @@ use App\Http\Requests\AdvertiseRequest;
 use App\Http\Requests\AdvertiseUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Advertise;
+use App\Models\AdvertiseForm;
 use App\Models\Step;
 use App\Repositories\Contracts\IAdvertiseRepository;
 use Illuminate\Http\JsonResponse;
@@ -38,6 +39,16 @@ class AdvertiseController extends Controller
     public function indexPaginate(TableRequest $request): JsonResponse
     {
         return response()->json($this->repository->indexPaginate($request), Response::HTTP_OK);
+    }
+
+    /**
+     * Get all of advertise form with pagination
+     * @param TableRequest $request
+     * @return JsonResponse
+     */
+    public function indexFormPaginate(TableRequest $request): JsonResponse
+    {
+        return response()->json($this->repository->indexFormPaginate($request), Response::HTTP_OK);
     }
 
     /**
@@ -80,5 +91,15 @@ class AdvertiseController extends Controller
     public function destroy(Advertise $advertise) :JsonResponse
     {
         return $this->repository->destroy($advertise);
+    }
+
+    /**
+     * Delete the advertise form.
+     * @param AdvertiseForm $advertiseForm
+     * @return JsonResponse
+     */
+    public function destroyForm(advertiseForm $advertiseForm) :JsonResponse
+    {
+        return $this->repository->destroyForm($advertiseForm);
     }
 }
