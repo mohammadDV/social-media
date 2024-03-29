@@ -156,6 +156,12 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::delete('/{advertise}', [AdvertiseController::class, 'destroy'])->name('profile.advertise.delete')->middleware('permission:advertise_delete');
     });
 
+     // advertise form
+     Route::prefix('advertise-form')->group(function () {
+        Route::get('/', [AdvertiseController::class, 'indexFormPaginate'])->name('profile.advertise-form.index')->middleware('permission:advertise_show');
+        Route::delete('/{advertiseForm}', [AdvertiseController::class, 'destroyForm'])->name('profile.advertise-form.delete')->middleware('permission:advertise_delete');
+    });
+
     // pages
     Route::prefix('pages')->group(function () {
         Route::get('/', [PageController::class, 'indexPaginate'])->name('profile.page.index')->middleware('permission:page_show');

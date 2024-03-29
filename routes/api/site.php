@@ -28,6 +28,8 @@ Route::post('/search', [PostController::class, 'search'])->name('site.posts.sear
 Route::post('/search-post-tag', [PostController::class, 'searchPostTag'])->name('site.post-tag.search');
 Route::get('/pages', [PageController::class, 'getActivePages'])->name('site.active-pages.search');
 Route::get('/page/{slug}', [PageController::class, 'getActivePage'])->name('site.active-page.search');
+Route::post('/advertise-form', [AdvertiseController::class, 'advertiseForm'])->name('profile.advertise.form');
+
 
 // Route::middleware(['auth:sanctum'])->post('/logout', [AuthController::class, 'logout'])
 //                 ->middleware('auth')
