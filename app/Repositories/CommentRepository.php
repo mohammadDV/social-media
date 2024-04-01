@@ -21,24 +21,22 @@ class CommentRepository implements ICommentRepository {
     /**
      * Get the post comment
      * @param Post $post
-     * @return CommentResource
      */
-    public function getPostComments(Post $post) :AnonymousResourceCollection
+    public function getPostComments(Post $post)
     {
 
-        $comments = Comment::query()
+        return Comment::query()
             ->where('is_report', 0)
             ->where('parent_id', 0)
             ->where('commentable_id', $post->id)
             ->where('status', 1)
             ->where('commentable_type', "App\\Models\\Post")
+            ->with('user')
             ->with('parents.user')
             ->with('likes')
             ->with('likes.user')
-            ->get();
-
-        return CommentResource::collection($comments);
-
+            ->orderBy('id', 'DESC')
+            ->paginate(2);
 
     }
 
@@ -99,10 +97,10 @@ class CommentRepository implements ICommentRepository {
     /**
      * Get the status comments.
      * @param Status $status
-     * @return Collection
      */
-    public function getStatusComments(Status $status) :Collection
+    public function getStatusComments(Status $status)
     {
+
         return Comment::query()
             ->where('is_report', 0)
             ->where('parent_id', 0)
@@ -113,7 +111,9 @@ class CommentRepository implements ICommentRepository {
             ->with('parents.user')
             ->with('likes')
             ->with('likes.user')
-            ->get();
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+
     }
 
     /**

@@ -43,7 +43,6 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
 
     // Comment
     Route::prefix('comment')->group(function () {
-        Route::get('/post/{post}', [CommentController::class, 'getPostComments'])->name('social.comment.post');
         Route::post('/post/{post}', [CommentController::class, 'storePostComment'])->name('social.comment.post.store');
         Route::get('/status/{status}', [CommentController::class, 'getStatusComments'])->name('social.comment.status');
         Route::post('/status/{status}', [CommentController::class, 'storeStatusComment'])->name('social.comment.status.store');
