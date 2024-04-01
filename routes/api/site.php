@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\LeagueController;
 use App\Http\Controllers\Api\LiveController;
 use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\Social\CommentController;
 use App\Http\Controllers\Api\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,8 +29,8 @@ Route::post('/search', [PostController::class, 'search'])->name('site.posts.sear
 Route::post('/search-post-tag', [PostController::class, 'searchPostTag'])->name('site.post-tag.search');
 Route::get('/pages', [PageController::class, 'getActivePages'])->name('site.active-pages.search');
 Route::get('/page/{slug}', [PageController::class, 'getActivePage'])->name('site.active-page.search');
-Route::post('/advertise-form', [AdvertiseController::class, 'advertiseForm'])->name('profile.advertise.form');
-
+Route::post('/advertise-form', [AdvertiseController::class, 'advertiseForm'])->name('site.advertise.form');
+Route::get('/comment/post/{post}', [CommentController::class, 'getPostComments'])->name('site.comment.post');
 
 // Route::middleware(['auth:sanctum'])->post('/logout', [AuthController::class, 'logout'])
 //                 ->middleware('auth')

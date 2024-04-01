@@ -3,13 +3,10 @@
 namespace App\Repositories\Contracts;
 
 use App\Http\Requests\StoreCommentRequest;
-use App\Http\Resources\CommentResource;
-use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
  /**
@@ -20,9 +17,8 @@ interface ICommentRepository  {
     /**
      * Get the post comment
      * @param Post $post
-     * @return AnonymousResourceCollection
      */
-    public function getPostComments(Post $post) :AnonymousResourceCollection;
+    public function getPostComments(Post $post);
 
     /**
      * Get the post comment
@@ -35,9 +31,8 @@ interface ICommentRepository  {
     /**
      * Get the status comments.
      * @param Status $status
-     * @return Collection
      */
-    public function getStatusComments(Status $status) :Collection;
+    public function getStatusComments(Status $status);
 
     /**
      * Get the status comment
