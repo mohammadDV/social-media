@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CheckNickname;
+use App\Rules\ValidateRole;
+
 class UserRequest extends BaseRequest
 {
     /**
@@ -23,11 +26,12 @@ class UserRequest extends BaseRequest
             'first_name' => ['required','string','min:2','max:255'],
             'last_name' => ['required','string','max:255'],
             'email' => ['required','max:255','email','string'],
+            'role_id' => !empty($this->get('role_id')) ? ['required', 'exists:roles,id', new ValidateRole]  : 'sometimes',
             'password' => ['required','min:6','max:255','string'],
-            'nickname' => !empty($this->get('nickname')) ? ['required', 'string', 'min:3', 'max:25'] : 'sometimes',
+            'nickname' => ['required', 'string', 'min:3', 'max:255', 'unique:users,nickname', 'regex:/^[a-zA-Z_]+$/'],
             'biography' => !empty($this->get('biography')) ? ['required', 'string', 'min:5', 'max:255'] : 'sometimes',
-            'profile_photo_path' => !empty($this->get('profile_photo_path')) ? ['required', 'image','mimes:jpg,jpeg,png,gif,svg','max:2048'] : 'sometimes',
-            'bg_photo_path' => !empty($this->get('bg_photo_path')) ? ['image','mimes:jpg,jpeg,png,gif,svg','max:2048'] : 'sometimes',
+            'profile_photo_path' => !empty($this->get('profile_photo_path')) ? ['required', 'string'] : 'sometimes',
+            'bg_photo_path' => !empty($this->get('bg_photo_path')) ? ['required', 'string'] : 'sometimes',
             'mobile' => !empty($this->get('mobile')) ? ['required', 'string', 'min:11', 'max:12'] : 'sometimes',
             'status' => ['required','in:0,1']
         ];

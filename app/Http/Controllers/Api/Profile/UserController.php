@@ -73,4 +73,14 @@ class UserController extends Controller
         return $this->repository->updatePassword($request, $user);
    }
 
+   /**
+    * Report the user.
+    * @param User $user
+    * @return JsonResponse
+    */
+   public function destroy(User $user) :JsonResponse
+   {
+       return $this->repository->destroy($user);
+   }
+
 }

@@ -44,12 +44,15 @@ class AuthController extends Controller
     public function register(RegisterRequest $request): Response
     {
         $user = User::create([
-            'first_name' => $request->name,
-            'nickname' => $request->name,
-            'role_id' => 1,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'nickname' => $request->nickname,
+            'role_id' => 4,
             'status' => 1,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'profile_photo_path'    => config('image.default-profile-image'),
+            'bg_photo_path'         => config('image.default-background-image'),
         ]);
 
         $user->assignRole(['user']);
@@ -58,9 +61,8 @@ class AuthController extends Controller
 
         return response([
             'token' => $token,
-            'mesasge' => 'success',
             'status' => 1
-        ], 201);
+        ], Response::HTTP_CREATED);
     }
 
     /**

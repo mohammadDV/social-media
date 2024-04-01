@@ -73,6 +73,12 @@ class AddPermissions extends Command
             'report_show',
             'report_update',
             'report_delete',
+            'user_show',
+            'user_store',
+            'user_update',
+            'user_delete',
+            'user_confirm',
+            'role_show',
         ];
         $permissions = [
             'post_show',
@@ -172,31 +178,31 @@ class AddPermissions extends Command
         ];
 
         // Add the lite and normal roles
-        // $admin = Role::updateOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-        // $author = Role::updateOrCreate(['name' => 'author', 'guard_name' => 'web']);
-        // $operator = Role::updateOrCreate(['name' => 'operator', 'guard_name' => 'web']);
-        // $user = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
+        $admin = Role::updateOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $author = Role::updateOrCreate(['name' => 'author', 'guard_name' => 'web']);
+        $operator = Role::updateOrCreate(['name' => 'operator', 'guard_name' => 'web']);
+        $user = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
         // Add the lite and normal roles api
-        $admin_api = Role::updateOrCreate(['name' => 'admin', 'guard_name' => 'api']);
-        $author_api = Role::updateOrCreate(['name' => 'author', 'guard_name' => 'api']);
-        $operator_api = Role::updateOrCreate(['name' => 'operator', 'guard_name' => 'api']);
-        $user_api = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'api']);
+        // $admin_api = Role::updateOrCreate(['name' => 'admin', 'guard_name' => 'api']);
+        // $author_api = Role::updateOrCreate(['name' => 'author', 'guard_name' => 'api']);
+        // $operator_api = Role::updateOrCreate(['name' => 'operator', 'guard_name' => 'api']);
+        // $user_api = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'api']);
 
         // Loop through the array and create permissions
         foreach ($permissions as $permission) {
-            // Permission::updateOrCreate(['name' => $permission, 'guard_name' => 'web']);
-            Permission::updateOrCreate(['name' => $permission, 'guard_name' => 'api']);
+            Permission::updateOrCreate(['name' => $permission, 'guard_name' => 'web']);
+            // Permission::updateOrCreate(['name' => $permission, 'guard_name' => 'api']);
         }
 
-        if ($admin_api) {
-            // $admin->syncPermissions($permissions);
-            $admin_api->syncPermissions($permissions);
-            // $user->syncPermissions($userPerm);
-            $user_api->syncPermissions($userPerm);
-            // $author->syncPermissions($authorPerm);
-            $author_api->syncPermissions($authorPerm);
-            // $operator->syncPermissions($operatorPerm);
-            $operator_api->syncPermissions($operatorPerm);
+        if ($admin) {
+            $admin->syncPermissions($permissions);
+            // $admin_api->syncPermissions($permissions);
+            $user->syncPermissions($userPerm);
+            // $user_api->syncPermissions($userPerm);
+            $author->syncPermissions($authorPerm);
+            // $author_api->syncPermissions($authorPerm);
+            $operator->syncPermissions($operatorPerm);
+            // $operator_api->syncPermissions($operatorPerm);
         }
 
         User::find(1)->assignRole(['admin']);

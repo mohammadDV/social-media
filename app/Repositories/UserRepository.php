@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Club;
+use App\Models\Role;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\traits\GlobalFunc;
@@ -51,6 +52,9 @@ class UserRepository implements IUserRepository {
                     ->orWhere('id', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');
             })
+            ->when(Auth::user()->role_id != 1, function ($query) {
+                $query->where('role_id', '!=', 1);
+            })
             ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
             ->paginate($request->get('rowsPerPage', 25));
 
@@ -89,15 +93,23 @@ class UserRepository implements IUserRepository {
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        $role_id = $request->input('role_id', 4);
+
+        if ($role_id == 1 && Auth::user()->role_id != 1) {
+            throw New \Exception('Unauthorized', 403);
+        }
+
         $user = User::create([
             'first_name'            => $request->input('first_name'),
             'last_name'             => $request->input('last_name'),
             'nickname'              => $request->input('nickname'),
-            'role_id'               => 1,
+            'role_id'               => $role_id,
+            'level'                 => in_array($role_id, [1,3]) ? 3 : 1,
             'email'                 => $request->input('email'),
             'password'              => Hash::make($request->input('password')),
             'status'                => $request->input('status'),
             'mobile'                => $request->input('mobile'),
+            'is_private'            => $request->input('is_private'),
             'national_code'         => $request->input('national_code'),
             'biography'             => $request->input('biography'),
             'profile_photo_path'    => $request->input('profile_photo_path'),
@@ -105,6 +117,10 @@ class UserRepository implements IUserRepository {
         ]);
 
         if ($user) {
+
+            $role = Role::findOrFail($role_id);
+            $user->syncRoles([$role->name]);
+
             return response()->json([
                 'status' => 1,
                 'message' => __('site.New user has been stored')
@@ -160,20 +176,39 @@ class UserRepository implements IUserRepository {
 
         $this->checkLevelAccess($user->id == Auth::user()->id);
 
+        $role_id = $request->input('role_id', 4);
+
+        if ($role_id == 1 && Auth::user()->role_id != 1) {
+            throw New \Exception('Unauthorized', 403);
+        }
+
+        if (!$this->checkNickname($request->input('nickname'), $user->id)) {
+            return response()->json([
+                'status' => 0,
+                'message' => __('site.The Nickname is invalid')
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         $update = $user->update([
             'first_name'            => $request->input('first_name'),
             'last_name'             => $request->input('last_name'),
             'nickname'              => $request->input('nickname'),
+            'role_id'               => $role_id,
+            'level'                 => in_array($role_id, [1,3]) ? 3 : 1,
             'status'                => $request->input('status'),
             'is_private'            => $request->input('is_private'),
             'mobile'                => $request->input('mobile'),
             'national_code'         => $request->input('national_code'),
             'biography'             => $request->input('biography'),
-            'profile_photo_path'    => $request->input('profile_photo_path'),
-            'bg_photo_path'         => $request->input('bg_photo_path'),
+            'profile_photo_path'    => $request->input('profile_photo_path', config('image.default-profile-image')),
+            'bg_photo_path'         => $request->input('bg_photo_path', config('image.default-background-image')),
         ]);
 
         if ($update) {
+
+            $role = Role::findOrFail($role_id);
+            $user->syncRoles([$role->name]);
+
             return response()->json([
                 'status' => 1,
                 'message' => __('site.The data has been updated')
@@ -224,4 +259,27 @@ class UserRepository implements IUserRepository {
 
         return $data;
    }
+
+    /**
+    * Report the user.
+    * @param User $user
+    * @return JsonResponse
+    */
+    public function destroy(User $user) :JsonResponse
+    {
+        $this->checkLevelAccess();
+
+        $user->update([
+            'is_report' => 1
+        ]);
+
+        if ($user) {
+            return response()->json([
+                'status' => 1,
+                'message' => __('site.The operation has been successfully')
+            ], Response::HTTP_OK);
+        }
+
+        throw new \Exception();
+    }
 }
