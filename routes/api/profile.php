@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Profile\LeagueController;
 use App\Http\Controllers\Api\Profile\PageController;
 use App\Http\Controllers\Api\Profile\PostController;
 use App\Http\Controllers\Api\Profile\ReportController;
+use App\Http\Controllers\Api\Profile\RoleController;
 use App\Http\Controllers\Api\Profile\RpcController;
 use App\Http\Controllers\Api\Profile\SportController;
 use App\Http\Controllers\Api\Profile\StatusController;
@@ -59,6 +60,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::post('/', [UserController::class, 'store'])->name('profile.user.store')->middleware('permission:user_store');
         Route::post('/{user}', [UserController::class, 'update'])->name('profile.user.update')->middleware('permission:user_update');
         Route::patch('/password', [UserController::class, 'updatePassword'])->name('profile.user.password.update')->middleware('permission:user_update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('profile.user.delete')->middleware('permission:user_delete');
     });
 
     // sports
@@ -160,6 +162,13 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
      Route::prefix('advertise-form')->group(function () {
         Route::get('/', [AdvertiseController::class, 'indexFormPaginate'])->name('profile.advertise-form.index')->middleware('permission:advertise_show');
         Route::delete('/{advertiseForm}', [AdvertiseController::class, 'destroyForm'])->name('profile.advertise-form.delete')->middleware('permission:advertise_delete');
+    });
+
+
+     // roles
+     Route::prefix('role')->group(function () {
+        Route::get('/', [RoleController::class, 'roles'])->name('profile.roles.index')->middleware('permission:role_show');
+        Route::get('/permissions', [RoleController::class, 'permissions'])->name('profile.permissions.index')->middleware('permission:permission_show');
     });
 
     // pages

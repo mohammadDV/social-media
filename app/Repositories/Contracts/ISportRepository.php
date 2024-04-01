@@ -55,7 +55,6 @@ interface ISportRepository  {
 
     /**
     * Delete the sport.
-    * @param UpdatePasswordRequest $request
     * @param Sport $sport
     * @return JsonResponse
     */

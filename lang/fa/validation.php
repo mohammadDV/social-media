@@ -94,7 +94,7 @@ return [
     "numeric"          => ":attribute باید شامل عدد باشد.",
     'password'         => 'رمز عبور اشتباه است.',
     'present'          => ':attribute باید وجود داشته باشد.',
-    "regex"            => ":attribute یک فرمت معتبر نیست",
+    "regex"            => " فرمت :attribute معتبر نیست.",
     "required"         => "فیلد :attribute الزامی است",
     "required_if"      => "فیلد :attribute هنگامی که :other برابر با :value است، الزامیست.",
     'required_unless'  => 'قیلد :attribute الزامیست مگر این فیلد :other مقدارش  :values باشد.',

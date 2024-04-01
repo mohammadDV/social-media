@@ -36,4 +36,6 @@ return [
 
     'default-current-index-image' => 'medium',
 
+    'default-profile-image' => 'https://s3.eu-central-1.amazonaws.com/varzeshtimes.ir/uploads/images/default/2024/03/30/hoot5JhCVJFyZxDHc9B5vVOsTjcDWpZbeW6AWMex.jpg',
+    'default-background-image' => 'https://s3.eu-central-1.amazonaws.com/varzeshtimes.ir/uploads/images/default/2024/03/30/8yHJGsFUQ9MbGGMY6J9Eue2W9Xpgql8FFwwwdMYx.jpg',
 ];

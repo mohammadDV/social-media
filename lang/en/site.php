@@ -224,7 +224,9 @@ return array(
     'Dear user. According to user reports, your media has been removed from public view due to violation of application rules. Please try to publish the content within the framework of the defined rules. Thank you for your cooperation.' => 'کاربر گرامی, :media شما با توجه به گزارش کاربران به علت نقض قوانین اپلیکیشن از دید عموم حذف شده است. لطفا دقت کنید که انتشار مطالب در چهارچوب قوانین تعریف شده باشد. با تشکر از همکاری شما.',
     'Status post' => 'استتوس',
     'This status is not changeable' => 'این استتوس قابلیت ویرایش را ندارد.',
-    'The operation has been successfully. We will call you as soon as possible.' => 'با تشکر. ثبت اطلاعات با موفقیت انجام شد. ما با شما بزودی تماس خواهیم گرفت.'
+    'The operation has been successfully. We will call you as soon as possible.' => 'با تشکر. ثبت اطلاعات با موفقیت انجام شد. ما با شما بزودی تماس خواهیم گرفت.',
+    'Invalid request' => 'خطا در ارسال درخواست.',
+    'The Nickname is invalid' => 'نام مستعار تکراری می باشد. لطفا نام دیگری انتخاب کنید.',
 );
 
 

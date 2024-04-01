@@ -18,8 +18,27 @@ trait GlobalFunc
     public function checkLevelAccess(bool $condition = false) {
 
         if (!$condition && Auth::user()->level != 3) {
-            throw New \Exception('Unauthorized', 401);
+            throw New \Exception('Unauthorized', 403);
         }
+    }
+
+    /**
+     * Check the level access
+     * @param bool $conditions
+     * @return bool
+     */
+    public function checkNickname(string $nickname, int $userId = 0) : bool {
+
+        if (User::query()
+            ->where('nickname', $nickname)
+            ->when(!empty($userId), function ($query) use($userId) {
+                $query->where('id', '!=', $userId);
+            })
+            ->count() > 0) {
+                return false;
+        }
+
+        return true;
     }
 
     /**

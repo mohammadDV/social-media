@@ -62,4 +62,11 @@ interface IUserRepository  {
     */
    public function search(SearchRequest $request) :LengthAwarePaginator|array;
 
+    /**
+    * Report the user.
+    * @param User $user
+    * @return JsonResponse
+    */
+   public function destroy(User $user) :JsonResponse;
+
 }
