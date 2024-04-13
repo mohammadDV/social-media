@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\ClubController;
 use App\Http\Controllers\Api\Profile\CountryController;
 use App\Http\Controllers\Api\Profile\LeagueController;
+use App\Http\Controllers\Api\Profile\NotificationController;
 use App\Http\Controllers\Api\Profile\PageController;
 use App\Http\Controllers\Api\Profile\PostController;
 use App\Http\Controllers\Api\Profile\ReportController;
@@ -181,9 +182,11 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
     });
 
     // notifications
-    // Route::prefix('notifications')->group(function () {
-    //     Route::get('/{user?}', [NotificationController::class, 'indexPaginate'])->name('profile.page.index')->middleware('permission:notification_show');
-    // });
+    Route::prefix('notifications')->group(function () {
+        Route::get('/send-list', [NotificationController::class, 'sendListPaginate'])->name('profile.notification.send-list')->middleware('permission:notification_send');
+        Route::post('/send-as-admin', [NotificationController::class, 'sendAsAdmin'])->name('profile.notification.send')->middleware('permission:notification_send');
+        Route::post('/check-notification-count', [NotificationController::class, 'checkNotificationCount'])->name('profile.check-notification-countsend')->middleware('permission:notification_send');
+    });
 
     // rpc
     Route::prefix('rpc')->group(function () {

@@ -21,6 +21,8 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0);
             $table->enum('type', ['simple', 'force'])->default('simple');
             $table->boolean('has_email')->default(false);
+            $table->boolean('has_modal')->default(false);
+            $table->boolean('is_admin')->default(false);
             $table->integer('model_id');
             $table->string('model_type');
             $table->timestamps();

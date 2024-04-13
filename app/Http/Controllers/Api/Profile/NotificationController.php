@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Api\Profile;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\NotificationRequest;
-use App\Http\Requests\NotificationUpdateRequest;
+use App\Http\Requests\SendNotificationRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Notification;
 use App\Models\User;
@@ -42,6 +41,38 @@ class NotificationController extends Controller
     {
 
         return response()->json($this->repository->show($notification), Response::HTTP_OK);
+    }
+
+    /**
+     * Send a notification.
+     * @param SendNotificationRequest $request
+     * @return JsonResponse
+     */
+    public function sendAsAdmin(SendNotificationRequest $request) :JsonResponse
+    {
+
+        return $this->repository->sendAsAdmin($request);
+    }
+
+    /**
+     * List of notification send.
+     * @param TableRequest $request
+     * @return JsonResponse
+     */
+    public function sendListPaginate(TableRequest $request) :JsonResponse
+    {
+        return response()->json($this->repository->sendListPaginate($request), Response::HTTP_OK);
+    }
+
+    /**
+     * Send a notification.
+     * @param SendNotificationRequest $request
+     * @return JsonResponse
+     */
+    public function checkNotificationCount(SendNotificationRequest $request) :JsonResponse
+    {
+
+        return $this->repository->checkNotificationCount($request);
     }
 
     /**

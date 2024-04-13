@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Http\Requests\SendNotificationRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Notification;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -34,5 +34,26 @@ interface INotificationRepository  {
     * @return JsonResponse
     */
    public function destroy(Notification $notification) :JsonResponse;
+
+   /**
+     * Send a notification.
+     * @param SendNotificationRequest $request
+     * @return JsonResponse
+     */
+    public function sendAsAdmin(SendNotificationRequest $request) :JsonResponse;
+
+    /**
+     * Check the notification users count
+     * @param SendNotificationRequest $request
+     * @return JsonResponse
+     */
+    public function checkNotificationCount(SendNotificationRequest $request) :array;
+
+    /**
+     * Get all notification sends.
+     * @param TableRequest $request
+     * @return LengthAwarePaginator
+     */
+    public function sendListPaginate(TableRequest $request) :LengthAwarePaginator;
 
 }
