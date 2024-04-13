@@ -24,6 +24,11 @@ class Notification extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function sends()
+    {
+        return $this->hasMany(NotificationSend::class);
+    }
+
     public function model()
     {
         return $this->morphTo();

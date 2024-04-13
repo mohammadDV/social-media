@@ -234,6 +234,7 @@ class UserRepository implements IUserRepository {
         $data['users'] = User::query()
             ->where('level', '!=', 3)
             ->where('status', 1)
+            ->where('is_report', 0)
             ->whereDoesntHave('blocked', function ($query) {
                 $query->where('user_id', Auth::user()->id);
             })

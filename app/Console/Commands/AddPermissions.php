@@ -153,6 +153,7 @@ class AddPermissions extends Command
             'notification_store',
             'notification_update',
             'notification_delete',
+            'notification_send',
             'like_show',
             'like_store',
             'follow_show',
