@@ -16,7 +16,7 @@ class ImageService extends ImageToolsService
         //set image
         $this->setImage($image);
         //execute provider
-        $this->provider();
+        // $this->provider();
 
         // Save image
         // if($image->getClientOriginalExtension()=='gif'){
