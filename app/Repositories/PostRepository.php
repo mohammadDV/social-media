@@ -90,7 +90,7 @@ class PostRepository implements IPostRepository {
         $categoryIds = [1,2,3,4,5,6,7];
 
         foreach ($categoryIds as $categoryId) {
-            if (count($data['posts'][$categoryId]) < $this->categoryCount) {
+            if (empty($data['posts'][$categoryId]) || count($data['posts'][$categoryId]) < $this->categoryCount) {
                 $posts = Post::query()
                     ->where('category_id', $categoryId)
                     ->where('status',1)

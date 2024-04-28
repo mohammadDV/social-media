@@ -178,6 +178,10 @@ class UserRepository implements IUserRepository {
 
         $role_id = $request->input('role_id', 4);
 
+        if ($user->id == Auth::user()->id) {
+            $role_id = Auth::user()->role_id;
+        }
+
         if ($role_id == 1 && Auth::user()->role_id != 1) {
             throw New \Exception('Unauthorized', 403);
         }

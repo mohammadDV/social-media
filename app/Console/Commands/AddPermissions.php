@@ -206,9 +206,21 @@ class AddPermissions extends Command
             // $operator_api->syncPermissions($operatorPerm);
         }
 
-        User::find(1)->assignRole(['admin']);
+        $user = User::firstOrCreate([
+            'level' => 3
+        ],[
+            'first_name' => 'admin',
+            'last_name' => 'admin',
+            'nickname' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => '$2y$10$ziG/AaH68P0T9BLpYfY//edVrgJ..i/8eXXohQPJIHQrdVQCUYX8m',
+            'level' => 3,
+            'status' => 1,
+            'role_id' => 1,
+            'type' => 1,
+        ]);
 
-        // $this->assignRoleToUser();
+        $user->assignRole(['admin']);
 
         $this->info(PHP_EOL.'Done');
         return Command::SUCCESS;
