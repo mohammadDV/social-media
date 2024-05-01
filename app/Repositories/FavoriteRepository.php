@@ -114,7 +114,7 @@ class FavoriteRepository implements IFavoriteRepository {
                 $query->where('title', "like", "%" . $request->search . "%");
                 $query->orWhere('alias_title', "like", "%" . $request->search . "%");
             })
-            ->orderBy('id', 'DESC')->paginate(12);
+            ->orderBy('id', 'ASC')->paginate(24);
 
         return $clubs;
     }
