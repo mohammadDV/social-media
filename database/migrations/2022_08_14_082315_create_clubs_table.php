@@ -25,6 +25,7 @@ class CreateClubsTable extends Migration
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->string('image', 2048)->nullable();
             $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('is_country')->default(0);
             $table->bigInteger('user_id')->nullable();
             // $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
