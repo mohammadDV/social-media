@@ -23,7 +23,7 @@ class PostUpdateRequest extends BaseRequest
         return [
             'title' => ['required','string','min:5','max:255'],
             'pre_title' => ['max:255'],
-            'category_id' => ['required','integer','exists:Categories,id'],
+            'category_id' => ['required','integer','exists:categories,id'],
             'summary' => ['max:255'],
             'content' => ['required','string','min:5'],
             'tags' => ['max:255'],
