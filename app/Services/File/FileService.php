@@ -24,7 +24,7 @@ class FileService extends FileToolsService
         //set File
         $this->setFile($file);
         //execute provider
-        $this->provider();
+        // $this->provider();
         //save File
         $result = Storage::disk('liara')->put($this->getFinalFileDirectory(), $file);
         return  str_replace('prod-data-sport.storage.iran.liara.space', 'varzeshtimes.ir', Storage::disk('liara')->url($result));
