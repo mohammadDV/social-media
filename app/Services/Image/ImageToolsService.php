@@ -118,7 +118,7 @@ class ImageToolsService
 
 
         //check adn create final image directory
-        $this->checkDirectory($this->getFinalImageDirectory());
+        // $this->checkDirectory($this->getFinalImageDirectory());
     }
 
 
