@@ -22,16 +22,17 @@ class ImageService extends ImageToolsService
         // if($image->getClientOriginalExtension()=='gif'){
 
             // if(env('APP_ENV') == "production") {
-                // $result = Storage::disk('s3')->put($this->getFinalImageDirectory(), $image);
-                // $S3Path = Storage::disk('s3')->url($result);
+                // $result = Storage::disk('liara')->put($this->getFinalImageDirectory(), $image);
+                // $S3Path = Storage::disk('liara')->url($result);
             // }else{
             //     $result = $image->move(public_path($this->getFinalImageDirectory()),$this->getImageName() . "." . $this->getImageFormat());
             // }
         // }else{
             // if(env('APP_ENV') == "production") {
                 // $result = Image::make($image->getRealPath())->encode($this->getImageFormat());
-                $result = Storage::disk('s3')->put($this->getFinalImageDirectory(), $image);
-            return  $S3Path = Storage::disk('s3')->url($result);
+                $result = Storage::disk('liara')->put($this->getFinalImageDirectory(), $image);
+            // return  $S3Path = str_replace('https://storage.iran.liara.space', 'https://varzeshtimes.ir/' , Storage::disk('liara')->url($result));
+        return  str_replace('prod-data-sport.storage.iran.liara.space', 'varzeshtimes.ir', Storage::disk('liara')->url($result));
             // }else{
             //     $result = Image::make($image->getRealPath())->save(public_path($this->getImageAddress()), null, $this->getImageFormat());
             // }

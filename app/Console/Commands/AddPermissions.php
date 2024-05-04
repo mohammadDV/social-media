@@ -41,6 +41,7 @@ class AddPermissions extends Command
             'chat_show',
             'chat_delete',
             'report_store',
+            'user_update'
         ];
         $authorPerm = [
             'status_show',
@@ -57,6 +58,7 @@ class AddPermissions extends Command
             'chat_show',
             'chat_delete',
             'report_store',
+            'user_update'
         ];
         $operatorPerm = [
             'ticket_show',

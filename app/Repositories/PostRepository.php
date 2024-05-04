@@ -56,8 +56,9 @@ class PostRepository implements IPostRepository {
         // ->addMinutes('1'),
         $posts = cache()->remember("post.all." . implode(".",$categoryIds) . "." . $count, now(),
             function () use($categoryIds, $count) {
-            return Post::whereIn('category_id', $categoryIds)->where('status',1)->latest()->take($count)->get();
-        });
+                return Post::whereIn('category_id', $categoryIds)->where('status', 1)->latest()->take($count)->get();
+            }
+        );
 
         $data['posts']          = [];
         $data['videos']         = [];
@@ -68,11 +69,13 @@ class PostRepository implements IPostRepository {
         $data['popular']        = $this->getPopular();
         foreach($posts ?? [] as $post){
             count($data['latest'])  >= $this->latestCount || in_array($post->category_id, $this->ignoreCategories) ?: $data['latest'][] =  $post;
-            if($post->type === 1){
+            if($post->type === 1) {
                 if($post->special === 1 && count($data['specialVideos']) < $this->spVideoCount) { $data['specialVideos'][] = $post; }
                 $data['videos'][] = $post;
             } else {
-                if($post->special === 1 && count($data['specialPosts']) < $this->spPostCount) { $data['specialPosts'][] = $post; }
+                if($post->special === 1 && count($data['specialPosts']) < $this->spPostCount) {
+                    $data['specialPosts'][] = $post;
+                }
                 $data['posts'][$post->category_id][] = $post;
             }
         }
