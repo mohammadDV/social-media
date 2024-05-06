@@ -181,6 +181,7 @@ return [
 		"image"     => "تصویر",
 		"summary"   => "سوتیتر",
 		"fullname"  => "نام کامل",
-		"message"  => "پیام"
+		"message"  => "پیام",
+		"g-recaptcha-response"  => "کپچا",
     ],
 ];
