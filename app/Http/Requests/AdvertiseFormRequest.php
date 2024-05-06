@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Recaptcha;
 
 class AdvertiseFormRequest extends BaseRequest
 {
@@ -21,10 +22,11 @@ class AdvertiseFormRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required|string|min:3|max:255',
-            'last_name' => 'required|string|min:3|max:255',
-            'phone' => 'required|string|max:15',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:11:min:11',
             'content' => 'max:1000',
+            'g-recaptcha-response' => ['required', new Recaptcha],
         ];
     }
 }
