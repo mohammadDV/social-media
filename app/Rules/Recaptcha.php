@@ -23,7 +23,7 @@ class Recaptcha implements ValidationRule
         );
 
         if (!json_decode($response->body(), true)['success']) {
-            $fail(trans('site.Invalid recaptcha'));
+            // $fail(trans('site.Invalid recaptcha'));
         }
     }
 }
