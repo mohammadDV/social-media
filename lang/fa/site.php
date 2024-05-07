@@ -227,10 +227,5 @@ return array(
     'The operation has been successfully. We will call you as soon as possible.' => 'با تشکرء ثبت اطلاعات با موفقیت انجام شد. ما با شما بزودی تماس خواهیم گرفت.',
     'Invalid request' => 'خطا در ارسال درخواست.',
     'The Nickname is invalid' => 'نام مستعار تکراری می باشد. لطفا نام دیگری انتخاب کنید.',
+    'Invalid recaptcha' => 'ارسال درخواست نامعتبر',
 );
-
-
-
-
-
-

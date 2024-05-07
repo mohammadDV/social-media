@@ -24,9 +24,9 @@ class AdvertiseFormRequest extends BaseRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:11:min:11',
+            'phone' => 'required|string|max:11|min:11',
             'content' => 'max:1000',
-            'g-recaptcha-response' => ['required', new Recaptcha],
+            'token' => [new Recaptcha],
         ];
     }
 }

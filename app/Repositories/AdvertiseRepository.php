@@ -247,7 +247,7 @@ class AdvertiseRepository implements IAdvertiseRepository {
     public function advertiseForm(AdvertiseFormRequest $request) : array
     {
 
-        $create = AdvertiseForm::create($request->all());
+        $create = AdvertiseForm::create($request->except('token'));
 
         if ($create) {
             return [

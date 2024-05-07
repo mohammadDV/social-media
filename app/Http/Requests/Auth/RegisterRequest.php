@@ -28,7 +28,7 @@ class RegisterRequest extends FormRequest
             'nickname' => ['required', 'string', 'min:3', 'max:255', 'unique:users,nickname', 'regex:/^[a-zA-Z_]+$/'],
             'email' => ['required', 'string', 'email', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'regex:/^[a-zA-Z0-9_!@#$%^&*()=+.]+$/'],
-            // 'g-recaptcha-response' => ['required', new Recaptcha],
+            'token' => [new Recaptcha],
         ];
     }
 }
