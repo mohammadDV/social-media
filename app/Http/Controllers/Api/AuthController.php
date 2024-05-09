@@ -7,10 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Google_Client;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -45,32 +43,67 @@ class AuthController extends Controller
     public function verify(Request $request): Response
     {
 
-        $client = new Google_Client(['client_id' => '334836814599-trhjl192sj725fn9nbjubddejdmh5s8m.apps.googleusercontent.com']);  // Specify the CLIENT_ID of the app that accesses the backend
+        $client = new Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
         $payload = $client->verifyIdToken($request->token);
+
         if ($payload) {
-        $userid = $payload['sub'];
-        // If the request specified a Google Workspace domain
-        //$domain = $payload['hd'];
+
+            $user = User::where('email', $payload['email'])->first();
+
+            if (!empty($user->id)) {
+                $token = $user->createToken('myapptokens')->plainTextToken;
+            } else {
+
+                $nickname = str_replace(' ', '-', $payload['name']);
+
+                $nickname = $this->nicknameCheck($nickname);
+
+                $user = User::create([
+                    'first_name' => !empty($payload['given_name']) ? $payload['given_name'] : $payload['name'],
+                    'last_name' => !empty($payload['family_name']) ? $payload['family_name'] : '',
+                    'nickname' => $nickname,
+                    'role_id' => 4,
+                    'status' => 1,
+                    'email' => $payload['email'],
+                    'google_id' => $payload['sub'],
+                    'password' => bcrypt($nickname . '!@#' . rand(1111, 9999)),
+                    'profile_photo_path' => !empty($payload['picture']) ? $payload['picture'] : config('image.default-profile-image'),
+                    'bg_photo_path' => config('image.default-background-image'),
+                ]);
+
+                $user->assignRole(['user']);
+
+                $token = $user->createToken('myapptokens')->plainTextToken;
+
+            }
+
+
+            return response([
+                'token' => $token,
+                'status' => 1
+            ], Response::HTTP_ACCEPTED);
+
+
         } else {
-            // Invalid ID token
+            return response([
+                'token' => '',
+                'status' => 0
+            ], Response::HTTP_BAD_REQUEST);
         }
+    }
 
-        // $user = User::where('email', $request->email)->first();
+    /**
+     * Check the nickname is unique or not
+     * @param string $nickname
+     * @return string $nickname
+     */
+    public function nicknameCheck(string $nickname): string
+    {
+        $user = User::query()
+            ->where('nickname', $nickname)
+            ->first();
 
-        // if(!$user || !Hash::check($request->password, $user->password)) {
-        //     return response([
-        //         'message' => 'These credentials do not match our records.',
-        //         'status' => 0
-        //     ], 401);
-        // }
-
-        // $token = $user->createToken('myapptokens')->plainTextToken;
-
-        return response([
-            'token' => $payload,
-            'mesasge' => 'success',
-            'status' => 1
-        ], 200);
+        return !empty($user->id) ? $this->nicknameCheck($nickname . rand(111111, 999999)) : $nickname;
     }
 
     /**
