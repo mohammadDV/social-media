@@ -88,6 +88,7 @@ class AddPermissions extends Command
             'post_update',
             'post_delete',
             'post_confirm',
+            'status_index',
             'status_show',
             'status_store',
             'status_update',

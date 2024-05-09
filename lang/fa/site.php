@@ -230,4 +230,5 @@ return array(
     'Invalid recaptcha' => 'ارسال درخواست نامعتبر',
     'Foreign leagues' => 'لیگ های خارجی',
     'Domestic leagues' => 'لیگ های داخلی',
+    'These credentials do not match our records.' => 'کاربر موردنظر یافت نشد.',
 );

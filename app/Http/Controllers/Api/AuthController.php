@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         if(!$user || !Hash::check($request->password, $user->password)) {
             return response([
-                'message' => 'These credentials do not match our records.',
+                'message' => __('site.These credentials do not match our records.'),
                 'status' => 0
             ], 401);
         }
