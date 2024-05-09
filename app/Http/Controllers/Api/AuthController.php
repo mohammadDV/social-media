@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Google_Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -33,6 +34,40 @@ class AuthController extends Controller
 
         return response([
             'token' => $token,
+            'mesasge' => 'success',
+            'status' => 1
+        ], 200);
+    }
+
+    /**
+     * Log in the user.
+     */
+    public function verify(Request $request): Response
+    {
+
+        $client = new Google_Client(['client_id' => '334836814599-trhjl192sj725fn9nbjubddejdmh5s8m.apps.googleusercontent.com']);  // Specify the CLIENT_ID of the app that accesses the backend
+        $payload = $client->verifyIdToken($request->token);
+        if ($payload) {
+        $userid = $payload['sub'];
+        // If the request specified a Google Workspace domain
+        //$domain = $payload['hd'];
+        } else {
+            // Invalid ID token
+        }
+
+        // $user = User::where('email', $request->email)->first();
+
+        // if(!$user || !Hash::check($request->password, $user->password)) {
+        //     return response([
+        //         'message' => 'These credentials do not match our records.',
+        //         'status' => 0
+        //     ], 401);
+        // }
+
+        // $token = $user->createToken('myapptokens')->plainTextToken;
+
+        return response([
+            'token' => $payload,
             'mesasge' => 'success',
             'status' => 1
         ], 200);

@@ -11,6 +11,10 @@ Route::post('/login', [AuthController::class, 'login'])
                 ->middleware('guest')
                 ->name('login');
 
+Route::post('/google/verify', [AuthController::class, 'verify'])
+                ->middleware('guest')
+                ->name('verify');
+
 Route::middleware(['auth:sanctum'])->post('/logout', [AuthController::class, 'logout'])
                 ->middleware('auth')
                 ->name('logout');
@@ -29,4 +33,3 @@ Route::middleware(['auth:sanctum'])->post('/logout', [AuthController::class, 'lo
 // Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
 //                 ->middleware(['auth', 'throttle:6,1'])
 //                 ->name('verification.send');
-
