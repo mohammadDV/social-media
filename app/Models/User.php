@@ -36,6 +36,7 @@ class User extends Authenticatable
         'email',
         'is_private',
         'is_report',
+        'google_id',
         'password'
     ];
 
