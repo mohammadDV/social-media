@@ -116,6 +116,7 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
     // leagues
     Route::prefix('leagues')->group(function () {
         Route::get('/', [LeagueController::class, 'indexPaginate'])->name('profile.league.index')->middleware('permission:league_show');
+        Route::get('/tables', [LeagueController::class, 'getTableLeague'])->name('profile.league.tables.index')->middleware('permission:league_show');
         Route::get('/{league}', [LeagueController::class, 'show'])->name('profile.league.show')->middleware('permission:league_show');
         Route::post('/', [LeagueController::class, 'store'])->name('profile.league.store')->middleware('permission:league_store');
         Route::post('/{league}', [LeagueController::class, 'update'])->name('profile.league.update')->middleware('permission:league_update');

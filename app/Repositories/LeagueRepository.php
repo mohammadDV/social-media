@@ -6,7 +6,6 @@ use App\Http\Requests\LeagueRequest;
 use App\Http\Requests\LeagueUpdateRequest;
 use App\Http\Requests\StoreClubRequest;
 use App\Http\Requests\TableRequest;
-use App\Models\Club;
 use App\Services\Image\ImageService;
 use App\Services\MatchService;
 use App\Models\League;
@@ -24,56 +23,73 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     use GlobalFunc;
 
     /**
-     * @param ImageService $imageService
-     * @param FileService $fileService
-     */
-    public function __construct(protected ImageService $imageService, protected FileService $fileService)
-    {
-
-    }
-
-    /**
      * Get the leagues.
-     * @param $sports
      * @return array
      */
-    public function index(array $sports) :array
+    public function index() :array
     {
         // ->addMinutes('1'),
-        $leagueRows = cache()->remember("league.all." . implode(".",$sports), now(),
-            function () use($sports) {
+
+        $matchTables = config('match');
+        $result     = [];
+
+        foreach ($matchTables as $matchTable) {
+
+            $leagueRows = cache()->remember("league.all." . $matchTable['id'], now(),
+            function () use($matchTable) {
             return League::Query()
                 ->with('sport')
-                ->whereIn('sport_id', $sports)
+                ->where('sport_id', $matchTable['sport_id'])
+                ->where('table_id', $matchTable['id'])
                 ->where('status',1)
                 ->orderBy('priority','ASC')
                 ->get();
-        });
+            });
 
-        $data       = [];
-        $leagues    = [];
-        $result     = [];
-        foreach($leagueRows as $league) {
-            if(empty($data[$league->sport_id])) {
-                $data[$league->sport_id] = $league;
+            $data       = [];
+            $leagues    = [];
+            foreach($leagueRows as $league) {
+                if(empty($data[$league->sport_id])) {
+                    $data[$league->sport_id] = $league;
+                }
+                $leagues[$league->sport_id][] = $league;
             }
-            $leagues[$league->sport_id][] = $league;
-        }
-        foreach($data as $key => $item){
+            foreach($data as $key => $item){
 
-            $leagueInfo = $this->getLeagueInfo($item);
+                $leagueInfo = $this->getLeagueInfo($item);
 
-            $result[$key] = [
-                "title"     => __('site.World ' . strtolower($item->sport->alias_title)),
-                "leagues"   => $leagues[$key],
-                "steps"     => $leagueInfo['steps'] ?? [],
-                "matches"   => $leagueInfo['matches'] ?? [],
-                "clubs"     => $leagueInfo['clubs'],
-            ];
+                $result[$matchTable['id']][$key] = [
+                    "title"     => __('site.' . $matchTable['title']),
+                    "leagues"   => $leagues[$key],
+                    "steps"     => $leagueInfo['steps'] ?? [],
+                    "matches"   => $leagueInfo['matches'] ?? [],
+                    "clubs"     => $leagueInfo['clubs'],
+                ];
+
+
+            }
         }
 
         return $result;
 
+    }
+
+    /**
+     * Get the table of the league info.
+     * @return array
+     */
+    public function getTableLeague() :array
+    {
+        $result = [];
+
+        foreach (config('match') ?? [] as $item) {
+            $result[] = [
+                'id' => $item['id'],
+                'title' => __('site.' . $item['title']),
+                'sport_id' => $item['sport_id'],
+            ];
+        }
+        return $result;
     }
 
     /**
@@ -223,7 +239,8 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
             'user_id'       => auth()->user()->id,
             'status'        => $request->input('status'),
             'type'          => $request->input('type'),
-            'priority'      => $request->input('priority', 0)
+            'priority'      => $request->input('priority', 0),
+            'table_id'      => $request->input('table_id', null)
         ]);
 
 
@@ -259,7 +276,8 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
             'user_id'       => auth()->user()->id,
             'status'        => $request->input('status'),
             'type'          => $request->input('type'),
-            'priority'      => $request->input('priority', 0)
+            'priority'      => $request->input('priority', 0),
+            'table_id'      => $request->input('table_id', null)
         ]);
 
 
