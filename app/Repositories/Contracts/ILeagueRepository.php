@@ -20,10 +20,9 @@ interface ILeagueRepository  {
 
     /**
      * Get the leagues.
-     * @param array $sports
      * @return array
      */
-    public function index(array $sports) :array;
+    public function index() :array;
 
     /**
      * Get the league info.
@@ -31,6 +30,12 @@ interface ILeagueRepository  {
      * @return array
      */
     public function getLeagueInfo(League $league) :array;
+
+    /**
+     * Get the table of the league info.
+     * @return array
+     */
+    public function getTableLeague() :array;
 
     /**
      * Get the leagues pagination.

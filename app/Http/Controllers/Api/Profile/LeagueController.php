@@ -93,6 +93,15 @@ class LeagueController extends Controller
         return response()->json($this->repository->getClubs($league), Response::HTTP_OK);
     }
 
+    /**
+     * Get the table of the league info.
+     * @return JsonResponse
+     */
+    public function getTableLeague(): JsonResponse
+    {
+        return response()->json($this->repository->getTableLeague(), Response::HTTP_OK);
+    }
+
      /**
     * Get the steps of league.
     * @param League $league

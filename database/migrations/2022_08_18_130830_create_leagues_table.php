@@ -19,6 +19,7 @@ class CreateLeaguesTable extends Migration
             $table->string('title');
             $table->string('alias_title')->nullable();
             $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('table_id')->nullable();
             $table->string('image', 2048)->nullable();
             $table->bigInteger("sport_id")->unsigned()->index();
             $table->foreign('sport_id')->references('id')->on('sports')->onDelete('cascade');

@@ -27,7 +27,7 @@ class LeagueController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json($this->repository->index(range(1,2)), Response::HTTP_OK);
+        return response()->json($this->repository->index(), Response::HTTP_OK);
     }
 
     /**
