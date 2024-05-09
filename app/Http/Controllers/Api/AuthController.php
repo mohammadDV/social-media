@@ -43,7 +43,7 @@ class AuthController extends Controller
     public function verify(Request $request): Response
     {
 
-        $client = new Google_Client();
+        $client = new Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
         $payload = $client->verifyIdToken($request->token);
 
         if ($payload) {
