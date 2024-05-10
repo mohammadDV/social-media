@@ -44,6 +44,7 @@ class AddPermissions extends Command
             'user_update'
         ];
         $authorPerm = [
+            'category_show',
             'status_show',
             'status_store',
             'status_update',
