@@ -15,4 +15,16 @@ interface ICategoryRepository  {
      */
     public function getActives() :AnonymousResourceCollection;
 
+    /**
+     * Get the team categories.
+     * @return AnonymousResourceCollection
+     */
+    public function getTeamCategories() :AnonymousResourceCollection;
+
+    /**
+     * Get all.
+     * @return AnonymousResourceCollection
+     */
+    public function index() :AnonymousResourceCollection;
+
 }
