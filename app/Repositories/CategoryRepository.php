@@ -18,7 +18,9 @@ class CategoryRepository implements ICategoryRepository {
         // ->addMinutes('1'),
         return cache()->remember("categories.all", now(), function () {
             return CategoryResource::collection(Category::query()
-                ->where('status',1)->get());
+                ->where('status',1)
+                ->where('menu',1)
+                ->get());
         });
     }
 }

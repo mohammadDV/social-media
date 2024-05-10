@@ -28,7 +28,6 @@ class PostRepository implements IPostRepository {
     protected $spVideoCount     = 10;
     protected $categoryCount    = 20;
     protected $spPostCount      = 5;
-    protected $ignoreCategories = [7]; // 1 = writers,  5 = Football analysis , 6 = Non-football analysis, 7 = newspaper
 
     /**
      * Get the post.
@@ -41,7 +40,7 @@ class PostRepository implements IPostRepository {
 
         return Post::query()
             ->where('id', $post->id)
-            ->with('tags')
+            ->with('tags', 'categories')
             ->first();
     }
 
@@ -56,7 +55,13 @@ class PostRepository implements IPostRepository {
         // ->addMinutes('1'),
         $posts = cache()->remember("post.all." . implode(".",$categoryIds) . "." . $count, now(),
             function () use($categoryIds, $count) {
-                return Post::whereIn('category_id', $categoryIds)->where('status', 1)->latest()->take($count)->get();
+                return Post::query()
+                ->with('categories')
+                ->where('status', 1)
+                ->whereHas('categories', function ($query) use ($categoryIds) {
+                    $query->whereIn('id', $categoryIds);
+                })
+                ->latest()->take($count)->get();
             }
         );
 
@@ -68,7 +73,7 @@ class PostRepository implements IPostRepository {
         $data['challenged']     = $this->getChallenged();
         $data['popular']        = $this->getPopular();
         foreach($posts ?? [] as $post){
-            count($data['latest'])  >= $this->latestCount || in_array($post->category_id, $this->ignoreCategories) ?: $data['latest'][] =  $post;
+            count($data['latest'])  >= $this->latestCount ?: $data['latest'][] =  $post;
             if($post->type === 1) {
                 if($post->special === 1 && count($data['specialVideos']) < $this->spVideoCount) { $data['specialVideos'][] = $post; }
                 $data['videos'][] = $post;
@@ -76,13 +81,20 @@ class PostRepository implements IPostRepository {
                 if($post->special === 1 && count($data['specialPosts']) < $this->spPostCount) {
                     $data['specialPosts'][] = $post;
                 }
-                $data['posts'][$post->category_id][] = $post;
+
+                foreach ($post->categories ?? [] as $category) {
+
+                    if (in_array($category->id, $categoryIds) ) {
+                        $data['posts'][$category->id][] = $post;
+                    }
+                }
+
             }
         }
 
         // Get special posts
         if (count($data['specialPosts']) < $this->spPostCount) {
-            $data['specialPosts'] = $this->getSpecialPosts();
+            $data['specialPosts'] = $this->getSpecialPosts($categoryIds);
         }
 
         // Get special videos
@@ -90,13 +102,13 @@ class PostRepository implements IPostRepository {
             $data['specialVideos'] = $this->getSpecialVideos();
         }
 
-        $categoryIds = [1,2,3,4,5,6,7];
-
         foreach ($categoryIds as $categoryId) {
             if (empty($data['posts'][$categoryId]) || count($data['posts'][$categoryId]) < $this->categoryCount) {
-                $posts = Post::query()
-                    ->where('category_id', $categoryId)
-                    ->where('status',1)
+                $data['posts'][$categoryId] = Post::query()
+                    ->where('status', 1)
+                    ->whereHas('categories', function ($query) use ($categoryId) {
+                        $query->where('id', $categoryId);
+                    })
                     ->latest()
                     ->take($this->categoryCount)
                     ->get();
@@ -126,11 +138,13 @@ class PostRepository implements IPostRepository {
      * Get special posts
      * @return Collection
      */
-    private function getSpecialPosts() : Collection
+    private function getSpecialPosts(array $categoryIds) : Collection
     {
         return Post::query()
-                ->whereIn('category_id', [1, 2, 3, 4])
                 ->where('status',1)
+                ->whereHas('categories', function ($query) use ($categoryIds) {
+                    $query->whereIn('id', $categoryIds);
+                })
                 ->latest()
                 ->take($this->spPostCount)
                 ->get();
@@ -144,7 +158,6 @@ class PostRepository implements IPostRepository {
     {
         return Post::query()
             ->where('status',1)
-            ->whereNotIN('category_id',$this->ignoreCategories)
             ->orderBy('view','DESC')
             ->take($this->latestCount)
             ->get();
@@ -194,7 +207,9 @@ class PostRepository implements IPostRepository {
         $data = cache()->remember("posts.per.category." . $category->id, now(),
             function () use($category) {
                 $posts = Post::query()
-                    ->where('category_id', $category->id)
+                    ->whereHas('categories', function ($query) use ($category) {
+                        $query->where('id', $category->id);
+                    })
                     ->where('status',1)
                     ->orderBy('id', 'desc')
                     ->paginate(10);
@@ -300,15 +315,14 @@ class PostRepository implements IPostRepository {
             'video'       => $request->input('type') == 1 ? $request->input('video', null) : null,
             'video_id'       => $request->input('type') == 1 ? $request->input('video_id') : null,
             'type'        => $request->input('type',0),
-            'category_id' => $request->input('category_id'),
             'status'      => $request->input('status'),
             'special'     => $request->input('special',0),
         ]);
 
+        $post->categories()->sync($request->input('categories'));
 
         if (!empty($request->input('tags')) && is_array($request->input('tags'))) {
             $tagIds = [];
-            // $tags_arr = array_unique(explode(',',$request->input('tags')));
             $tags_arr = array_unique($request->input('tags'));
             if (!empty($tags_arr)){
                 foreach($tags_arr as $tagitem) {
@@ -349,9 +363,10 @@ class PostRepository implements IPostRepository {
                 'video'       => $request->input('type') == 1 ? $request->input('video', null) : null,
                 'video_id'    => $request->input('type') == 1 ? $request->input('video_id') : null,
                 'type'        => $request->input('type',0),
-                'category_id' => $request->input('category_id'),
                 'status'      => $request->input('status'),
             ]);
+
+            $post->categories()->sync($request->input('categories'));
 
             if (is_array($request->input('tags'))) {
                 $tagIds = [];
