@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\Profile\LiveController;
 use App\Http\Controllers\Api\Profile\AdvertiseController;
 use App\Http\Controllers\Api\Profile\MatchController;
@@ -220,6 +221,16 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::post('/', [TicketSubjectController::class, 'store'])->name('profile.ticket-subject.store')->middleware('permission:subject_store');
         Route::post('/{ticketSubject}', [TicketSubjectController::class, 'update'])->name('profile.ticket-subject.update')->middleware('permission:subject_update');
         Route::delete('/{ticketSubject}', [TicketSubjectController::class, 'destroy'])->name('profile.ticket-subject.delete')->middleware('permission:subject_delete');
+    });
+
+    // ticket subjects
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('profile.category.index')->middleware('permission:category_show');
+        // Route::get('/', [CategoryController::class, 'indexPaginate'])->name('profile.category.index')->middleware('permission:category_show');
+        // Route::get('/{ticketSubject}', [CategoryController::class, 'show'])->name('profile.category.show')->middleware('permission:category_show');
+        // Route::post('/', [CategoryController::class, 'store'])->name('profile.category.store')->middleware('permission:category_store');
+        // Route::post('/{ticketSubject}', [CategoryController::class, 'update'])->name('profile.category.update')->middleware('permission:category_update');
+        // Route::delete('/{ticketSubject}', [CategoryController::class, 'destroy'])->name('profile.category.delete')->middleware('permission:category_delete');
     });
 
 });

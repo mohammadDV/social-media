@@ -23,4 +23,27 @@ class CategoryRepository implements ICategoryRepository {
                 ->get());
         });
     }
+
+    /**
+     * Get the team categories.
+     * @return AnonymousResourceCollection
+     */
+    public function getTeamCategories() :AnonymousResourceCollection
+    {
+        return cache()->remember("categories.all", now(), function () {
+            return CategoryResource::collection(Category::query()
+                ->where('status',1)
+                ->where('menu',0)
+                ->get());
+        });
+    }
+
+    /**
+     * Get all.
+     * @return AnonymousResourceCollection
+     */
+    public function index() :AnonymousResourceCollection
+    {
+        return CategoryResource::collection(Category::all());
+    }
 }

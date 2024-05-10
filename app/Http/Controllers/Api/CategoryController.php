@@ -24,4 +24,20 @@ class CategoryController extends Controller
     {
         return response()->json($this->repository->getActives(), Response::HTTP_OK);
     }
+
+    /**
+     * Get the team categories.
+     */
+    public function getTeamCategories(): JsonResponse
+    {
+        return response()->json($this->repository->getTeamCategories(), Response::HTTP_OK);
+    }
+
+    /**
+     * Get all.
+     */
+    public function index(): JsonResponse
+    {
+        return response()->json($this->repository->index(), Response::HTTP_OK);
+    }
 }

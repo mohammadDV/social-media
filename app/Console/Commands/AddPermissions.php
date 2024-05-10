@@ -83,6 +83,10 @@ class AddPermissions extends Command
             'role_show',
         ];
         $permissions = [
+            'category_show',
+            'category_store',
+            'category_update',
+            'category_delete',
             'post_show',
             'post_store',
             'post_update',
