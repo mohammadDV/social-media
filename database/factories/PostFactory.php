@@ -24,7 +24,6 @@ class PostFactory extends Factory
             'image'         => $this->faker->imageUrl(),
             'video'         => $this->faker->imageUrl(),
             'user_id'       => rand(1, 19),
-            'category_id'   => Arr::random([1,2,3,4,5,6]),
             'special'       => Arr::random([0,1]),
             'status'        => 1,
             'type'          => 0,

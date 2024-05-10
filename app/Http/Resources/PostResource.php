@@ -22,7 +22,7 @@ class PostResource extends JsonResource
             'summary' => $this->summary,
             'content' => $this->content,
             'image' => $this->image,
-            'category_id' => $this->category_id, // Assuming you have a category_id field
+            'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'view' => $this->view,
             'type' => $this->type,
             'special' => $this->special,
