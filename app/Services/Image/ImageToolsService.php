@@ -2,6 +2,8 @@
 
 namespace App\Services\Image;
 
+use Illuminate\Support\Facades\Auth;
+
 class ImageToolsService
 {
 
@@ -103,7 +105,9 @@ class ImageToolsService
     protected function provider()
     {
         //set properties
-        $this->getImageDirectory() ?? $this->setImageDirectory(date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d'));
+        $this->getImageDirectory() ?? $this->setImageDirectory(Auth::check() ?
+        'user-' . Auth::user()->id . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d'):
+        'common' . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d'));
         $this->getImageName() ?? $this->setImageName(random_int(1111111111,9999999999) . time());
         $this->getImageFormat() ?? $this->setImageFormat($this->image->extension());
 

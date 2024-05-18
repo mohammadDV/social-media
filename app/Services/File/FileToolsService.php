@@ -2,6 +2,8 @@
 
 namespace App\Services\File;
 
+use Illuminate\Support\Facades\Auth;
+
 class FileToolsService
 {
 
@@ -109,7 +111,9 @@ class FileToolsService
     protected function provider()
     {
         //set properties
-        $this->getFileDirectory() ?? $this->setFileDirectory(date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d'));
+        $this->getFileDirectory() ?? $this->setFileDirectory(Auth::check() ?
+        'user-' . Auth::user()->id . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d') :
+        'common' . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d'));
         $this->getFileName() ?? $this->setFileName(time());
         $this->setFileFormat(pathinfo($this->file->getClientOriginalName(), PATHINFO_EXTENSION));
 
