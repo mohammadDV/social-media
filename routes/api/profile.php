@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Profile\CountryController;
 use App\Http\Controllers\Api\Profile\LeagueController;
 use App\Http\Controllers\Api\Profile\NotificationController;
 use App\Http\Controllers\Api\Profile\PageController;
+use App\Http\Controllers\Api\Profile\PlayerController;
 use App\Http\Controllers\Api\Profile\PostController;
 use App\Http\Controllers\Api\Profile\ReportController;
 use App\Http\Controllers\Api\Profile\RoleController;
@@ -223,14 +224,24 @@ Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function()
         Route::delete('/{ticketSubject}', [TicketSubjectController::class, 'destroy'])->name('profile.ticket-subject.delete')->middleware('permission:subject_delete');
     });
 
-    // ticket subjects
+    // categories
     Route::prefix('categories')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('profile.category.index')->middleware('permission:category_show');
         // Route::get('/', [CategoryController::class, 'indexPaginate'])->name('profile.category.index')->middleware('permission:category_show');
-        // Route::get('/{ticketSubject}', [CategoryController::class, 'show'])->name('profile.category.show')->middleware('permission:category_show');
+        // Route::get('/{category}', [CategoryController::class, 'show'])->name('profile.category.show')->middleware('permission:category_show');
         // Route::post('/', [CategoryController::class, 'store'])->name('profile.category.store')->middleware('permission:category_store');
-        // Route::post('/{ticketSubject}', [CategoryController::class, 'update'])->name('profile.category.update')->middleware('permission:category_update');
-        // Route::delete('/{ticketSubject}', [CategoryController::class, 'destroy'])->name('profile.category.delete')->middleware('permission:category_delete');
+        // Route::post('/{category}', [CategoryController::class, 'update'])->name('profile.category.update')->middleware('permission:category_update');
+        // Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('profile.category.delete')->middleware('permission:category_delete');
+    });
+
+    // players
+    Route::prefix('players')->group(function () {
+        Route::get('/all/{sport?}/{country?}', [PlayerController::class, 'index'])->name('profile.player.all')->middleware('permission:player_show');
+        Route::get('/', [PlayerController::class, 'indexPaginate'])->name('profile.player.index')->middleware('permission:player_show');
+        Route::get('/{player}', [PlayerController::class, 'show'])->name('profile.player.show')->middleware('permission:player_show');
+        Route::post('/', [PlayerController::class, 'store'])->name('profile.player.store')->middleware('permission:player_store');
+        Route::post('/{player}', [PlayerController::class, 'update'])->name('profile.player.update')->middleware('permission:player_update');
+        Route::delete('/{player}', [PlayerController::class, 'destroy'])->name('profile.player.delete')->middleware('permission:player_delete');
     });
 
 });

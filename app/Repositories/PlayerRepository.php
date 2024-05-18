@@ -2,20 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Http\Requests\ClubRequest;
-use App\Http\Requests\ClubUpdateRequest;
+use App\Http\Requests\PlayerRequest;
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\UpdatePasswordRequest;
-use App\Models\Club;
+use App\Models\Player;
 use App\Models\Country;
-use App\Models\FavoriteClub;
 use App\Models\League;
 use App\Models\Matches;
 use App\Models\Post;
 use App\Models\Sport;
 use App\Models\Tag;
-use App\Models\User;
-use App\Repositories\Contracts\IClubRepository;
+use App\Repositories\Contracts\IPlayerRepository;
 use App\Repositories\traits\GlobalFunc;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -24,19 +21,19 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
-class ClubRepository implements IClubRepository {
+class PlayerRepository implements IPlayerRepository {
 
     use GlobalFunc;
 
     /**
-     * Get the clubs.
+     * Get the players.
      * @param Sport|null $sport
      * @param Country|null $country
      * @return Collection
      */
     public function index(Sport|null $sport, Country|null $country) :Collection
     {
-        return Club::query()
+        return Player::query()
             ->when(Auth::user()->level != 3, function ($query) {
                 return $query->where('user_id', Auth::user()->id);
             })
@@ -46,20 +43,20 @@ class ClubRepository implements IClubRepository {
             ->when(!empty($country->id), function ($query) use ($country) {
                 return $query->where('country_id', $country->id);
             })
-            ->with('sport','country')
+            ->with('sport','country', 'club')
             ->orderBy('title', 'ASC')
             ->get();
     }
 
     /**
-     * Get the clubs pagination.
+     * Get the players pagination.
      * @param TableRequest $request
      * @return LengthAwarePaginator
      */
     public function indexPaginate(TableRequest $request) :LengthAwarePaginator
     {
         $search = $request->get('query');
-        return Club::query()
+        return Player::query()
             ->when(Auth::user()->level != 3, function ($query) {
                 return $query->where('user_id', Auth::user()->id);
             })
@@ -67,76 +64,38 @@ class ClubRepository implements IClubRepository {
                 return $query->where('title', 'like', '%' . $search . '%')
                     ->orWhere('alias_title','like','%' . $search . '%');
             })
-            ->with('sport','country')
+            ->with('sport','country', 'club')
             ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
             ->paginate($request->get('rowsPerPage', 25));
     }
 
     /**
-     * Get the clubs followers pagination.
-     * @param TableRequest $request
-     * @param Club $club
-     * @return LengthAwarePaginator
-     */
-    public function getFollowers(TableRequest $request, Club $club) :LengthAwarePaginator
-    {
-        return User::query()
-            ->with('clubs')
-            ->where('status', 1)
-            ->where('level', '!=', 3)
-            ->whereHas('clubs', function ($query) use($club) {
-                $query->where('club_id', $club->id);
-            })
-            // ->whereDoesntHave('blocked', function($query) {
-            //     $query->where('user_id', Auth::user()->id);
-            // })
-            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
-            ->paginate($request->get('rowsPerPage', 20));
-    }
-
-    /**
-     * Does the user follow the club or not.
-     * @param Club $club
-     * @return array
-     * @throws \Exception
-     */
-    public function isActive(Club $club) :array
-    {
-        return [
-            'active' => FavoriteClub::query()
-                ->where('user_id', Auth::check() ? Auth::user()?->id : 0)
-                ->where('club_id', $club->id)
-                ->count() == 1
-        ];
-    }
-
-    /**
-     * Get the club info.
-     * @param Club $club
-     * @return Club
+     * Get the player info.
+     * @param Player $player
+     * @return Player
      * @throws Exception
      */
-    public function getInfo(Club $club) {
+    public function getInfo(Player $player) {
 
 
-        if ($club->status != 1) {
+        if ($player->status != 1) {
             throw new Exception;
         }
 
-        $club = Club::query()
+        $player = Player::query()
             ->with('sport')
-            ->where('id', $club->id)
+            ->where('id', $player->id)
             ->first();
 
-        $tag = trim($club->title);
+        $tag = trim($player->title);
 
-        if ($club?->sport_id != 1) {
-            $tag = trim($club?->sport?->title . ' ' . $club->title);
+        if ($player?->sport_id != 1) {
+            $tag = trim($player?->sport?->title . ' ' . $player->title);
         }
 
         $tag = Tag::firstOrCreate(['title' => $tag]);
 
-        $info = $club;
+        $info = $player;
 
         $posts = Post::query()
             ->where('status', 1)
@@ -157,23 +116,23 @@ class ClubRepository implements IClubRepository {
             ->get();
 
         $league = League::query()
-            ->with('clubs')
+            ->with('players')
             ->where('status', 1)
             ->where('type', 1)
-            ->whereHas('clubs', function ($query) use($club){
-                $query->where('id', $club->id);
+            ->whereHas('players', function ($query) use($player){
+                $query->where('id', $player->id);
             })
             ->orderBy('id', 'desc')
             ->first();
 
-        $clubs = $league?->clubs;
+        $players = $league?->players;
 
         $matches = Matches::query()
             ->with('teamHome', 'teamAway', 'step')
             ->where('status', 2)
-            ->where(function ($query) use($club) {
-                $query->where('home_id', $club->id)
-                ->orWhere('away_id', $club->id);
+            ->where(function ($query) use($player) {
+                $query->where('home_id', $player->id)
+                ->orWhere('away_id', $player->id);
             })
             ->orderBy('date', 'desc')
             ->limit(6)
@@ -184,46 +143,37 @@ class ClubRepository implements IClubRepository {
             'info' => $info,
             'posts' => $posts,
             'videos' => $videos,
-            'clubs' => $clubs,
+            'players' => $players,
             'matches' => $matches,
         ];
     }
 
     /**
-     * Get the club.
-     * @param Club $club
-     * @return Club
+     * Get the player.
+     * @param Player $player
+     * @return Player
      */
-    public function show(Club $club) :Club
+    public function show(Player $player) :Player
     {
-        return Club::query()
-                ->with('sport','country')
-                ->where('id', $club->id)
+        return Player::query()
+                ->with('sport','country', 'club')
+                ->where('id', $player->id)
                 ->first();
     }
 
     /**
-     * Store the club.
-     * @param ClubRequest $request
+     * Store the player.
+     * @param PlayerRequest $request
      * @return JsonResponse
      * @throws \Exception
      */
-    public function store(ClubRequest $request) :JsonResponse
+    public function store(PlayerRequest $request) :JsonResponse
     {
         $this->checkLevelAccess();
 
-        $club = Club::create([
-            'alias_id'      => $request->input('alias_id'),
-            'alias_title'   => $request->input('alias_title'),
-            'title'         => $request->input('title'),
-            'image'         => $request->input('image'),
-            'country_id'    => $request->input('country_id'),
-            'sport_id'      => $request->input('sport_id'),
-            'user_id'       => Auth::user()->id,
-            'status'        => $request->input('status'),
-        ]);
+        $player = Player::create($request->all());
 
-        if ($club) {
+        if ($player) {
             return response()->json([
                 'status' => 1,
                 'message' => __('site.The operation has been successfully')
@@ -234,28 +184,19 @@ class ClubRepository implements IClubRepository {
     }
 
     /**
-     * Update the club.
-     * @param ClubUpdateRequest $request
-     * @param Club $club
+     * Update the player.
+     * @param PlayerRequest $request
+     * @param Player $player
      * @return JsonResponse
      * @throws \Exception
      */
-    public function update(ClubUpdateRequest $request, Club $club) :JsonResponse
+    public function update(PlayerRequest $request, Player $player) :JsonResponse
     {
-        $this->checkLevelAccess(Auth::user()->id == $club->user_id);
+        $this->checkLevelAccess();
 
-        $club = $club->update([
-            'alias_id'      => $request->input('alias_id'),
-            'alias_title'   => $request->input('alias_title'),
-            'title'         => $request->input('title'),
-            'image'         => $request->input('image'),
-            'country_id'    => $request->input('country_id'),
-            'sport_id'      => $request->input('sport_id'),
-            'user_id'       => auth()->user()->id,
-            'status'        => $request->input('status'),
-        ]);
+        $player = $player->update($request->except('sport', 'country', 'club'));
 
-        if ($club) {
+        if ($player) {
             return response()->json([
                 'status' => 1,
                 'message' => __('site.The operation has been successfully')
@@ -266,18 +207,18 @@ class ClubRepository implements IClubRepository {
     }
 
     /**
-    * Delete the club.
+    * Delete the player.
     * @param UpdatePasswordRequest $request
-    * @param Club $club
+    * @param Player $player
     * @return JsonResponse
     */
-   public function destroy(Club $club) :JsonResponse
+   public function destroy(Player $player) :JsonResponse
    {
-        $this->checkLevelAccess(Auth::user()->id == $club->user_id);
+        $this->checkLevelAccess(Auth::user()->id == $player->user_id);
 
-        $club->delete();
+        $player->delete();
 
-        if ($club) {
+        if ($player) {
             return response()->json([
                 'status' => 1,
                 'message' => __('site.The operation has been successfully')
