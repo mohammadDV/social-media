@@ -146,6 +146,7 @@ class AddCategories extends Command
 
             $this->info(PHP_EOL.'Done' . $i);
             $x++;
+            sleep(5);
         }
 
 
