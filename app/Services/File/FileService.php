@@ -29,8 +29,8 @@ class FileService extends FileToolsService
         $result = Storage::disk('liara')->put($this->getFinalFileDirectory(), $file);
         return  str_replace('prod-data-sport.storage.iran.liara.space', 'varzeshtimes.ir', Storage::disk('liara')->url($result));
 
-        $result = $file->move(storage_path($this->getFinalFileDirectory()), $this->getFinalFileName());
-        return $result ? $this->getFileAddress() : false;
+        // $result = $file->move(storage_path($this->getFinalFileDirectory()), $this->getFinalFileName());
+        // return $result ? $this->getFileAddress() : false;
     }
 
 

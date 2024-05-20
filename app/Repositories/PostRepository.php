@@ -191,7 +191,7 @@ class PostRepository implements IPostRepository {
         $post->increment('view');
 
         $post = Post::query()
-            ->with('tags', 'category' , 'comments.user', 'comments.parents', 'advertise')
+            ->with('tags', 'categories' , 'comments.user', 'comments.parents', 'advertise')
             ->find($post->id);
         return new PostResource($post);
     }

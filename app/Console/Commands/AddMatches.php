@@ -2,13 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Category;
 use App\Models\Club;
 use App\Models\Matches;
 use App\Models\Step;
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class AddCategories extends Command
@@ -34,10 +32,19 @@ class AddCategories extends Command
      */
     public function handle()
     {
-
-
-        $leagueId = '3';
         $user = User::where('level', 3)->firstOrFail();
+
+
+        // $leagueId = '3'; // Bondesliga
+        // $seasonId = 'eq.45'; // Bondesliga
+        // $leagueId = '1'; // Premier league
+        // $seasonId = 'eq.44'; // Premier league
+        // $leagueId = '4'; // Serie A
+        // $seasonId = 'eq.38'; // Serie A
+        // $leagueId = '2'; // Laliga
+        // $seasonId = 'eq.179'; // Laliga
+        $leagueId = '5'; // Ligue 1
+        $seasonId = 'eq.6919'; // Ligue 1
 
         $x = 0;
         while ($x < 10) {
@@ -47,7 +54,7 @@ class AddCategories extends Command
             ])->get('https://football-devs.p.rapidapi.com/matches', [
                 'limit' => 50,
                 'offset' => $x * 50,
-                'season_id' => 'eq.45',
+                'season_id' => $seasonId,
                 'lang' => 'en',
             ]);
 
@@ -59,7 +66,7 @@ class AddCategories extends Command
                 foreach ($data as $item) {
 
                     if (empty($item['round']['round'])) {
-                        break;
+                        dd("Done!!!");
                     }
 
                     $round = $item['round']['round'];
@@ -73,13 +80,13 @@ class AddCategories extends Command
                     ];
 
                     $step = Step::updateOrCreate([
-                        'title' => $leagueId . '-' . $round,
+                        'title' => 'هفته' . ' ' . $round,
+                        "league_id" => $leagueId,
                     ], [
                         "current"   => 0,
                         "priority"  => 1,
                         "status"  => 1,
                         "user_id"   => $user->id,
-                        "league_id" => $leagueId,
                     ]);
 
                     if (empty($step->id)) {
@@ -131,7 +138,6 @@ class AddCategories extends Command
                         "date"      => $result['date'],
                         "priority"  => $result['priority'],
                         "user_id"   => $user->id,
-                        "step_id"   => $step->id,
                     ]);
 
                     if ($add) {
