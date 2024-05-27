@@ -36,6 +36,6 @@ return [
 
     'default-current-index-image' => 'medium',
 
-    'default-profile-image' => 'https://varzeshtimes.ir/static/profile.png',
-    'default-background-image' => 'https://varzeshtimes.ir/static/background.png',
+    'default-profile-image' => 'https://cdn.varzeshpod.com/static/profile.png',
+    'default-background-image' => 'https://cdn.varzeshpod.com/static/background.png',
 ];

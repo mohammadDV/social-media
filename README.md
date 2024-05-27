@@ -9,7 +9,7 @@ With a mission to celebrate sportsmanship and create a community of like-minded 
 
 Stay tuned for the latest updates, match highlights, and expert commentaries as the Dream Team takes you on a sports adventure like no other. Join the conversation, share your thoughts, and be a part of the growing community of sports aficionados.
 
-For more information and to stay updated on the latest sports news, visit varzeshtimes.com.
+For more information and to stay updated on the latest sports news, visit varzeshpod.com.
 
 ## How to run
 1. rename `.env.example` to `.env`

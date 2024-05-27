@@ -31,8 +31,8 @@ class ImageService extends ImageToolsService
             // if(env('APP_ENV') == "production") {
                 // $result = Image::make($image->getRealPath())->encode($this->getImageFormat());
                 $result = Storage::disk('liara')->put($this->getFinalImageDirectory(), $image);
-            // return  $S3Path = str_replace('https://storage.iran.liara.space', 'https://varzeshtimes.ir/' , Storage::disk('liara')->url($result));
-        return  str_replace('prod-data-sport.storage.iran.liara.space', 'varzeshtimes.ir', Storage::disk('liara')->url($result));
+            // return  $S3Path = str_replace('https://storage.iran.liara.space', 'https://cdn.varzeshpod.com/' , Storage::disk('liara')->url($result));
+        return  str_replace('prod-data-sport.storage.iran.liara.space', 'cdn.varzeshpod.com', Storage::disk('liara')->url($result));
             // }else{
             //     $result = Image::make($image->getRealPath())->save(public_path($this->getImageAddress()), null, $this->getImageFormat());
             // }

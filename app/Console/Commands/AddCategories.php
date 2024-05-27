@@ -70,7 +70,7 @@ class AddCategories extends Command
                         'status' => 1,
                         'alias_title' => $country[1],
                         'slug' => strtolower(str_replace(' ', '-', $country[1])),
-                        'image' => 'https://varzeshtimes.ir/country/' . $id . '.png',
+                        'image' => 'https://cdn.varzeshpod.com/country/' . $id . '.png',
                         'created_at' => Carbon::now()
                     ]);
                     $id++;
@@ -94,7 +94,7 @@ class AddCategories extends Command
                         'status' => 1,
                         'alias_title' => $country[1],
                         'slug' => strtolower(str_replace(' ', '-', $country[1])),
-                        'image' => 'https://varzeshtimes.ir/clubs/' . $id . '.png',
+                        'image' => 'https://cdn.varzeshpod.com/clubs/' . $id . '.png',
                         'created_at' => Carbon::now()
                     ]);
                     $id++;
