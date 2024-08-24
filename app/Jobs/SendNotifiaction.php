@@ -41,7 +41,7 @@ class SendNotifiaction implements ShouldQueue
 
         try {
             // Chunk the users and process them
-            User::chunk($chunkSize, function ($users) {
+            User::chunk($this->chunkSize, function ($users) {
                 $dataToInsert = [];
 
                 // Prepare data for bulk insertion
@@ -54,7 +54,7 @@ class SendNotifiaction implements ShouldQueue
                 }
 
                 // Insert data in bulk using Eloquent model
-                YourModel::insert($dataToInsert);
+                // YourModel::insert($dataToInsert);
             });
 
             // Commit the transaction if everything went fine
