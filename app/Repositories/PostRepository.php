@@ -142,6 +142,7 @@ class PostRepository implements IPostRepository {
     {
         return Post::query()
                 ->where('status',1)
+                ->where('special',1)
                 ->whereHas('categories', function ($query) use ($categoryIds) {
                     $query->whereIn('id', $categoryIds);
                 })
