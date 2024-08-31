@@ -364,6 +364,7 @@ class PostRepository implements IPostRepository {
                 'video_id'    => $request->input('type') == 1 ? $request->input('video_id') : null,
                 'type'        => $request->input('type',0),
                 'status'      => $request->input('status'),
+                'special'     => $request->input('special',0),
             ]);
 
             $post->categories()->sync($request->input('categories'));
