@@ -126,9 +126,9 @@ class PostRepository implements IPostRepository {
     private function getSpecialVideos() : Collection
     {
         return Post::query()
-                ->where('status',1)
-                ->where('type',1)
-                ->where('special',1)
+                ->where('status', 1)
+                ->where('type', 1)
+                ->where('special', 1)
                 ->latest()
                 ->take($this->spVideoCount)
                 ->get();
@@ -141,8 +141,9 @@ class PostRepository implements IPostRepository {
     private function getSpecialPosts(array $categoryIds) : Collection
     {
         return Post::query()
-                ->where('status',1)
-                ->where('special',1)
+                ->where('status', 1)
+                ->where('special', 1)
+                ->where('type', 0)
                 ->whereHas('categories', function ($query) use ($categoryIds) {
                     $query->whereIn('id', $categoryIds);
                 })
