@@ -191,6 +191,7 @@ class PostRepository implements IPostRepository {
     public function getAllPerUser(User $user) :LengthAwarePaginator
     {
         return Post::query()
+            ->with('user')
             ->where('user_id', $user->id)
             ->orderBy('id', 'DESC')
             ->paginate(10);
