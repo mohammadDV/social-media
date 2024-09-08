@@ -7,6 +7,7 @@ use App\Http\Requests\PostUpdateRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -38,6 +39,13 @@ interface IPostRepository  {
      * @return PostResource
      */
     public function getPostInfo(Post $post) :PostResource;
+
+    /**
+     * Get the posts for the user.
+     * @param ?User $user
+     * @return LengthAwarePaginator
+     */
+    public function getAllPerUser(User $user) :LengthAwarePaginator;
 
     /**
      * Get all of post per category.

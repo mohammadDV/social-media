@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
         return [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'nickname' => ['required', 'string', 'min:3', 'max:255', 'unique:users,nickname', 'regex:/^[a-zA-Z_]+$/'],
+            'nickname' => ['required', 'string', 'min:3', 'max:255', 'unique:users,nickname'],
             'email' => ['required', 'string', 'email', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'regex:/^[a-zA-Z0-9_!@#$%^&*-]+$/'],
             'token' => [new Recaptcha],

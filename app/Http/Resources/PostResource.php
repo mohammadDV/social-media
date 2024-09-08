@@ -28,6 +28,13 @@ class PostResource extends JsonResource
             'special' => $this->special,
             'video' => $this->video,
             'advertise' => $this->whenLoaded('advertise'),
+            'user' => $this->whenLoaded('user', function() {
+                return [
+                    'id' => $this->user->id,
+                    'nickname' => $this->user->nickname,
+                    'profile_photo_path' => $this->user->profile_photo_path,
+                ];
+            }),
             'created_at' => $this->created_at,
             'comments' => CommentResource::collection($this->comments),
             'tags' => TagResource::collection($this->whenLoaded('tags')),

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use App\Repositories\Contracts\IPostRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,6 +27,16 @@ class PostController extends Controller
     public function index(): JsonResponse
     {
         return response()->json($this->repository->index(range(1,7), 200), Response::HTTP_OK);
+    }
+
+    /**
+     * Get all of statuses
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function getAllPerUser(User $user): JsonResponse
+    {
+        return response()->json($this->repository->getAllPerUser($user), Response::HTTP_OK);
     }
 
     /**
