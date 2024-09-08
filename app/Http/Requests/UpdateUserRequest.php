@@ -25,7 +25,7 @@ class UpdateUserRequest extends BaseRequest
             'first_name' => ['required','string','min:2','max:255'],
             'last_name' => ['required','string','max:255'],
             'role_id' => !empty($this->get('role_id')) ? ['required', 'exists:roles,id', new ValidateRole]  : 'sometimes',
-            'nickname' => ['required', 'string', 'min:3', 'max:255', 'regex:/^[a-zA-Z0-9_!@#$%^&*-]+$/'],
+            'nickname' => ['required', 'string', 'min:3', 'max:255'],
             'biography' => !empty($this->get('biography')) ? ['required', 'string', 'min:5', 'max:255'] : 'sometimes',
             'profile_photo_path' => ['required', 'string'],
             'bg_photo_path' => ['required', 'string'],

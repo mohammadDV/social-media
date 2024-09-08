@@ -1,23 +1,23 @@
-﻿1;Arsenal F.C;آرسنال;64;ac0317
-2;Aston Villa F.C;آستون ویلا;64;781c33
-3;AFC Bournemouth;بورنموث;64;120d0e
-4;Brentford F.C;برنتفورد;64;ac1014
-5;Brighton & Hove Albion F.C;برایتون;64;0053c7
-6;Burnley F.C;برنلی;64;5f0a30
-7;Chelsea F.C;چلسی;64;293f95
-8;Crystal Palace F.C;کریستال پالاس;64;0447a0
-9;Everton F.C;اورتون;64;17477d
-10;Fulham F.C;فولهام;64;e6e5ea
-11;Liverpool F.C;لیورپول;64;b11926
-12;Luton Town F.C;لوتون تاون;64;ee5833
-13;Manchester City F.C;منچستر سیتی;64;9bc1e2
-14;Manchester United F.C;منچستر یونایتد;64;da102e
-15;Newcastle United F.C;نیوکاسل;64;3a393f
-16;Nottingham Forest F.C;ناتینگهام فارست;64;e2393e
-17;Sheffield United F.C;شفیلد یونایتد;64;f93e43
-18;Tottenham Hotspur F.C;تاتنهام ;64;f8f8fc
-19;West Ham United F.C;وست هم;64;701a2b
-20;Wolverhampton Wanderers F.C;ولورهمپتون;64;f6c135
+﻿1;Arsenal ;آرسنال;64;ac0317;
+2;Aston Villa ;آستون ویلا;64;781c33;
+3;AFC Bournemouth;بورنموث;64;120d0e;
+4;Brentford ;برنتفورد;64;ac1014;
+5;Brighton & Hove Albion ;برایتون;64;0053c7;
+6;Burnley;برنلی;64;5f0a30;
+7;Chelsea ;چلسی;64;293f95;
+8;Crystal Palace ;کریستال پالاس;64;0447a0;
+9;Everton ;اورتون;64;17477d;
+10;Fulham ;فولهام;64;e6e5ea;
+11;Liverpool ;لیورپول;64;b11926;
+12;Luton Town;لوتون تاون;64;ee5833;
+13;Manchester City ;منچستر سیتی;64;9bc1e2;
+14;Manchester United ;منچستر یونایتد;64;da102e;
+15;Newcastle United ;نیوکاسل;64;3a393f;
+16;Nottingham Forest ;ناتینگهام فارست;64;e2393e;
+17;Sheffield United;شفیلد یونایتد;64;f93e43;
+18;Tottenham Hotspur ;تاتنهام ;64;f8f8fc;
+19;West Ham United ;وست هم;64;701a2b;
+20;Wolverhampton Wanderers;ولورهمپتون;64;f6c135;
 21;Bayer 04 Leverkusen;بایرلورکوزن;76;
 22;FC Bayern München;بایرن مونیخ;76;
 23;VfB Stuttgart;اشتوتگارت;76;
@@ -28,15 +28,15 @@
 28;FC Augsburg;آگسبورگ;76;
 29;TSG Hoffenheim;هوفنهایم;76;
 30;SV Werder Bremen;وردربرمن;76;
-31;FC Heidenheim;هایدنهایم;76;
+31;1. FC Heidenheim 1846;هایدنهایم;76;
 32;VfL Wolfsburg;وولفسبورگ;76;
 33;Borussia Mönchengladbach;بورسیا مونشن گلادباخ;76;
-34;VfL Bochum;بوخوم;76;
-35;FC Union Berlin;یونیون برلین;76;
-36;FSV Mainz;ماینتس;76;
+34;VfL Bochum 1848;بوخوم;76;
+35;1. FC Union Berlin;یونیون برلین;76;
+36;1. FSV Mainz 05;ماینتس;76;
 37;FC Köln;کلن;76;
 38;SV Darmstadt;دارمشتات;76;
-39;Girona FC;ژیرونا;175;
+39;Girona ;ژیرونا;175;
 40;FC Barcelona;بارسلونا;175;
 41;Atlético Madrid;اتلتیکو مادرید;175;
 42;Real Madrid;رئال مادرید;175;
@@ -53,14 +53,14 @@
 53;Sevilla FC;سویا;175;
 54;RCD Mallorca;مایورکا;175;
 55;RC Celta;سلتاویگو;175;
-56;UD Almería;آلمریا;175;
+56;UD Almeria;آلمریا;175;
 57;Granada CF;گرانادا;175;
-58;Cádiz CF;کادیز;175;
+58;Cadiz CF;کادیز;175;
 59;Inter;اینتر;96;
 60;AC Milan;میلان;96;
 61;Juventus;یوونتوس;96;
 62;Bologna;بلونیا;96;
-63;AS Roma;رم;96;
+63;AS Roma;آ اس رم;96;
 64;Atalanta;آتالانتا;96;
 65;SS Lazio;لاتزیو;96;
 66;Napoli;ناپولی;96;
@@ -75,7 +75,7 @@
 75;Empoli;امپولی;96;
 76;Udinese;اودینزه;96;
 77;Sassuolo;ساسولو;96;
-78;Salernitana;سالرنتینا;96;
+78;Salernitana;سالرنیتانا;96;
 79;Paris Saint-Germain;پاری سن ژرمن;73;
 80;AS Monaco;موناکو;73;
 81;Stade Brestois;برست;73;
@@ -94,3 +94,69 @@
 94;FC Metz;متز;73;
 95;FC Lorient;لوریان;73;
 96;Clermont Foot;کلرمون;73;
+97;Persepolis;پرسپولیس;93;
+98;Esteghlal FC;استقلال;93;
+99;Sepahan;سپاهان;93;
+100;Foolad FC;فولاد خوزستان;93;
+101;Tractor;تراکتور;93;
+102;Gol Gohar;گل گهرسیرجان;93;
+103;Aluminium Arak;آلومینیوم اراک;93;
+104;ZOB Ahan;ذوب آهن ;93;
+105;Esteghlal Khuzestan;استقلال خوزستان;93;
+106;Mes Rafsanjan;مس رفسنجان;93;
+107;Chadormalu;چادرملو;93;
+108;Havadar;هوادار;93;
+109;Kheybar Khorramabad;خیبر خرم آباد;93;
+110;Nassaji Mazandaran;نساجی مازندران;93;
+111;Shams Azar Qazvin;شمس آذر قزوین;93;
+112;Malavan;ملوان;93;
+113;Leicester City;لسترسیتی;64;
+114;Ipswich;ایپسویچ;64;
+115;Southampton;ساوتهمپتون;64;
+116;St Pauli;سن پائولی;76;
+117;Holstein Kiel;هولشتاین کیل;76;
+118;Leganes;لگانس;175;
+119;Valladolid;وایادولید;175;
+120;Espanyol;اسپانیول;175;
+121;Parma;پارما;96;
+122;Como;کومو;96;
+123;Venezia;ونتزیا;96;
+124;Auxerre ;اوسر;73;
+125;Angers;آنژه;73;
+126;St Etienne;سن اتین;73;
+127;PSV Eindhoven;آیندهوون;135;
+128;Feyenoord;فاینورد;135;
+129;Benfica;بنفیکا;152;
+130;Sporting CP;اسپورتینگ لیسبون;152;
+131;Shakhtar Donetsk;شاختار دونتسک;199;
+132;Celtic;سلتیک;163;
+133;Club Brugge ;کلوب بروژ;21;
+134;Dinamo Zagreb;دینامو زاگرب;52;
+135;Young Boys;یانگ بویز;183;
+136;Red Bull Salzburg;سالزبورگ;14;
+137;Sparta Prague;اسپارتاپراگ;56;
+138;Red Star Belgrade;ستاره سرخ بلگراد;165;
+139;Slovan Bratislava;اسلوان براتیسلاو ;169;
+140;Sturm Graz;اشتورم گراتس;14;
+141;Al Hilal;الهلال;162;
+142;Al Nassr;النصر;162;
+143;Al Ahli;الاهلی;162;
+144;Al Sadd;السد;154;
+145;Al Rayyan;الریان;154;
+146;Al Gharafa;الغرافه;154;
+147;Al Ain;العین;200;
+148;Al Wasl;الوصل;200;
+149;Pakhtakor;پاختاکور;204;
+150;Al Shorta;الشرطه;94;
+151;Ulsan Hyundai FC;اولسان هیوندای;103;
+152;Pohang Steelers;پوهانگ استیلرز;103;
+153;Gwangju;گوانگجو;103;
+154;Vissel Kobe;ویسل کوبه;98;
+155;Yokohama F. Marinos;یوکوهاما مارینوس;98;
+156;Kawasaki Frontale;کاوازاکی فرونتال;98;
+157;Shanghai Port;شانگهای پورت;43;
+158;Shandong Taishan;شاندونگ;43;
+159;Shanghai Shenhua;شانگهای شنهوا;43;
+160;Buriram United;بوریرام یونایتد;188;
+161;Central Coast Mariners;سنترال کوست مارینرز;13;
+162;Johor Darul Ta'zim;جوهور دارالتعظیم;119;

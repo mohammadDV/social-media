@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\Social\BlockController;
 use App\Http\Controllers\Api\Social\TicketController;
 use App\Http\Controllers\Api\Social\CommentController;
@@ -23,6 +24,7 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function() {
     Route::post('/upload-file', [FileController::class, 'uploadFile'])->name('site.upload-file');
     Route::get('/statuses/{user?}', [StatusController::class, 'index'])->name('site.statuses.index');
     Route::get('/status/all/{user}', [StatusController::class, 'getAllPerUser'])->name('site.statuses.all-per-user');
+    Route::get('/post/all/{user}', [PostController::class, 'getAllPerUser'])->name('site.statuses.all-per-user');
     Route::get('/status/favorite/{user}', [StatusController::class, 'getFavorite'])->name('site.statuses.all-per-user');
     Route::post('/status/favorite/{status}', [StatusController::class, 'addFavorite'])->name('site.statuses.all-per-user');
     Route::get('/status/preview/{status}', [StatusController::class, 'getInfo'])->name('site.statuses.info');

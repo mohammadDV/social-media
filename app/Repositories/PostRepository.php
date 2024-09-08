@@ -8,6 +8,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\User;
 use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\traits\GlobalFunc;
 use Illuminate\Database\Eloquent\Collection;
@@ -182,6 +183,19 @@ class PostRepository implements IPostRepository {
 
     }
 
+    /**
+     * Get the posts for the user.
+     * @param ?User $user
+     * @return LengthAwarePaginator
+     */
+    public function getAllPerUser(User $user) :LengthAwarePaginator
+    {
+        return Post::query()
+            ->where('user_id', $user->id)
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+    }
+
      /**
      * Get the post info.
      * @param Post $post
@@ -193,7 +207,7 @@ class PostRepository implements IPostRepository {
         $post->increment('view');
 
         $post = Post::query()
-            ->with('tags', 'categories' , 'comments.user', 'comments.parents', 'advertise')
+            ->with('user', 'tags', 'categories' , 'comments.user', 'comments.parents', 'advertise')
             ->find($post->id);
         return new PostResource($post);
     }
