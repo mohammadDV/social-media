@@ -13,17 +13,26 @@ class MatchService {
 
     public function getSteps(int $league_id) : array {
 
-        $steps          = Step::where('league_id', $league_id)->orderBy('priority','ASC')->get();
+        $steps = cache()->remember("steps.league." . $league_id, now()->addMinutes(2),
+        function () use ($league_id) {
+            return Step::query()
+                ->where('league_id', $league_id)
+                ->orderBy('priority','ASC')->get();
+        });
+
         $current        = [];
         $alternative    = [];
         $result         = [];
         foreach($steps ?? [] as $key => $item) {
+
             $result[$key]['id']         = $item->id;
             $result[$key]['title']      = $item->title;
             $result[$key]['priority']   = $item->priority;
+
             if($item->current === 1){
                 $current = $item;
             }
+
             $alternative = $item;
         }
 
@@ -34,18 +43,41 @@ class MatchService {
     }
 
     public function getCurrentStep(int $league_id) : object {
-        $current =  Step::where(['league_id', $league_id],['current',1])->first();
+
+        $current = cache()->remember("steps.league.current." . $league_id, now()->addMinutes(2),
+            function () use ($league_id) {
+                return Step::where(['league_id', $league_id],['current',1])->first();
+            });
+
         if(empty($current->id)){
-            $current = Step::where(['league_id', $league_id])->orderBy('priority','ASC')->first();
+            $current = cache()->remember("steps.league.current.priority." . $league_id, now()->addMinutes(2),
+                function () use ($league_id) {
+                    return Step::where(['league_id', $league_id])->orderBy('priority','ASC')->first();
+                });
         }
+
         return $current;
     }
 
     public function getMatches(int $step_id) : array {
         $result = [];
 
-        $mateches = Matches::where([['step_id',$step_id]])->take(100)->orderBy('priority','ASC')->get();
-        $clubs    = Club::whereIn('id',array_merge(array_column($mateches->toArray(),'home_id'),array_column($mateches->toArray(),'away_id')))->get()->keyBy('id');
+        $mateches = cache()->remember("matches.first" . $step_id, now()->addMinutes(2),
+            function () use ($step_id) {
+                return Matches::query()
+                    ->where([['step_id',$step_id]])
+                    ->take(100)
+                    ->orderBy('priority','ASC')
+                    ->get();
+            });
+
+        $clubs = cache()->remember("matches.clubs" . $step_id, now()->addMinutes(2),
+            function () use ($mateches) {
+                return Club::query()
+                    ->whereIn('id',array_merge(array_column($mateches->toArray(),'home_id'),array_column($mateches->toArray(),'away_id')))
+                    ->get()
+                    ->keyBy('id');
+            });
 
         foreach($mateches ?? [] as $key => $item) {
             $result[$key]['id']         = $item->id;
@@ -69,8 +101,15 @@ class MatchService {
     public function getTournamentClubs(int $step_id) : array {
         $result = [];
 
-        $clubStep   = ClubStep::where('step_id',$step_id)->take(100)->orderBy('points','DESC')->get();
-        $clubs      = Club::whereIn('id',array_merge(array_column($clubStep->toArray(),'club_id')))->get()->keyBy('id');
+        $clubStep   = cache()->remember("Tournament.steps." . $step_id, now()->addMinutes(2),
+            function () use ($step_id) {
+                return ClubStep::where('step_id',$step_id)->take(100)->orderBy('points','DESC')->get();
+            });
+
+        $clubs = cache()->remember("tournament.club." . $step_id, now()->addMinutes(2),
+            function () use ($clubStep) {
+                Club::whereIn('id',array_merge(array_column($clubStep->toArray(),'club_id')))->get()->keyBy('id');
+            });
 
         foreach($clubStep ?? [] as $key => $item) {
             $result[$key]['id']             = $key+1;
@@ -80,14 +119,22 @@ class MatchService {
             $result[$key]['title']          = $clubs[$item->club_id]->title;
             $result[$key]['image']          = $clubs[$item->club_id]->image;
         }
+
         return $result;
     }
 
     public function getClubsPerTournament(int $league_id) : array {
         $result = [];
 
-        $clubLeague = ClubLeague::where('league_id',$league_id)->take(100)->orderBy('points','DESC')->get();
-        $clubs      = Club::whereIn('id',array_merge(array_column($clubLeague->toArray(),'club_id')))->get()->keyBy('id');
+        $clubLeague = cache()->remember("per.tournament.league." . $league_id, now()->addMinutes(2),
+            function () use ($league_id) {
+                return ClubLeague::where('league_id',$league_id)->take(100)->orderBy('points','DESC')->get();
+            });
+
+        $clubs = cache()->remember("per.tournament.club." . $league_id, now()->addMinutes(2),
+            function () use ($clubLeague) {
+                return Club::whereIn('id',array_merge(array_column($clubLeague->toArray(),'club_id')))->get()->keyBy('id');
+            });
 
         foreach($clubLeague ?? [] as $key => $item) {
             $result[$key]['id']             = $key+1;

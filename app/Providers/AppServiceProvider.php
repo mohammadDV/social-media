@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use App\Libraries\OpenAI\Client as OpenAiClient;
+// use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // DB::listen(function ($query) {
+            // You can log queries here or increase a counter
+        //     Log::info("Query executed: " . $query->sql);
+        // });
         App::setlocale('fa');
     }
 }

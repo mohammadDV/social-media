@@ -15,11 +15,29 @@ class CategoryRepository implements ICategoryRepository {
      */
     public function getActives() :AnonymousResourceCollection
     {
-        // ->addMinutes('1'),
-        return cache()->remember("categories.all", now(), function () {
+        return cache()->remember("categories.all.actives", now()->addMinutes(10), function () {
             return CategoryResource::collection(Category::query()
                 ->where('status',1)
                 ->where('menu',1)
+                ->get());
+        });
+    }
+
+
+    /**
+     * Get the popular categories.
+     * @return AnonymousResourceCollection
+     */
+    public function popularCategories() :AnonymousResourceCollection
+    {
+        return cache()->remember("categories.pupular", now()->addMinutes(10), function () {
+            return CategoryResource::collection(Category::query()
+                ->withCount('posts')
+                ->where('status',1)
+                ->where('menu', 0)
+                ->take(50)
+                ->orderby('posts_count', 'DESC')
+                ->orderby('alias_title', 'DESC')
                 ->get());
         });
     }
@@ -30,7 +48,7 @@ class CategoryRepository implements ICategoryRepository {
      */
     public function getTeamCategories() :AnonymousResourceCollection
     {
-        return cache()->remember("categories.all", now(), function () {
+        return cache()->remember("categories.all.team", now()->addMinutes(2), function () {
             return CategoryResource::collection(Category::query()
                 ->where('status',1)
                 ->where('menu',0)

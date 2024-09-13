@@ -17,7 +17,7 @@ class TagRepository implements ITagRepository {
      */
     public function getRandom() :Collection
     {
-        return cache()->remember("tags.random", now(), function () {
+        return cache()->remember("tags.random", now()->addMinutes(10), function () {
             return Tag::query()
                 ->inRandomOrder()
                 ->limit(15)
@@ -32,7 +32,6 @@ class TagRepository implements ITagRepository {
      */
     public function index(Tag $tag) :AnonymousResourceCollection
     {
-        // ->addMinutes('1'),
         $posts = Post::query()
             ->with('tags')
             ->where('status', '=', 1)

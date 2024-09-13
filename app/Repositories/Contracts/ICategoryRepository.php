@@ -16,6 +16,12 @@ interface ICategoryRepository  {
     public function getActives() :AnonymousResourceCollection;
 
     /**
+     * Get the poular categories.
+     * @return AnonymousResourceCollection
+     */
+    public function popularCategories() :AnonymousResourceCollection;
+
+    /**
      * Get the team categories.
      * @return AnonymousResourceCollection
      */

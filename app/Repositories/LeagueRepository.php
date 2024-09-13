@@ -6,12 +6,10 @@ use App\Http\Requests\LeagueRequest;
 use App\Http\Requests\LeagueUpdateRequest;
 use App\Http\Requests\StoreClubRequest;
 use App\Http\Requests\TableRequest;
-use App\Services\Image\ImageService;
 use App\Services\MatchService;
 use App\Models\League;
 use App\Repositories\Contracts\ILeagueRepository;
 use App\Repositories\traits\GlobalFunc;
-use App\Services\File\FileService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -28,22 +26,20 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
      */
     public function index() :array
     {
-        // ->addMinutes('1'),
-
         $matchTables = config('match');
         $result     = [];
 
         foreach ($matchTables as $matchTable) {
 
-            $leagueRows = cache()->remember("league.all." . $matchTable['id'], now(),
-            function () use($matchTable) {
-            return League::Query()
-                ->with('sport')
-                ->where('sport_id', $matchTable['sport_id'])
-                ->where('table_id', $matchTable['id'])
-                ->where('status',1)
-                ->orderBy('priority','ASC')
-                ->get();
+            $leagueRows = cache()->remember("league.all." . $matchTable['id'], now()->addMinutes(5),
+                function () use($matchTable) {
+                    return League::Query()
+                        ->with('sport')
+                        ->where('sport_id', $matchTable['sport_id'])
+                        ->where('table_id', $matchTable['id'])
+                        ->where('status',1)
+                        ->orderBy('priority','ASC')
+                        ->get();
             });
 
             $data       = [];
@@ -65,8 +61,6 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
                     "matches"   => $leagueInfo['matches'] ?? [],
                     "clubs"     => $leagueInfo['clubs'],
                 ];
-
-
             }
         }
 
@@ -89,6 +83,7 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
                 'sport_id' => $item['sport_id'],
             ];
         }
+
         return $result;
     }
 
@@ -100,13 +95,13 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     public function getLeagueInfo(League $league) :array
     {
 
-        $data['steps']       = $this->getSteps($league->id ?? 0);
+        $data['steps'] = $this->getSteps($league->id ?? 0);
 
-        $data['matches']    = $this->getMatches($data['steps']['current']->id ?? 0);
+        $data['matches'] = $this->getMatches($data['steps']['current']->id ?? 0);
         if($league->type == 1){
-            $data['clubs']      = $this->getClubs($league);
+            $data['clubs'] = $this->getClubs($league);
         }else{
-            $data['clubs']      = $this->getTournamentClubs($data['steps']['current']->id ?? 0);
+            $data['clubs'] = $this->getTournamentClubs($data['steps']['current']->id ?? 0);
         }
 
         return $data;
@@ -299,7 +294,10 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     */
     public function getClubs(League $league) :Collection
     {
-        return League::find($league->id)->clubs;
+        return cache()->remember("clubs.league.second" . $league->id, now()->addMinutes(2),
+            function () use ($league) {
+                return League::find($league->id)->clubs;
+            });
     }
 
     /**
@@ -309,7 +307,10 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     */
     public function getAllSteps(League $league) :Collection
     {
-        return League::find($league->id)->steps;
+        return cache()->remember("steps.all.league" . $league->id, now()->addMinutes(2),
+            function () use ($league) {
+                return League::find($league->id)->steps;
+            });
     }
 
     /**
