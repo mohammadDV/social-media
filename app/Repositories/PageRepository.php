@@ -8,8 +8,6 @@ use App\Http\Requests\TableRequest;
 use App\Models\Page;
 use App\Repositories\Contracts\IPageRepository;
 use App\Repositories\traits\GlobalFunc;
-use App\Services\File\FileService;
-use App\Services\Image\ImageService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -19,15 +17,6 @@ use Illuminate\Support\Facades\Auth;
 class PageRepository implements IPageRepository {
 
     use GlobalFunc;
-
-    /**
-     * @param ImageService $imageService
-     * @param FileService $fileService
-     */
-    public function __construct(protected ImageService $imageService, protected FileService $fileService)
-    {
-
-    }
 
     /**
      * Get the page pagination.
@@ -56,10 +45,12 @@ class PageRepository implements IPageRepository {
      */
     public function getActivePages() :Collection
     {
-        return Page::query()
-            ->where('status', 1)
-            ->orderBy('priority', 'asc')
-            ->get();
+        return cache()->remember("pages.active", now()->addMinutes(10), function () {
+            return Page::query()
+                ->where('status', 1)
+                ->orderBy('priority', 'asc')
+                ->get();
+        });
     }
 
     /**
@@ -69,11 +60,13 @@ class PageRepository implements IPageRepository {
      */
     public function getActivePage(string $slug) :Page|null
     {
-        return Page::query()
-            ->where('status', 1)
-            ->where('slug', trim($slug))
-            ->orderBy('priority', 'asc')
-            ->first();
+        return cache()->remember("page.active", now()->addMinutes(5), function () use ($slug) {
+            return Page::query()
+                ->where('status', 1)
+                ->where('slug', trim($slug))
+                ->orderBy('priority', 'asc')
+                ->first();
+        });
     }
 
     /**

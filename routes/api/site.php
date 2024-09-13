@@ -21,6 +21,7 @@ Route::get('/step/{step}', [LeagueController::class, 'getStepInfo'])->name('site
 Route::get('/lives', [LiveController::class, 'index'])->name('site.lives.index');
 Route::get('/advertise', [AdvertiseController::class, 'index'])->name('site.advertise.index');
 Route::get('/active-categories', [CategoryController::class, 'getActives'])->name('site.active-categories');
+Route::get('/popular-categories', [CategoryController::class, 'popularCategories'])->name('site.popular-categories');
 Route::get('/team-categories', [CategoryController::class, 'getTeamCategories'])->name('site.team-categories');
 Route::get('/tags-random', [TagController::class, 'getRandom'])->name('site.tags-random');
 Route::get('/tag/{tag}', [TagController::class, 'index'])->name('site.tags-random');

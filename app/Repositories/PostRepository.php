@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
+use App\Repositories\Contracts\ICategoryRepository;
 use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\traits\GlobalFunc;
 use Illuminate\Database\Eloquent\Collection;
@@ -47,65 +48,58 @@ class PostRepository implements IPostRepository {
 
     /**
      * Get the posts.
-     * @param $categories
-     * @param $count
+     * @param array $categories
+     * @param int $count
      * @return array
      */
     public function index(array $categoryIds, int $count) :array
     {
-        // ->addMinutes('1'),
-        $posts = cache()->remember("post.all." . implode(".",$categoryIds) . "." . $count, now(),
-            function () use($categoryIds, $count) {
+        $data['latest'] = $this->getLatestPosts($count);
+        $data['categories'] = app(ICategoryRepository::class)->popularCategories();
+        $data['challenged'] = $this->getChallenged();
+        $data['popular'] = $this->getPopular();
+        $data['specialPosts'] = $this->getSpecialPosts();
+        $data['specialVideos'] = $this->getSpecialVideos();
+        $data['posts'] = $this->getCategorizedPosts($categoryIds);
+
+        return $data;
+
+    }
+
+
+    /**
+     * Get special videos
+     *
+     * @param int $count
+     */
+    private function getLatestPosts(int $count)
+    {
+        return cache()->remember("posts.latest." . $count, now()->addMinutes(2),
+            function () use($count) {
                 return Post::query()
-                ->with('categories')
-                ->where('status', 1)
-                ->whereHas('categories', function ($query) use ($categoryIds) {
-                    $query->whereIn('id', $categoryIds);
-                })
-                ->latest()->take($count)->get();
+                    ->with('categories')
+                    ->where('status', 1)
+                    ->whereHas('categories', function ($query) {
+                        $query->whereNotIn('id', [7]);
+                    })
+                    ->latest()
+                    ->take($count)
+                    ->get();
             }
         );
+    }
 
-        $data['posts']          = [];
-        $data['videos']         = [];
-        $data['specialVideos']  = [];
-        $data['specialPosts']   = [];
-        $data['latest']         = [];
-        $data['challenged']     = $this->getChallenged();
-        $data['popular']        = $this->getPopular();
-        foreach($posts ?? [] as $post){
-            count($data['latest'])  >= $this->latestCount ?: $data['latest'][] =  $post;
-            if($post->type === 1) {
-                if($post->special === 1 && count($data['specialVideos']) < $this->spVideoCount) { $data['specialVideos'][] = $post; }
-                $data['videos'][] = $post;
-            } else {
-                if($post->special === 1 && count($data['specialPosts']) < $this->spPostCount) {
-                    $data['specialPosts'][] = $post;
-                }
+    /**
+     * Get special videos
+     */
+    private function getCategorizedPosts($categoryIds)
+    {
+        $data = [];
 
-                foreach ($post->categories ?? [] as $category) {
-
-                    if (in_array($category->id, $categoryIds) ) {
-                        $data['posts'][$category->id][] = $post;
-                    }
-                }
-
-            }
-        }
-
-        // Get special posts
-        if (count($data['specialPosts']) < $this->spPostCount) {
-            $data['specialPosts'] = $this->getSpecialPosts($categoryIds);
-        }
-
-        // Get special videos
-        if (count($data['specialVideos']) < $this->spVideoCount) {
-            $data['specialVideos'] = $this->getSpecialVideos();
-        }
-
-        foreach ($categoryIds as $categoryId) {
-            if (empty($data['posts'][$categoryId]) || count($data['posts'][$categoryId]) < $this->categoryCount) {
-                $data['posts'][$categoryId] = Post::query()
+        foreach ($categoryIds ?? [] as $categoryId) {
+            $data[$categoryId] = cache()->remember("posts.categorized." . $categoryId, now()->addMinutes(2),
+            function () use($categoryId) {
+                return Post::query()
                     ->where('status', 1)
                     ->whereHas('categories', function ($query) use ($categoryId) {
                         $query->where('id', $categoryId);
@@ -113,12 +107,12 @@ class PostRepository implements IPostRepository {
                     ->latest()
                     ->take($this->categoryCount)
                     ->get();
-            }
+            });
         }
 
         return $data;
-
     }
+
 
     /**
      * Get special videos
@@ -126,31 +120,38 @@ class PostRepository implements IPostRepository {
      */
     private function getSpecialVideos() : Collection
     {
-        return Post::query()
-                ->where('status', 1)
-                ->where('type', 1)
-                ->where('special', 1)
-                ->latest()
-                ->take($this->spVideoCount)
-                ->get();
+        return cache()->remember("posts.special.videos.", now()->addMinutes(2),
+            function () {
+                return Post::query()
+                        ->where('status', 1)
+                        ->where('type', 1)
+                        ->where('special', 1)
+                        ->latest()
+                        ->take($this->spVideoCount)
+                        ->get();
+                });
     }
 
     /**
      * Get special posts
      * @return Collection
      */
-    private function getSpecialPosts(array $categoryIds) : Collection
+    private function getSpecialPosts() : Collection
     {
-        return Post::query()
+        return cache()->remember("posts.special.posts.", now()->addMinutes(2),
+            function () {
+                return Post::query()
                 ->where('status', 1)
                 ->where('special', 1)
                 ->where('type', 0)
-                ->whereHas('categories', function ($query) use ($categoryIds) {
-                    $query->whereIn('id', $categoryIds);
+                ->whereHas('categories', function ($query) {
+                    $query->whereNotIn('id', [7]);
                 })
                 ->latest()
                 ->take($this->spPostCount)
                 ->get();
+            });
+
     }
 
     /**
@@ -159,11 +160,14 @@ class PostRepository implements IPostRepository {
      */
     private function getPopular() : object
     {
-        return Post::query()
-            ->where('status',1)
-            ->orderBy('view','DESC')
-            ->take($this->latestCount)
-            ->get();
+        return cache()->remember("posts.popular.", now()->addMinutes(2),
+            function () {
+                return Post::query()
+                    ->where('status',1)
+                    ->orderBy('view', 'DESC')
+                    ->take($this->latestCount)
+                    ->get();
+            });
     }
 
     /**
@@ -172,15 +176,16 @@ class PostRepository implements IPostRepository {
      */
     private function getChallenged() : object
     {
-
-        return Post::query()
-            ->where('status', 1)
-            ->whereHas('comments')
-            ->withCount('comments')
-            ->orderBy('comments_count', 'desc')
-            ->limit($this->latestCount)
-            ->get();
-
+        return cache()->remember("posts.challenged.", now()->addMinutes(2),
+            function () {
+                return Post::query()
+                    ->where('status', 1)
+                    ->whereHas('comments')
+                    ->withCount('comments')
+                    ->orderBy('comments_count', 'desc')
+                    ->limit($this->latestCount)
+                    ->get();
+            });
     }
 
     /**

@@ -26,6 +26,14 @@ class CategoryController extends Controller
     }
 
     /**
+     * Get the active categories.
+     */
+    public function popularCategories(): JsonResponse
+    {
+        return response()->json($this->repository->popularCategories(), Response::HTTP_OK);
+    }
+
+    /**
      * Get the team categories.
      */
     public function getTeamCategories(): JsonResponse

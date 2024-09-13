@@ -20,6 +20,7 @@ class CategoryResource extends JsonResource
             'text' => $this->title,
             'slug' => $this->slug,
             'image' => $this->image,
+            'posts_count' => $this->when(!is_null($this->posts_count), $this->posts_count),
         ];;
     }
 }

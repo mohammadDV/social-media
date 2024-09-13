@@ -23,8 +23,7 @@ class LiveRepository implements ILiveRepository {
      */
     public function index() :array
     {
-        // ->addMinutes('1'),
-        $livesRow = cache()->remember("live.all", now(),
+        $livesRow = cache()->remember("live.all", now()->addMinutes(2),
             function () {
             return Live::query()->orderBy('priority','ASC')->take(50)->get();
         });
