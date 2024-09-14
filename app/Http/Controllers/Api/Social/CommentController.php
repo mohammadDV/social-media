@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Api\Social;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PostRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Post;
 use App\Models\Status;
 use App\Repositories\Contracts\ICommentRepository;
-use App\Repositories\Contracts\IPostRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CommentController extends Controller

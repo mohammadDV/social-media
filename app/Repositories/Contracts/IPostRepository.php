@@ -27,6 +27,12 @@ interface IPostRepository  {
     public function index(array $categories, int $count) :array;
 
     /**
+     * Get the suggested posts.
+     * @return array
+     */
+    public function suggested() :array;
+
+    /**
      * Get the post.
      * @param Post $post
      * @return array
@@ -56,14 +62,14 @@ interface IPostRepository  {
 
     /**
      * Get searched posts.
-     * @param search $search
+     * @param string $search
      * @return AnonymousResourceCollection
      */
     public function search(string $search) :AnonymousResourceCollection;
 
     /**
      * Get searched posts.
-     * @param search $search
+     * @param string $search
      * @return array
      */
     public function searchPostTag(string $search) :array;
