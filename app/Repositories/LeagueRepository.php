@@ -31,7 +31,7 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
 
         foreach ($matchTables as $matchTable) {
 
-            $leagueRows = cache()->remember("league.all." . $matchTable['id'], now()->addMinutes(5),
+            $leagueRows = cache()->remember("league.all." . $matchTable['id'], now()->addMinutes(config('cache.default_min')),
                 function () use($matchTable) {
                     return League::Query()
                         ->with('sport')
@@ -294,7 +294,7 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     */
     public function getClubs(League $league) :Collection
     {
-        return cache()->remember("clubs.league.second" . $league->id, now()->addMinutes(2),
+        return cache()->remember("clubs.league.second" . $league->id, now()->addMinutes(config('cache.default_min')),
             function () use ($league) {
                 return League::find($league->id)->clubs;
             });
@@ -307,7 +307,7 @@ class LeagueRepository extends MatchService implements ILeagueRepository {
     */
     public function getAllSteps(League $league) :Collection
     {
-        return cache()->remember("steps.all.league" . $league->id, now()->addMinutes(2),
+        return cache()->remember("steps.all.league" . $league->id, now()->addMinutes(config('cache.default_min')),
             function () use ($league) {
                 return League::find($league->id)->steps;
             });

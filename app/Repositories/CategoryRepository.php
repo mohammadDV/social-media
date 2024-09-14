@@ -48,7 +48,7 @@ class CategoryRepository implements ICategoryRepository {
      */
     public function getTeamCategories() :AnonymousResourceCollection
     {
-        return cache()->remember("categories.all.team", now()->addMinutes(2), function () {
+        return cache()->remember("categories.all.team", now()->addMinutes(config('cache.default_min')), function () {
             return CategoryResource::collection(Category::query()
                 ->where('status',1)
                 ->where('menu',0)

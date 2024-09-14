@@ -13,7 +13,7 @@ class MatchService {
 
     public function getSteps(int $league_id) : array {
 
-        $steps = cache()->remember("steps.league." . $league_id, now()->addMinutes(2),
+        $steps = cache()->remember("steps.league." . $league_id, now()->addMinutes(config('cache.default_min')),
         function () use ($league_id) {
             return Step::query()
                 ->where('league_id', $league_id)
@@ -44,13 +44,13 @@ class MatchService {
 
     public function getCurrentStep(int $league_id) : object {
 
-        $current = cache()->remember("steps.league.current." . $league_id, now()->addMinutes(2),
+        $current = cache()->remember("steps.league.current." . $league_id, now()->addMinutes(config('cache.default_min')),
             function () use ($league_id) {
                 return Step::where(['league_id', $league_id],['current',1])->first();
             });
 
         if(empty($current->id)){
-            $current = cache()->remember("steps.league.current.priority." . $league_id, now()->addMinutes(2),
+            $current = cache()->remember("steps.league.current.priority." . $league_id, now()->addMinutes(config('cache.default_min')),
                 function () use ($league_id) {
                     return Step::where(['league_id', $league_id])->orderBy('priority','ASC')->first();
                 });
@@ -62,7 +62,7 @@ class MatchService {
     public function getMatches(int $step_id) : array {
         $result = [];
 
-        $mateches = cache()->remember("matches.first" . $step_id, now()->addMinutes(2),
+        $mateches = cache()->remember("matches.first" . $step_id, now()->addMinutes(config('cache.default_min')),
             function () use ($step_id) {
                 return Matches::query()
                     ->where([['step_id',$step_id]])
@@ -71,7 +71,7 @@ class MatchService {
                     ->get();
             });
 
-        $clubs = cache()->remember("matches.clubs" . $step_id, now()->addMinutes(2),
+        $clubs = cache()->remember("matches.clubs" . $step_id, now()->addMinutes(config('cache.default_min')),
             function () use ($mateches) {
                 return Club::query()
                     ->whereIn('id',array_merge(array_column($mateches->toArray(),'home_id'),array_column($mateches->toArray(),'away_id')))
@@ -101,12 +101,12 @@ class MatchService {
     public function getTournamentClubs(int $step_id) : array {
         $result = [];
 
-        $clubStep   = cache()->remember("Tournament.steps." . $step_id, now()->addMinutes(2),
+        $clubStep   = cache()->remember("Tournament.steps." . $step_id, now()->addMinutes(config('cache.default_min')),
             function () use ($step_id) {
                 return ClubStep::where('step_id',$step_id)->take(100)->orderBy('points','DESC')->get();
             });
 
-        $clubs = cache()->remember("tournament.club." . $step_id, now()->addMinutes(2),
+        $clubs = cache()->remember("tournament.club." . $step_id, now()->addMinutes(config('cache.default_min')),
             function () use ($clubStep) {
                 Club::whereIn('id',array_merge(array_column($clubStep->toArray(),'club_id')))->get()->keyBy('id');
             });
@@ -126,12 +126,12 @@ class MatchService {
     public function getClubsPerTournament(int $league_id) : array {
         $result = [];
 
-        $clubLeague = cache()->remember("per.tournament.league." . $league_id, now()->addMinutes(2),
+        $clubLeague = cache()->remember("per.tournament.league." . $league_id, now()->addMinutes(config('cache.default_min')),
             function () use ($league_id) {
                 return ClubLeague::where('league_id',$league_id)->take(100)->orderBy('points','DESC')->get();
             });
 
-        $clubs = cache()->remember("per.tournament.club." . $league_id, now()->addMinutes(2),
+        $clubs = cache()->remember("per.tournament.club." . $league_id, now()->addMinutes(config('cache.default_min')),
             function () use ($clubLeague) {
                 return Club::whereIn('id',array_merge(array_column($clubLeague->toArray(),'club_id')))->get()->keyBy('id');
             });

@@ -47,12 +47,28 @@ class PostRepository implements IPostRepository {
     }
 
     /**
+     * Get the suggested posts.
+     * @return array
+     */
+    public function suggested() :array
+    {
+        $data['latest'] = $this->getLatestPosts($this->latestCount);
+        $data['challenged'] = $this->getChallenged();
+        $data['popular'] = $this->getPopular();
+        $data['specialPosts'] = $this->getSpecialPosts();
+        $data['specialVideos'] = $this->getSpecialVideos();
+
+        return $data;
+
+    }
+
+    /**
      * Get the posts.
      * @param array $categories
      * @param int $count
      * @return array
      */
-    public function index(array $categoryIds, int $count) :array
+    public function index(array $categoryIds = [], int $count) :array
     {
         $data['latest'] = $this->getLatestPosts($count);
         $data['categories'] = app(ICategoryRepository::class)->popularCategories();
@@ -60,7 +76,7 @@ class PostRepository implements IPostRepository {
         $data['popular'] = $this->getPopular();
         $data['specialPosts'] = $this->getSpecialPosts();
         $data['specialVideos'] = $this->getSpecialVideos();
-        $data['posts'] = $this->getCategorizedPosts($categoryIds);
+        $data['posts'] = !empty($categoryIds) ? $this->getCategorizedPosts($categoryIds) : [];
 
         return $data;
 
@@ -74,7 +90,7 @@ class PostRepository implements IPostRepository {
      */
     private function getLatestPosts(int $count)
     {
-        return cache()->remember("posts.latest." . $count, now()->addMinutes(2),
+        return cache()->remember("posts.latest." . $count, now()->addMinutes(config('cache.default_min')),
             function () use($count) {
                 return Post::query()
                     ->with('categories')
@@ -97,7 +113,7 @@ class PostRepository implements IPostRepository {
         $data = [];
 
         foreach ($categoryIds ?? [] as $categoryId) {
-            $data[$categoryId] = cache()->remember("posts.categorized." . $categoryId, now()->addMinutes(2),
+            $data[$categoryId] = cache()->remember("posts.categorized." . $categoryId, now()->addMinutes(10),
             function () use($categoryId) {
                 return Post::query()
                     ->where('status', 1)
@@ -120,7 +136,7 @@ class PostRepository implements IPostRepository {
      */
     private function getSpecialVideos() : Collection
     {
-        return cache()->remember("posts.special.videos.", now()->addMinutes(2),
+        return cache()->remember("posts.special.videos.", now()->addMinutes(config('cache.default_min')),
             function () {
                 return Post::query()
                         ->where('status', 1)
@@ -138,7 +154,7 @@ class PostRepository implements IPostRepository {
      */
     private function getSpecialPosts() : Collection
     {
-        return cache()->remember("posts.special.posts.", now()->addMinutes(2),
+        return cache()->remember("posts.special.posts.", now()->addMinutes(config('cache.default_min')),
             function () {
                 return Post::query()
                 ->where('status', 1)
@@ -160,7 +176,7 @@ class PostRepository implements IPostRepository {
      */
     private function getPopular() : object
     {
-        return cache()->remember("posts.popular.", now()->addMinutes(2),
+        return cache()->remember("posts.popular.", now()->addMinutes(config('cache.default_min')),
             function () {
                 return Post::query()
                     ->where('status',1)
@@ -176,7 +192,7 @@ class PostRepository implements IPostRepository {
      */
     private function getChallenged() : object
     {
-        return cache()->remember("posts.challenged.", now()->addMinutes(2),
+        return cache()->remember("posts.challenged.", now()->addMinutes(config('cache.default_min')),
             function () {
                 return Post::query()
                     ->where('status', 1)
@@ -212,10 +228,14 @@ class PostRepository implements IPostRepository {
 
         $post->increment('view');
 
-        $post = Post::query()
-            ->with('user', 'tags', 'categories' , 'comments.user', 'comments.parents', 'advertise')
-            ->find($post->id);
-        return new PostResource($post);
+        return cache()->remember("post.info." . $post->id, now()->addMinutes(config('cache.default_min')),
+            function () use($post) {
+                $post = Post::query()
+                    ->with('user', 'tags', 'categories', 'advertise')
+                    ->find($post->id);
+                return new PostResource($post);
+            });
+
     }
 
     /**
@@ -225,8 +245,10 @@ class PostRepository implements IPostRepository {
      */
     public function getPostsPerCategory(Category $category) :array
     {
-        // ->addMinutes('1'),
-        $data = cache()->remember("posts.per.category." . $category->id, now(),
+
+        $page = !empty(request()->page) ? request()->page : 1;
+
+        $data = cache()->remember("posts.per.category." . $category->id . "." . $page, now()->addMinute(config('default_min')),
             function () use($category) {
                 $posts = Post::query()
                     ->whereHas('categories', function ($query) use ($category) {
@@ -247,19 +269,22 @@ class PostRepository implements IPostRepository {
 
     /**
      * Get searched posts.
-     * @param search $category
+     * @param string $search
      * @return AnonymousResourceCollection
      */
     public function search(string $search) :AnonymousResourceCollection
     {
-        // ->addMinutes('1'),
-        $posts = Post::where('status', '=', 1)
-        ->where(function ($query) use ($search) {
-            $query->where('title', "like", "%" . $search . "%");
-            $query->orWhere('pre_title', "like", "%" . $search . "%");
-            $query->orWhere('content', "like", "%" . $search . "%");
-            $query->orWhere('summary', "like", "%" . $search . "%");
-        })->orderBy('id', 'DESC')->paginate(10);
+        $page = !empty(request()->page) ? request()->page : 1;
+        $posts = cache()->remember("posts.search." . str_replace(' ', '', $search) . "." . $page, now()->addMinute(config('default_min')),
+            function () use($search) {
+                return Post::where('status', '=', 1)
+                    ->where(function ($query) use ($search) {
+                        $query->where('title', "like", "%" . $search . "%");
+                        $query->orWhere('pre_title', "like", "%" . $search . "%");
+                        $query->orWhere('content', "like", "%" . $search . "%");
+                        $query->orWhere('summary', "like", "%" . $search . "%");
+                    })->orderBy('id', 'DESC')->paginate(10);
+            });
 
         return PostResource::collection($posts);
 
@@ -267,30 +292,36 @@ class PostRepository implements IPostRepository {
 
     /**
      * Get searched posts.
-     * @param search $category
+     * @param string $category
      * @return array
      */
     public function searchPostTag(string $search) :array
     {
-        $data['posts'] = PostResource::collection(Post::query()
-            ->where('status', '=', 1)
-            ->where(function ($query) use ($search) {
-                $query->where('title', "like", "%" . $search . "%");
-                $query->orWhere('pre_title', "like", "%" . $search . "%");
-                $query->orWhere('content', "like", "%" . $search . "%");
-                $query->orWhere('summary', "like", "%" . $search . "%");
-            })
-            ->orderBy('id', 'DESC')
-            ->limit(6)
-            ->get());
+        $data['posts'] = cache()->remember("post.tag.search." . str_replace(' ', '', $search), now()->addMinute(config('default_min')),
+            function () use($search) {
+                PostResource::collection(Post::query()
+                ->where('status', '=', 1)
+                ->where(function ($query) use ($search) {
+                    $query->where('title', "like", "%" . $search . "%");
+                    $query->orWhere('pre_title', "like", "%" . $search . "%");
+                    $query->orWhere('content', "like", "%" . $search . "%");
+                    $query->orWhere('summary', "like", "%" . $search . "%");
+                })
+                ->orderBy('id', 'DESC')
+                ->limit(6)
+                ->get());
+            });
 
-        $data['tags'] = Tag::query()
-            ->where(function ($query) use ($search) {
-                $query->where('title', "like", "%" . $search . "%");
-            })
-            ->orderBy('id', 'DESC')
-            ->limit(10)
-            ->get();
+        $data['tags'] = cache()->remember("tags.post.search." . str_replace(' ', '', $search), now()->addMinute(config('default_min')),
+            function () use($search) {
+                Tag::query()
+                ->where(function ($query) use ($search) {
+                    $query->where('title', "like", "%" . $search . "%");
+                })
+                ->orderBy('id', 'DESC')
+                ->limit(10)
+                ->get();
+            });
 
         return $data;
 

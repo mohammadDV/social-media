@@ -25,18 +25,42 @@ class CommentRepository implements ICommentRepository {
     public function getPostComments(Post $post)
     {
 
-        return Comment::query()
-            ->where('is_report', 0)
-            ->where('parent_id', 0)
-            ->where('commentable_id', $post->id)
-            ->where('status', 1)
-            ->where('commentable_type', "App\\Models\\Post")
-            ->with('user')
-            ->with('parents.user')
-            ->with('likes')
-            ->with('likes.user')
-            ->orderBy('id', 'DESC')
-            ->paginate(2);
+        $cacheKey = "post.comment.pagination." . $post->id;
+
+        if (!empty(request()->submit)) {
+
+            if (cache()->has($cacheKey)) {
+                cache()->forget($cacheKey);
+            }
+
+            return Comment::query()
+                    ->where('is_report', 0)
+                    ->where('parent_id', 0)
+                    ->where('commentable_id', $post->id)
+                    ->where('status', 1)
+                    ->where('commentable_type', "App\\Models\\Post")
+                    ->with('user')
+                    ->with('parents.user')
+                    ->with('likes')
+                    ->with('likes.user')
+                    ->orderBy('id', 'DESC')
+                    ->paginate(10);
+        }
+
+        return cache()->remember($cacheKey, now()->addMinutes(2), function () use ($post) {
+            return Comment::query()
+                ->where('is_report', 0)
+                ->where('parent_id', 0)
+                ->where('commentable_id', $post->id)
+                ->where('status', 1)
+                ->where('commentable_type', "App\\Models\\Post")
+                ->with('user')
+                ->with('parents.user')
+                ->with('likes')
+                ->with('likes.user')
+                ->orderBy('id', 'DESC')
+                ->paginate(10);
+        });
 
     }
 
