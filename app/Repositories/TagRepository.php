@@ -35,7 +35,7 @@ class TagRepository implements ITagRepository {
         $page = !empty(request()->page) ? request()->page : 1;
         $posts = cache()->remember("site.tags.index." . $tag->id . "." . $page, now()->addMinute(config('default_min')),
             function () use($tag) {
-                Post::query()
+                return Post::query()
                     ->with('tags')
                     ->where('status', '=', 1)
                     ->whereHas('tags', function ($query) use ($tag) {
