@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 /**
  * Class RepositoryServiceProvider
  *
- * @package Masena\Shared\Repositories
  */
 class RepositoryServiceProvider extends ServiceProvider
 {

@@ -24,7 +24,7 @@ class PostUpdateRequest extends BaseRequest
             'title' => ['required','string','min:5','max:255'],
             'pre_title' => ['max:255'],
             'categories' => ['required','array'],
-            'summary' => ['max:255'],
+            'summary' => ['required', 'max:255'],
             'content' => ['required','string','min:5'],
             'tags' => ['max:255'],
             'image' => !empty($this->get('image')) ? ['required','string'] : ['sometimes'],

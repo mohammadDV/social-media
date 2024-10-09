@@ -35,16 +35,27 @@ class AddCategories extends Command
         $user = User::where('level', 3)->firstOrFail();
 
 
+        die();
         // $leagueId = '3'; // Bondesliga
         // $seasonId = 'eq.45'; // Bondesliga
+        // $leagueId = '8'; // Bondesliga
+        // $seasonId = 'eq.46408'; // Bondesliga
         // $leagueId = '1'; // Premier league
         // $seasonId = 'eq.44'; // Premier league
+        // $leagueId = '6'; // Premier league
+        // $seasonId = 'eq.45769'; // Premier league
         // $leagueId = '4'; // Serie A
         // $seasonId = 'eq.38'; // Serie A
+        // $leagueId = '9'; // Serie A
+        // $seasonId = 'eq.46406'; // Serie A
         // $leagueId = '2'; // Laliga
         // $seasonId = 'eq.179'; // Laliga
-        $leagueId = '5'; // Ligue 1
-        $seasonId = 'eq.6919'; // Ligue 1
+        // $leagueId = '7'; // Laliga
+        // $seasonId = 'eq.45770'; // Laliga
+        // $leagueId = '5'; // Ligue 1
+        // $seasonId = 'eq.6919'; // Ligue 1
+        $leagueId = '11'; // Ligue 1
+        $seasonId = 'eq.46133'; // Ligue 1
 
         $x = 0;
         while ($x < 10) {
@@ -66,7 +77,7 @@ class AddCategories extends Command
                 foreach ($data as $item) {
 
                     if (empty($item['round']['round'])) {
-                        dd("Done!!!");
+                        $item['round']['round'] = 1;
                     }
 
                     $round = $item['round']['round'];
@@ -105,6 +116,7 @@ class AddCategories extends Command
                     $teams = Club::whereIn('alias_id', [$awayId, $homeId])->get();
 
                     if ($teams->count() != 2) {
+                        continue;
                         dd("teams problem " . var_export($item, true));
                     }
 
@@ -121,7 +133,9 @@ class AddCategories extends Command
                         $result['hsc'] = $item['home_team_score']['default_time'];
                         $result['asc'] = $item['away_team_score']['default_time'];
                     } else {
-                        continue;
+                        $result['status'] = 0;
+                        $result['hsc'] = '?';
+                        $result['asc'] = '?';
                     }
 
                     $result['date'] = str_replace('T', ' ', explode('+00', $item['start_time'])[0]); // 2023-10-22T13:30:00+00:00

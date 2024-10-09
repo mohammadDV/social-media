@@ -60,13 +60,13 @@ class PageRepository implements IPageRepository {
      */
     public function getActivePage(string $slug) :Page|null
     {
-        return cache()->remember("page.active", now()->addMinutes(config('cache.default_min')), function () use ($slug) {
+        // return cache()->remember("page.active", now()->addMinutes(config('cache.default_min')), function () use ($slug) {
             return Page::query()
                 ->where('status', 1)
                 ->where('slug', trim($slug))
                 ->orderBy('priority', 'asc')
                 ->first();
-        });
+        // });
     }
 
     /**
