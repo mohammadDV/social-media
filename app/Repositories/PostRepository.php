@@ -26,7 +26,7 @@ class PostRepository implements IPostRepository {
 
     protected $categories_id    = [];
     protected $count            = 100;
-    protected $latestCount      = 50;
+    protected $latestCount      = 80;
     protected $spVideoCount     = 10;
     protected $categoryCount    = 20;
     protected $spPostCount      = 5;
@@ -215,7 +215,7 @@ class PostRepository implements IPostRepository {
             ->with('user')
             ->where('user_id', $user->id)
             ->orderBy('id', 'DESC')
-            ->paginate(10);
+            ->paginate(20);
     }
 
      /**
@@ -228,13 +228,13 @@ class PostRepository implements IPostRepository {
 
         $post->increment('view');
 
-        return cache()->remember("post.info." . $post->id, now()->addMinutes(config('cache.default_min')),
-            function () use($post) {
+        // return cache()->remember("post.info." . $post->id, now()->addMinutes(config('cache.default_min')),
+        //     function () use($post) {
                 $post = Post::query()
                     ->with('user', 'tags', 'categories', 'advertise')
                     ->find($post->id);
                 return new PostResource($post);
-            });
+            // });
 
     }
 
@@ -256,7 +256,7 @@ class PostRepository implements IPostRepository {
                     })
                     ->where('status',1)
                     ->orderBy('id', 'desc')
-                    ->paginate(10);
+                    ->paginate(20);
 
                 return PostResource::collection($posts);
         });
@@ -283,7 +283,7 @@ class PostRepository implements IPostRepository {
                         $query->orWhere('pre_title', "like", "%" . $search . "%");
                         $query->orWhere('content', "like", "%" . $search . "%");
                         $query->orWhere('summary', "like", "%" . $search . "%");
-                    })->orderBy('id', 'DESC')->paginate(10);
+                    })->orderBy('id', 'DESC')->paginate(20);
             });
 
         return PostResource::collection($posts);
@@ -357,7 +357,6 @@ class PostRepository implements IPostRepository {
      */
     public function store(PostRequest $request) :JsonResponse
     {
-
 
         $post = auth()->user()->posts()->create([
             'pre_title'   => $request->input('pre_title'),

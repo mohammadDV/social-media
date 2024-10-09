@@ -25,7 +25,7 @@ use App\Http\Controllers\Api\Social\ChatController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::middleware(['auth:sanctum', 'auth'])->prefix('profile')->group(function() {
+Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->prefix('profile')->group(function() {
 
     // Posts
     Route::prefix('posts')->group(function () {
