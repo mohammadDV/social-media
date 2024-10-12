@@ -118,6 +118,7 @@ class AuthController extends Controller
             'role_id' => 4,
             'status' => 1,
             'email' => $request->email,
+            'mobile' => $request->mobile,
             'password' => bcrypt($request->password),
             'profile_photo_path'    => config('image.default-profile-image'),
             'bg_photo_path'         => config('image.default-background-image'),
