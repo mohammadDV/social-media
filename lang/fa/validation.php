@@ -183,5 +183,6 @@ return [
 		"fullname"  => "نام کامل",
 		"message"  => "پیام",
 		"g-recaptcha-response"  => "کپچا",
+		"privacy_policy"  => "قوانین و مقررات",
     ],
 ];
