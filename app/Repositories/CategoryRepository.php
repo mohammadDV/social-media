@@ -32,10 +32,11 @@ class CategoryRepository implements ICategoryRepository {
     {
         return cache()->remember("categories.pupular", now()->addMinutes(10), function () {
             return CategoryResource::collection(Category::query()
+                ->whereHas('posts')
                 ->withCount('posts')
                 ->where('status',1)
                 ->where('menu', 0)
-                ->take(52)
+                ->take(150)
                 ->orderby('posts_count', 'DESC')
                 ->orderby('alias_title', 'DESC')
                 ->get());
