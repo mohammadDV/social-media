@@ -29,7 +29,7 @@ class PostRepository implements IPostRepository {
     protected $latestCount      = 80;
     protected $spVideoCount     = 10;
     protected $categoryCount    = 20;
-    protected $spPostCount      = 5;
+    protected $spPostCount      = 10;
 
     /**
      * Get the post.
@@ -297,9 +297,10 @@ class PostRepository implements IPostRepository {
      */
     public function searchPostTag(string $search) :array
     {
-        $data['posts'] = cache()->remember("post.tag.search." . str_replace(' ', '', $search), now()->addMinute(config('default_min')),
-            function () use($search) {
-                PostResource::collection(Post::query()
+
+        // cache()->remember("post.tag.search." . str_replace(' ', '', $search), now()->addMinute(config('default_min')),
+        //     function () use($search) {
+            $data['posts'] = PostResource::collection(Post::query()
                 ->where('status', '=', 1)
                 ->where(function ($query) use ($search) {
                     $query->where('title', "like", "%" . $search . "%");
@@ -310,18 +311,27 @@ class PostRepository implements IPostRepository {
                 ->orderBy('id', 'DESC')
                 ->limit(6)
                 ->get());
-            });
+            // });
 
-        $data['tags'] = cache()->remember("tags.post.search." . str_replace(' ', '', $search), now()->addMinute(config('default_min')),
-            function () use($search) {
-                Tag::query()
+        // $data['tags'] = cache()->remember("tags.post.search." . str_replace(' ', '', $search), now()->addMinute(config('default_min')),
+        //     function () use($search) {
+            $data['tags'] = Tag::query()
                 ->where(function ($query) use ($search) {
                     $query->where('title', "like", "%" . $search . "%");
                 })
                 ->orderBy('id', 'DESC')
                 ->limit(10)
                 ->get();
-            });
+
+            $data['categories'] = Category::query()
+                ->where(function ($query) use ($search) {
+                    $query->where('title', "like", "%" . $search . "%");
+                    $query->orWhere('alias_title', "like", "%" . $search . "%");
+                })
+                ->orderBy('id', 'DESC')
+                ->limit(10)
+                ->get();
+            // });
 
         return $data;
 
