@@ -35,6 +35,11 @@ class UserResource extends JsonResource
             'roles' => $this->getRoleNames(),
             'permissions' => $this->getPermissionRoleNames(),
             'clubs' => new ClubResource($this->whenLoaded('clubs')),
+            'intercom' => hash_hmac(
+                'sha256', // hash function
+                $this->id, // IMPORTANT: a UUID to identify your user
+                config('intercom.secret') // IMPORTANT: your web Identity Verification secret key - keep it safe!
+            )
         ];
     }
 }
