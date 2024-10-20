@@ -30,14 +30,21 @@ class LiveRepository implements ILiveRepository {
 
         $lives          = [];
         foreach($livesRow ?? [] as $live){
-            $lives[slug($live->date)][] = [
-                "title"     => $live->title,
-                "teams"     => $live->teams,
-                "date"      => $live->date,
-                "link"      => $live->link,
-                "info"      => $live->info,
-                "priority"  => $live->priority,
-            ];
+
+            $unique = explode(' ', $live->date);
+
+            if (!empty($unique[0])) {
+
+                $lives[slug($unique[0])][] = [
+                    "title"     => $live->title,
+                    "teams"     => $live->teams,
+                    "date"      => $live->date,
+                    "link"      => $live->link,
+                    "info"      => $live->info,
+                    "priority"  => $live->priority,
+                ];
+            }
+
         }
         return $lives;
 
