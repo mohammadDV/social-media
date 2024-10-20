@@ -6,6 +6,7 @@ use App\Http\Requests\ClubRequest;
 use App\Http\Requests\ClubUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Models\Category;
 use App\Models\Club;
 use App\Models\Country;
 use App\Models\FavoriteClub;
@@ -127,6 +128,9 @@ class ClubRepository implements IClubRepository {
             ->with('sport')
             ->where('id', $club->id)
             ->first();
+        $category = Category::query()
+            ->where('club_id', $club->id)
+            ->first();
 
         $tag = trim($club->title);
 
@@ -140,21 +144,24 @@ class ClubRepository implements IClubRepository {
 
         $posts = Post::query()
             ->where('status', 1)
-            ->where('type', 0)
-            ->whereHas('tags', function ($query) use($tag){
-                $query->where('id', $tag->id);
+            // ->where('type', 0)
+            ->whereHas('categories', function ($query) use ($category) {
+                $query->whereIn('id', [$category->id]);
             })
-            ->limit(6)
+            // ->whereHas('tags', function ($query) use($tag){
+            //     $query->where('id', $tag->id);
+            // })
+            ->limit(12)
             ->get();
 
-        $videos = Post::query()
-            ->where('status', 1)
-            ->where('type', 1)
-            ->whereHas('tags', function ($query) use($tag){
-                $query->where('id', $tag->id);
-            })
-            ->limit(6)
-            ->get();
+        // $videos = Post::query()
+        //     ->where('status', 1)
+        //     ->where('type', 1)
+        //     ->whereHas('tags', function ($query) use($tag){
+        //         $query->where('id', $tag->id);
+        //     })
+        //     ->limit(6)
+        //     ->get();
 
         $league = League::query()
             ->with('clubs')
@@ -183,7 +190,9 @@ class ClubRepository implements IClubRepository {
             'tag' => $tag,
             'info' => $info,
             'posts' => $posts,
-            'videos' => $videos,
+            'category' => $category,
+            // 'videos' => $videos,
+            'videos' => [],
             'clubs' => $clubs,
             'matches' => $matches,
         ];
