@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ValidationController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::get('/sitemap.xml', [SitemapController::class, 'generateSitemap']);
 
 Route::post('/validation/{requestName}', [ValidationController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
