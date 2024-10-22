@@ -56,7 +56,7 @@ class SitemapController extends Controller
         $tags = Tag::query()
             ->withCount('posts')
             ->orderby('posts_count', 'DESC')
-            ->limit(100)
+            ->limit(20)
             ->get();
         // Add each category URL
         foreach ($tags as $tag) {
@@ -74,7 +74,7 @@ class SitemapController extends Controller
                 $query->whereIn('id', [5])
                     ->orwhereIn('id', [1]);
             })
-            ->limit(300)
+            ->limit(200)
             ->get();
         // Add each post URL
         foreach ($posts as $post) {
