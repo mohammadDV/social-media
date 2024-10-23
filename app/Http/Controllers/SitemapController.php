@@ -74,7 +74,7 @@ class SitemapController extends Controller
                 $query->whereIn('id', [5])
                     ->orwhereIn('id', [1]);
             })
-            ->limit(200)
+            ->limit(150)
             ->get();
         // Add each post URL
         foreach ($posts as $post) {
