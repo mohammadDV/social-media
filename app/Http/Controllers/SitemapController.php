@@ -40,17 +40,20 @@ class SitemapController extends Controller
         }
 
         // Fetch categories
-        // $categories = Category::query()
-        //     ->where('status', 1)
-        //     ->whereHas('posts')
-        //     ->get();
-        // // Add each category URL
-        // foreach ($categories as $category) {
-        //     $sitemap .= '<url>';
-        //     $sitemap .= '<loc>' . 'https://varzeshpod.com/category/' .$category->id . '/' . $category->slug . '</loc>';
-        //     $sitemap .= '<priority>0.8</priority>';
-        //     $sitemap .= '</url>';
-        // }
+        $categories = Category::query()
+            ->where('status', 1)
+            ->whereHas('posts')
+            ->withCount('posts')
+            ->orderby('posts_count', 'DESC')
+            ->limit(50)
+            ->get();
+        // Add each category URL
+        foreach ($categories as $category) {
+            $sitemap .= '<url>';
+            $sitemap .= '<loc>' . 'https://varzeshpod.com/category/' .$category->id . '/' . $category->slug . '</loc>';
+            $sitemap .= '<priority>0.8</priority>';
+            $sitemap .= '</url>';
+        }
 
         // Fetch categories
         $tags = Tag::query()
@@ -74,7 +77,7 @@ class SitemapController extends Controller
                 $query->whereIn('id', [5])
                     ->orwhereIn('id', [1]);
             })
-            ->limit(2)
+            ->limit(50)
             ->get();
         // Add each post URL
         foreach ($posts as $post) {
