@@ -40,17 +40,17 @@ class SitemapController extends Controller
         }
 
         // Fetch categories
-        $categories = Category::query()
-            ->where('status', 1)
-            ->whereHas('posts')
-            ->get();
-        // Add each category URL
-        foreach ($categories as $category) {
-            $sitemap .= '<url>';
-            $sitemap .= '<loc>' . 'https://varzeshpod.com/category/' .$category->id . '/' . $category->slug . '</loc>';
-            $sitemap .= '<priority>0.8</priority>';
-            $sitemap .= '</url>';
-        }
+        // $categories = Category::query()
+        //     ->where('status', 1)
+        //     ->whereHas('posts')
+        //     ->get();
+        // // Add each category URL
+        // foreach ($categories as $category) {
+        //     $sitemap .= '<url>';
+        //     $sitemap .= '<loc>' . 'https://varzeshpod.com/category/' .$category->id . '/' . $category->slug . '</loc>';
+        //     $sitemap .= '<priority>0.8</priority>';
+        //     $sitemap .= '</url>';
+        // }
 
         // Fetch categories
         $tags = Tag::query()
