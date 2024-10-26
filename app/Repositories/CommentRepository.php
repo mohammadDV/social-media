@@ -10,13 +10,20 @@ use App\Models\Post;
 use App\Models\Status;
 use App\Models\User;
 use App\Repositories\Contracts\ICommentRepository;
-use Illuminate\Database\Eloquent\Collection;
+use App\Services\TelegramNotificationService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class CommentRepository implements ICommentRepository {
+
+    /**
+     * @param TelegramNotificationService $service
+     */
+    public function __construct(protected TelegramNotificationService $service)
+    {
+
+    }
 
     /**
      * Get the post comment
@@ -108,9 +115,14 @@ class CommentRepository implements ICommentRepository {
                 __('site.Someone sent a comment to your post.', ['someone' => Auth::user()->nickname])
             );
 
+            $this->service->sendNotification(
+                config('telegram.chat_id'),
+                sprintf('انتشار یک کامنت در پست با شماره %s از %s با شماره کاربری %s', $post->id, Auth::user()->nickname, Auth::user()->id) . PHP_EOL . $request->input('comment')
+            );
+
             return response()->json([
                 'status'    => 1,
-                'message'   => [__('site.Your comment has been stored successfully')],
+                'message'   => __('site.Your comment has been stored successfully'),
             ], Response::HTTP_CREATED);
         }
 
@@ -181,6 +193,11 @@ class CommentRepository implements ICommentRepository {
                 $status->user,
                 '/profile/' . $status->id,
                 __('site.Someone sent a comment to your status.', ['someone' => Auth::user()->nickname])
+            );
+
+            $this->service->sendNotification(
+                config('telegram.chat_id'),
+                sprintf('انتشار یک کامنت در استتوس با شماره %s از %s با شماره کاربری %s', $status->id, Auth::user()->nickname, Auth::user()->id) . PHP_EOL . $request->input('comment')
             );
 
             return response()->json([

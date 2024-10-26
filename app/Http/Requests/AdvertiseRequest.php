@@ -23,9 +23,9 @@ class AdvertiseRequest extends BaseRequest
         return [
             'title' => 'required|string:min:5|max:255',
             'place_id' => 'required|integer|min:0|max:100',
-            'link' => 'required|string|max:255',
+            // 'link' => 'required|string|max:255',
             'status' => 'required|integer|in:0,1',
-            // 'image' => ['required','string'],
+            'image' => ['required','string'],
         ];
     }
 }

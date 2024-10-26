@@ -10,6 +10,7 @@ use App\Models\Advertise;
 use App\Models\AdvertiseForm;
 use App\Repositories\Contracts\IAdvertiseRepository;
 use App\Repositories\traits\GlobalFunc;
+use App\Services\TelegramNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -57,6 +58,14 @@ class AdvertiseRepository implements IAdvertiseRepository {
                 'id' => 10 , 'title'  => __('site.Right static page'),
             ]
         ];
+    }
+
+    /**
+     * @param TelegramNotificationService $service
+     */
+    public function __construct(protected TelegramNotificationService $service)
+    {
+
     }
 
     /**
@@ -247,6 +256,11 @@ class AdvertiseRepository implements IAdvertiseRepository {
     {
 
         $create = AdvertiseForm::create($request->except('token'));
+
+        $this->service->sendNotification(
+            config('telegram.chat_id'),
+            sprintf('ارسال یک فرم تبلیغات از %s با شماره تماس %s', $request->input('first_name'), $request->input('phone'))
+        );
 
         if ($create) {
             return [
