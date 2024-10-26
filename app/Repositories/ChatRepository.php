@@ -13,6 +13,7 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Repositories\Contracts\IChatRepository;
 use App\Repositories\traits\GlobalFunc;
+use App\Services\TelegramNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -21,6 +22,14 @@ use Illuminate\Support\Facades\Auth;
 class ChatRepository implements IChatRepository {
 
     use GlobalFunc;
+
+    /**
+     * @param TelegramNotificationService $service
+     */
+    public function __construct(protected TelegramNotificationService $service)
+    {
+
+    }
 
     /**
      * Get the sports pagination.
@@ -212,6 +221,11 @@ class ChatRepository implements IChatRepository {
                         'has_email' => 1,
                     ]);
                 });
+
+                $this->service->sendNotification(
+                    config('telegram.chat_id'),
+                    sprintf('ارسال یک پیام خصوصی با شماره %s از %s با شماره کاربری %s', $message->id, Auth::user()->nickname, Auth::user()->id) . PHP_EOL . $request->input('message')
+                );
 
 
             return response()->json([

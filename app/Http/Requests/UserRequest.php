@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\CheckNickname;
+use App\Rules\NicknameCheck;
 use App\Rules\ValidateRole;
 
 class UserRequest extends BaseRequest
@@ -28,7 +28,7 @@ class UserRequest extends BaseRequest
             'email' => ['required','max:255','email','string'],
             'role_id' => !empty($this->get('role_id')) ? ['required', 'exists:roles,id', new ValidateRole]  : 'sometimes',
             'password' => ['required','min:6','max:255','string'],
-            'nickname' => ['required', 'string', 'min:3', 'max:255', 'unique:users,nickname'],
+            'nickname' => ['required', 'string', 'min:3', 'max:255', 'unique:users,nickname', new NicknameCheck],
             'biography' => !empty($this->get('biography')) ? ['required', 'string', 'min:5', 'max:255'] : 'sometimes',
             'profile_photo_path' => !empty($this->get('profile_photo_path')) ? ['required', 'string'] : 'sometimes',
             'bg_photo_path' => !empty($this->get('bg_photo_path')) ? ['required', 'string'] : 'sometimes',

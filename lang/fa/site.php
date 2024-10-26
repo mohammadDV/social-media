@@ -228,6 +228,7 @@ return array(
     'Invalid request' => 'خطا در ارسال درخواست.',
     'The Nickname is invalid' => 'نام مستعار تکراری می باشد. لطفا نام دیگری انتخاب کنید.',
     'Invalid recaptcha' => 'ارسال درخواست نامعتبر',
+    'Invalid Nickname' => 'لطفا از قرار دادن کلمه ادمین در نام مستعار خودداری کنید.',
     'Foreign leagues' => 'لیگ های خارجی',
     'Domestic leagues' => 'لیگ های داخلی',
     'These credentials do not match our records.' => 'کاربر موردنظر یافت نشد.',

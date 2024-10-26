@@ -10,8 +10,7 @@ use App\Models\Status;
 use App\Models\User;
 use App\Repositories\Contracts\IStatusRepository;
 use App\Repositories\traits\GlobalFunc;
-use App\Services\File\FileService;
-use App\Services\Image\ImageService;
+use App\Services\TelegramNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -24,10 +23,9 @@ class StatusRepository implements IStatusRepository {
     use GlobalFunc;
 
     /**
-     * @param ImageService $imageService
-     * @param FileService $fileService
+     * @param TelegramNotificationService $service
      */
-    public function __construct(protected ImageService $imageService, protected FileService $fileService)
+    public function __construct(protected TelegramNotificationService $service)
     {
 
     }
@@ -191,6 +189,21 @@ class StatusRepository implements IStatusRepository {
             'status'      => $request->input('status',0)
         ]);
 
+        $notif = sprintf('انتشار یک استتوس از %s با شماره کاربری %s', Auth::user()->nickname, Auth::user()->id) . PHP_EOL . $request->input('text');
+
+        if (!empty($imageResult)) {
+            $this->service->sendPhoto(
+                config('telegram.chat_id'),
+                $request->input('file', null),
+                $notif
+            );
+        } else {
+            $this->service->sendNotification(
+                config('telegram.chat_id'),
+                $notif
+            );
+        }
+
         return response()->json([
             'status' => 1,
             'message' => __('site.New status has been stored')
@@ -226,6 +239,22 @@ class StatusRepository implements IStatusRepository {
                 'file'        => $imageResult ?? null,
                 'status'      => $request->input('status'),
             ]);
+
+            $notif = sprintf('ویرایش یک استتوس از %s با شماره کاربری %s', Auth::user()->nickname, Auth::user()->id) . PHP_EOL . $request->input('title');
+
+            if (!empty($imageResult)) {
+                $this->service->sendPhoto(
+                    config('telegram.chat_id'),
+                    $request->input('file', null),
+                    $notif
+                );
+            } else {
+                $this->service->sendNotification(
+                    config('telegram.chat_id'),
+                    $notif
+                );
+            }
+
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
@@ -272,10 +301,6 @@ class StatusRepository implements IStatusRepository {
             DB::beginTransaction();
 
             $status = Status::withTrashed()->where('id', $id)->first();
-
-            if (!empty($status->file)){
-                $this->fileService->deleteFile($status->file);
-            }
 
             $delete = $status->forceDelete();
             if ($delete){
