@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Repositories\Contracts\ICategoryRepository;
 use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\traits\GlobalFunc;
+use App\Services\TelegramNotificationService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -30,6 +31,14 @@ class PostRepository implements IPostRepository {
     protected $spVideoCount     = 10;
     protected $categoryCount    = 20;
     protected $spPostCount      = 10;
+
+    /**
+     * Constructor of PostController.
+     */
+    public function __construct(protected TelegramNotificationService $service)
+    {
+        //
+    }
 
     /**
      * Get the post.
@@ -60,6 +69,26 @@ class PostRepository implements IPostRepository {
 
         return $data;
 
+    }
+
+    /**
+     * Get the author posts.
+     * @param User $user
+     * @return array
+     */
+    public function authorPosts(User $user)
+    {
+        return cache()->remember("author-posts." . $user->id, now()->addMinutes(config('cache.default_min')),
+            function () use($user) {
+                return Post::query()
+                    ->where('status', 1)
+                    ->where('user_id', $user->id)
+                    ->orderBy('view', 'DESC')
+                    ->latest()
+                    ->take(5)
+                    ->get();
+            }
+        );
     }
 
     /**
@@ -375,7 +404,7 @@ class PostRepository implements IPostRepository {
             'summary'     => $request->input('summary'),
             'image'       => $request->input('image', null),
             'video'       => $request->input('type') == 1 ? $request->input('video', null) : null,
-            'video_id'       => $request->input('type') == 1 ? $request->input('video_id') : null,
+            'video_id'    => $request->input('type') == 1 ? $request->input('video_id') : null,
             'type'        => $request->input('type',0),
             'status'      => $request->input('status'),
             'special'     => $request->input('special',0),
@@ -394,6 +423,11 @@ class PostRepository implements IPostRepository {
             }
         }
 
+        $this->service->sendPhoto(
+            config('telegram.chat_id'),
+            $request->input('image', null),
+            sprintf('انتشار یک پست از %s', Auth::user()->nickname) . PHP_EOL . $request->input('title')
+        );
 
         return response()->json([
             'status' => 1,
@@ -443,6 +477,12 @@ class PostRepository implements IPostRepository {
                 }
                 $post->tags()->sync($tagIds);
             }
+
+            $this->service->sendPhoto(
+                config('telegram.chat_id'),
+                $request->input('image', null),
+                sprintf('ویرایش یک پست از %s', Auth::user()->nickname) . PHP_EOL . $request->input('title')
+            );
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();

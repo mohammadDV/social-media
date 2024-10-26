@@ -38,6 +38,14 @@ class PostController extends Controller
     }
 
     /**
+     * Get the suggested post.
+     */
+    public function authorPosts(User $user): JsonResponse
+    {
+        return response()->json($this->repository->authorPosts($user), Response::HTTP_OK);
+    }
+
+    /**
      * Get all of statuses
      * @param User $user
      * @return JsonResponse

@@ -33,6 +33,13 @@ interface IPostRepository  {
     public function suggested() :array;
 
     /**
+     * Get the author posts.
+     * @param User $user
+     * @return
+     */
+    public function authorPosts(User $user);
+
+    /**
      * Get the post.
      * @param Post $post
      * @return array

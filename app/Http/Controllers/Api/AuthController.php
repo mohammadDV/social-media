@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use App\Services\TelegramNotificationService;
 use Google_Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,6 +14,15 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+    /**
+     * @param TelegramNotificationService $service
+     */
+    public function __construct(protected TelegramNotificationService $service)
+    {
+
+    }
+
     /**
      * Log in the user.
      */
@@ -127,6 +137,16 @@ class AuthController extends Controller
         $user->assignRole(['user']);
 
         $token = $user->createToken('myapptokens')->plainTextToken;
+
+        $this->service->sendNotification(
+            config('telegram.chat_id'),
+            'ثبت نام کاربر جدید' . PHP_EOL .
+            'first_name ' . $request->first_name . PHP_EOL .
+            'last_name ' . $request->last_name. PHP_EOL .
+            'nickname ' . $request->nickname . PHP_EOL .
+            'email ' . $request->email . PHP_EOL .
+            'mobile ' . $request->mobile . PHP_EOL
+        );
 
         return response([
             'token' => $token,
