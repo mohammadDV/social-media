@@ -12,8 +12,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\traits\GlobalFunc;
-use App\Services\File\FileService;
-use App\Services\Image\ImageService;
+use App\Services\TelegramNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -26,10 +25,9 @@ class UserRepository implements IUserRepository {
     use GlobalFunc;
 
     /**
-     * @param ImageService $imageService
-     * @param FileService $fileService
+     * @param TelegramNotificationService $service
      */
-    public function __construct(protected ImageService $imageService, protected FileService $fileService)
+    public function __construct(protected TelegramNotificationService $service)
     {
 
     }
@@ -212,6 +210,19 @@ class UserRepository implements IUserRepository {
 
             $role = Role::findOrFail($role_id);
             $user->syncRoles([$role->name]);
+
+            $this->service->sendNotification(
+                config('telegram.chat_id'),
+                'ویرایش اطلاعات برای کاربر' . PHP_EOL .
+                'first_name ' . $request->input('first_name') . PHP_EOL .
+                'last_name ' . $request->input('last_name'),
+                'nickname ' . $request->input('nickname'),
+                'mobile ' . $request->input('mobile'),
+                'national_code ' . $request->input('national_code'),
+                'biography ' . $request->input('biography'),
+                'profile_photo_path ' . $request->input('profile_photo_path', config('image.default-profile-image')),
+                'bg_photo_path ' . $request->input('bg_photo_path', config('image.default-background-image')),
+            );
 
             return response()->json([
                 'status' => 1,
