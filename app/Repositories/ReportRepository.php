@@ -11,6 +11,7 @@ use App\Models\Report;
 use App\Models\Status;
 use App\Repositories\Contracts\IReportRepository;
 use App\Repositories\traits\GlobalFunc;
+use App\Services\TelegramNotificationService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
@@ -21,6 +22,14 @@ class ReportRepository implements IReportRepository {
 
 
     use GlobalFunc;
+
+    /**
+     * @param TelegramNotificationService $service
+     */
+    public function __construct(protected TelegramNotificationService $service)
+    {
+
+    }
 
     /**
      * Get the report.
@@ -106,6 +115,12 @@ class ReportRepository implements IReportRepository {
         ]);
 
         $report->increment('count');
+
+        $this->service->sendNotification(
+            config('telegram.chat_id'),
+            sprintf('ارسال یک گزارش از %s با نام کاربری %s', Auth::user()->id, Auth::user()->nickname) . PHP_EOL .
+            $request->input('message')
+        );
 
         if ($report) {
             return response()->json([
