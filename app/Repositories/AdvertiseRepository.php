@@ -75,7 +75,7 @@ class AdvertiseRepository implements IAdvertiseRepository {
      */
     public function index(array $places) : array {
 
-        $advertise = cache()->remember("advertise.all", now()->addMinutes(1), function () use($places) {
+        $advertise = cache()->remember("advertise.all", now()->addMinutes(20), function () use($places) {
             return Advertise::query()
                 ->where('status', 1)
                 ->whereIn('place_id', $places)
