@@ -27,7 +27,7 @@ class PostRepository implements IPostRepository {
 
     protected $categories_id    = [];
     protected $count            = 100;
-    protected $latestCount      = 80;
+    protected $latestCount      = 50;
     protected $spVideoCount     = 10;
     protected $categoryCount    = 20;
     protected $spPostCount      = 10;
