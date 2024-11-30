@@ -39,7 +39,7 @@ Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->prefix('profile')
 
     // video
     Route::prefix('videos')->group(function () {
-        Route::get('/index', [VideoController::class, 'index'])->name('profile.video.index')->middleware('permission:video_show');
+        Route::get('/index', [VideoController::class, 'index'])->name('profile.video.index');
         Route::get('/{video}', [VideoController::class, 'show'])->name('profile.video.show')->middleware('permission:video_show');
         Route::get('/', [VideoController::class, 'indexPaginate'])->name('profile.video.paginate')->middleware('permission:video_show');
         Route::post('/', [VideoController::class, 'store'])->name('profile.video.store')->middleware('permission:video_store');
