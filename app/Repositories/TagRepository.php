@@ -42,7 +42,7 @@ class TagRepository implements ITagRepository {
                         $query->where('id', $tag->id);
                     })
                     ->orderBy('id', 'DESC')
-                    ->paginate(10);
+                    ->paginate(20);
              });
 
         return PostResource::collection($posts);
