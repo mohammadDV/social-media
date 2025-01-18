@@ -128,6 +128,7 @@ class ClubRepository implements IClubRepository {
             ->with('sport')
             ->where('id', $club->id)
             ->first();
+
         $category = Category::query()
             ->where('club_id', $club->id)
             ->first();
@@ -151,7 +152,8 @@ class ClubRepository implements IClubRepository {
             // ->whereHas('tags', function ($query) use($tag){
             //     $query->where('id', $tag->id);
             // })
-            ->limit(12)
+            ->orderBy('id', 'DESC')
+            ->limit(20)
             ->get();
 
         // $videos = Post::query()
