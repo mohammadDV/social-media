@@ -2,16 +2,16 @@
 
 use Illuminate\Support\Facades\Storage;
 
-function fileUrl($src){
+// function fileUrl($src){
 
     // if(env('APP_ENV') == "local"){
-        return Storage::disk('s3')->temporaryUrl($src,'+2 minutes');
+        // return Storage::disk('s3')->temporaryUrl($src,'+2 minutes');
     // }else{
     //     return url($src);
     // }
 
-    var_dump(env('APP_ENV'));
-}
+//     var_dump(env('APP_ENV'));
+// }
 
 function limit_title($text, $limit) {
     if (str_word_count($text, 0) > $limit) {
