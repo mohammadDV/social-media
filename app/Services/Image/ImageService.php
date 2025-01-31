@@ -11,7 +11,7 @@ use Intervention\Image\Facades\Image;
 class ImageService extends ImageToolsService
 {
 
-    public function save($image)
+    public function save($image, $thumb = 0)
     {
         //set image
         $this->setImage($image);
@@ -30,7 +30,25 @@ class ImageService extends ImageToolsService
         // }else{
             // if(env('APP_ENV') == "production") {
                 // $result = Image::make($image->getRealPath())->encode($this->getImageFormat());
+
                 $result = Storage::disk('liara')->put($this->getFinalImageDirectory(), $image);
+
+
+                $url = Storage::disk('liara')->url($result);
+                $path = parse_url($url, PHP_URL_PATH);
+
+                if (!empty($thumb)) {
+                    $fileName = '/thumbnails/' . basename($path);
+                    $resizedImage = Image::make($image)->resize(150, 100)->encode('jpg');
+                    Storage::disk('liara')->put($this->getFinalImageDirectory() . $fileName, $resizedImage);
+
+                    $fileName = '/slides/' . basename($path);
+                    $resizedImage = Image::make($image)->resize(455, 303)->encode('jpg');
+                    Storage::disk('liara')->put($this->getFinalImageDirectory() . $fileName, $resizedImage);
+                }
+
+
+                // $result = Storage::disk('liara')->put($this->getFinalImageDirectory(), $image);
             // return  $S3Path = str_replace('https://storage.iran.liara.space', 'https://cdn.varzeshpod.com/' , Storage::disk('liara')->url($result));
         return  str_replace('prod-data-sport.storage.iran.liara.space', 'cdn.varzeshpod.com', Storage::disk('liara')->url($result));
             // }else{

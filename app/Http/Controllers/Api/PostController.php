@@ -26,7 +26,7 @@ class PostController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json($this->repository->index([1,2,3,5,6,7], 80), Response::HTTP_OK);
+        return response()->json($this->repository->index([1,2,3,5,4,7], 80), Response::HTTP_OK);
     }
 
     /**

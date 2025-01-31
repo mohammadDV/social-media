@@ -397,12 +397,25 @@ class PostRepository implements IPostRepository {
     public function store(PostRequest $request) :JsonResponse
     {
 
+        $thumb = null;
+        $slide = null;
+        if (!empty($request->input('image')) && !empty($request->input('thumb'))) {
+            $image = $request->input('image');
+            $path = parse_url($image, PHP_URL_PATH);
+
+            $filename = basename($path);
+            $thumb = str_replace($filename, 'thumbnails/' . $filename, $image);
+            $slide = str_replace($filename, 'slides/' . $filename,  $image);
+        }
+
         $post = auth()->user()->posts()->create([
             'pre_title'   => $request->input('pre_title'),
             'title'       => $request->input('title'),
             'content'     => $request->input('content'),
             'summary'     => $request->input('summary'),
             'image'       => $request->input('image', null),
+            'thumbnail'   => $request->input('thumb') == 1 ? $thumb : null,
+            'slide'       => $request->input('thumb') == 1 ? $slide : null,
             'video'       => $request->input('type') == 1 ? $request->input('video', null) : null,
             'video_id'    => $request->input('type') == 1 ? $request->input('video_id') : null,
             'type'        => $request->input('type',0),
@@ -448,6 +461,17 @@ class PostRepository implements IPostRepository {
 
         $this->checkLevelAccess($post->user_id == Auth::user()->id);
 
+        $thumb = null;
+        $slide = null;
+        if (!empty($request->input('image')) && !empty($request->input('thumb'))) {
+            $image = $request->input('image');
+            $path = parse_url($image, PHP_URL_PATH);
+
+            $filename = basename($path);
+            $thumb = str_replace($filename, 'thumbnails/' . $filename, $image);
+            $slide = str_replace($filename, 'slides/' . $filename,  $image);
+        }
+
         DB::beginTransaction();
         try {
             $post->update([
@@ -456,6 +480,8 @@ class PostRepository implements IPostRepository {
                 'content'     => $request->input('content'),
                 'summary'     => $request->input('summary'),
                 'image'       => $request->input('image', null),
+                'thumbnail'   => $request->input('thumb') == 1 ? $thumb : null,
+                'slide'       => $request->input('thumb') == 1 ? $slide : null,
                 'video'       => $request->input('type') == 1 ? $request->input('video', null) : null,
                 'video_id'    => $request->input('type') == 1 ? $request->input('video_id') : null,
                 'type'        => $request->input('type',0),

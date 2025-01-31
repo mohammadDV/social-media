@@ -29,7 +29,9 @@ class FileRepository implements IFileRepository {
     {
         if ($request->hasFile('image')) {
             $this->imageService->setExclusiveDirectory('uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $request->input('dir', 'default'));
-            $imageResult = $this->imageService->save($request->file('image'));
+            $imageResult = $this->imageService->save($request->file('image'),
+            !empty($request->input('thumb')) ? 1 : 0
+        );
             if (!$imageResult){
                 throw new \Exception(__('site.Error in save data'));
             }
