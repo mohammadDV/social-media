@@ -21,6 +21,8 @@ class CreatePostsTable extends Migration
             $table->string('summary')->nullable();
             $table->text('content');
             $table->text('image')->nullable();
+            $table->text('thumbnail')->nullable();
+            $table->text('slide')->nullable();
             $table->bigInteger("user_id")->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger("video_id")->nullable();
