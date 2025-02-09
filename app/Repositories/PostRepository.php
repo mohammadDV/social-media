@@ -430,7 +430,7 @@ class PostRepository implements IPostRepository {
             $tags_arr = array_unique($request->input('tags'));
             if (!empty($tags_arr)){
                 foreach($tags_arr as $item) {
-                    $tagIds[] = Tag::firstOrCreate(['title' => str_replace(' ', '_', $item)])->id;
+                    $tagIds[] = Tag::firstOrCreate(['title' => trim($item)])->id;
                 }
                 $post->tags()->attach($tagIds);
             }
@@ -497,7 +497,7 @@ class PostRepository implements IPostRepository {
                 if (!empty($tags_arr)){
                     foreach($tags_arr as $item) {
                         if (!empty($item)){
-                            $tagIds[] = Tag::firstOrCreate(['title' => str_replace(' ', '_', $item)])->id;
+                            $tagIds[] = Tag::firstOrCreate(['title' => trim($item)])->id;
                         }
                     }
                 }
