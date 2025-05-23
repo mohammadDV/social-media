@@ -174,7 +174,7 @@ class UserRepository implements IUserRepository {
 
         $this->checkLevelAccess($user->id == Auth::user()->id);
 
-        $role_id = $request->input('role_id', 4);
+        $role_id = !empty($request->input('role_id')) ? $request->input('role_id') : Auth::user()->role_id;
 
         if ($user->id == Auth::user()->id) {
             $role_id = Auth::user()->role_id;
