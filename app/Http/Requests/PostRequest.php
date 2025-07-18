@@ -28,7 +28,7 @@ class PostRequest extends BaseRequest
             'summary' => ['required','max:255'],
             'content' => ['required','string','min:5'],
             'tags' => ['max:255'],
-            'image' => ['required','string'],
+            // 'image' => ['required','string'],
             'type' => ['integer','min:0','max:1'],
             'video' =>  $this->get('type') == 1 ? 'required|string' : 'sometimes',
             'status' => ['required','min:0','max:1'],
