@@ -504,11 +504,11 @@ class PostRepository implements IPostRepository {
                 $post->tags()->sync($tagIds);
             }
 
-            $this->service->sendPhoto(
-                config('telegram.chat_id'),
-                $request->input('image', null),
-                sprintf('ویرایش یک پست از %s', Auth::user()->nickname) . PHP_EOL . $request->input('title')
-            );
+            // $this->service->sendPhoto(
+            //     config('telegram.chat_id'),
+            //     $request->input('image', null),
+            //     sprintf('ویرایش یک پست از %s', Auth::user()->nickname) . PHP_EOL . $request->input('title')
+            // );
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
