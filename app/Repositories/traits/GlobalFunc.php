@@ -85,7 +85,7 @@ trait GlobalFunc
         $imageService->setExclusiveDirectory($url);
         $result = $imageService->save($file);
         if ($result && !empty($image)){
-            if(env('APP_ENV') == "production"){
+            if(config('app.env') == "production"){
                 Storage::disk('s3')->delete($image);
             }else{
                 $imageService->deleteImage($image);

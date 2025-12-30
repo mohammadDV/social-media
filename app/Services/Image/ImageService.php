@@ -55,9 +55,6 @@ class ImageService extends ImageToolsService
             //     $result = Image::make($image->getRealPath())->save(public_path($this->getImageAddress()), null, $this->getImageFormat());
             // }
         // }
-
-        // return explode(config('filesystems.disks.s3.bucket') . "/",$S3Path)[1];
-        return env('APP_ENV') == "production" ? explode(config('filesystems.disks.s3.bucket') . "/",$S3Path)[1] :  $this->getImageAddress();
     }
 
     public function fitAndSave($image, $width, $height)
