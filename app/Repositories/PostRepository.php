@@ -421,6 +421,7 @@ class PostRepository implements IPostRepository {
             'type'        => $request->input('type',0),
             'status'      => $request->input('status'),
             'special'     => $request->input('special',0),
+            'send_to_telegram' => 1,
         ]);
 
         $post->categories()->sync($request->input('categories'));
@@ -435,6 +436,22 @@ class PostRepository implements IPostRepository {
                 $post->tags()->attach($tagIds);
             }
         }
+
+        $postUrl = sprintf('https://varzeshpod.com/news/%d/%s', $post->id, $post->slug);
+        $caption = sprintf(
+            '%s' . PHP_EOL . PHP_EOL .
+            '%s' . PHP_EOL . PHP_EOL .
+            '<a href="%s"> 🔗 لینک خبر </a>' . PHP_EOL,
+            $request->input('title'),
+            '✏️' .$request->input('summary'),
+            $postUrl
+        );
+
+        $this->service->sendPhoto(
+            config('telegram.telegram_channel_id'),
+            $request->input('image', null),
+            $caption
+        );
 
         $this->service->sendPhoto(
             config('telegram.chat_id'),
@@ -502,6 +519,28 @@ class PostRepository implements IPostRepository {
                     }
                 }
                 $post->tags()->sync($tagIds);
+            }
+
+            if ($post->send_to_telegram != 1) {
+                $post->refresh(); // Refresh to get the latest slug after update
+                $postUrl = sprintf('https://varzeshpod.com/news/%d/%s', $post->id, $post->slug);
+                $caption = sprintf(
+                    '%s' . PHP_EOL . PHP_EOL .
+                    '%s' . PHP_EOL . PHP_EOL .
+                    '<a href="%s"> 🔗 لینک خبر </a>' . PHP_EOL,
+                    $request->input('title'),
+                    '✏️' .$request->input('summary'),
+                    $postUrl
+                );
+
+                $this->service->sendPhoto(
+                    config('telegram.telegram_channel_id'),
+                    $request->input('image', null),
+                    $caption
+                );
+
+                $post->send_to_telegram = 1;
+                $post->save();
             }
 
             // $this->service->sendPhoto(

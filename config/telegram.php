@@ -217,4 +217,5 @@ return [
     ],
 
     'chat_id' => env('TELEGRAM_CHAT_ID','1184138863'),
+    'telegram_channel_id' => env('TELEGRAM_CHANNEL_ID','@Varzeshpod'),
 ];

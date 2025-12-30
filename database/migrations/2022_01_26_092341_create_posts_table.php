@@ -30,6 +30,7 @@ class CreatePostsTable extends Migration
             $table->bigInteger('view')->default(0);
             $table->tinyInteger('type')->default(0); // 0 = normal | 1 = video
             $table->tinyInteger('special')->default(0); // 0 = normal | 1 = as slider
+            $table->tinyInteger('send_to_telegram')->default(0); // 0 = normal | 1 = as slider
             $table->text('video')->nullable();
 //            $table->bigInteger('non-football')->default(0);
             $table->softDeletes();
