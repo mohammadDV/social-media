@@ -11,7 +11,7 @@ class TelegramNotificationService
 
     public function __construct()
     {
-        $this->telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
+        $this->telegram = new Api(config('telegram.bots.mybot.token'));
     }
 
     public function sendNotification($chatId, $message)
@@ -23,14 +23,20 @@ class TelegramNotificationService
     }
 
     // Method to send photo with caption
-    public function sendPhoto($chatId, $photoPathOrUrl, $caption = null)
+    public function sendPhoto($chatId, $photoPathOrUrl, $caption = null, $parseMode = 'HTML')
     {
         $photo = InputFile::create($photoPathOrUrl);
 
-        return $this->telegram->sendPhoto([
+        $params = [
             'chat_id' => $chatId,
             'photo'   => $photo,
             'caption' => $caption
-        ]);
+        ];
+
+        if ($parseMode) {
+            $params['parse_mode'] = $parseMode;
+        }
+
+        return $this->telegram->sendPhoto($params);
     }
 }
