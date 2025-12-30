@@ -17,7 +17,11 @@ RUN apt-get update && apt-get install -y \
 
 # Install extensions for php
 RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install gd
+RUN apt-get update && apt-get install -y libjpeg62-turbo-dev libpng-dev libwebp-dev libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install gd
+RUN echo "upload_max_filesize=100M\npost_max_size=100M" > /usr/local/etc/php/conf.d/uploads.ini
+
 
 # Install composer (php package manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
