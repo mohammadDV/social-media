@@ -15,17 +15,17 @@ class MatchController extends Controller
     /**
      * Constructor of MatchController.
      */
-    public function __construct(protected  IMatchRepository $repository)
+    public function __construct(protected IMatchRepository $repository)
     {
         //
     }
 
     /**
      * Get the match.
-     * @param Matches $match
-     * @return JsonResponse
+     *
+     * @param  Matches  $match
      */
-    public function show(Matches $matches) :JsonResponse
+    public function show(Matches $matches): JsonResponse
     {
 
         return response()->json($this->repository->show($matches), Response::HTTP_OK);
@@ -33,33 +33,24 @@ class MatchController extends Controller
 
     /**
      * Store the match.
-     * @param MatchRequest $request
-     * @param Step $step
-     * @return JsonResponse
      */
-    public function store(MatchRequest $request, Step $step) :JsonResponse
+    public function store(MatchRequest $request, Step $step): JsonResponse
     {
         return $this->repository->store($request, $step);
     }
 
     /**
      * Update the match.
-     * @param MatchRequest $request
-     * @param Step $step
-     * @param Matches $matches
-     * @return JsonResponse
      */
-    public function update(MatchRequest $request, Step $step, Matches $matches) :JsonResponse
+    public function update(MatchRequest $request, Step $step, Matches $matches): JsonResponse
     {
         return $this->repository->update($request, $step, $matches);
     }
 
     /**
      * Delete the match.
-     * @param Matches $matches
-     * @return JsonResponse
      */
-    public function destroy(Matches $matches) :JsonResponse
+    public function destroy(Matches $matches): JsonResponse
     {
         return $this->repository->destroy($matches);
     }

@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
-
-    public function clubs() {
+    public function clubs()
+    {
         return $this->hasMany(Club::class);
     }
-
 }

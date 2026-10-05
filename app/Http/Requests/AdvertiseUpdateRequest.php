@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class AdvertiseUpdateRequest extends BaseRequest
 {
@@ -16,7 +17,7 @@ class AdvertiseUpdateRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -25,7 +26,7 @@ class AdvertiseUpdateRequest extends BaseRequest
             'place_id' => 'required|integer|min:0|max:100',
             // 'link' => 'required|string|max:255',
             'status' => 'required|integer|in:0,1',
-            'image' => !empty($this->get('image')) ? ['required','string'] : 'sometimes',
+            'image' => ! empty($this->get('image')) ? ['required', 'string'] : 'sometimes',
         ];
     }
 }

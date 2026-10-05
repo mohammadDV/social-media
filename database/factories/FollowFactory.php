@@ -15,8 +15,8 @@ class FollowFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'       => User::factory(),
-            'follower_id'   => User::factory(),
+            'user_id' => User::factory(),
+            'follower_id' => User::factory(),
         ];
     }
 }

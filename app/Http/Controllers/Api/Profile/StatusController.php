@@ -23,8 +23,6 @@ class StatusController extends Controller
 
     /**
      * Get all of post except newspaper.
-     * @param Request $request
-     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
@@ -33,8 +31,6 @@ class StatusController extends Controller
 
     /**
      * Store the post.
-     * @param StatusRequest $request
-     * @return JsonResponse
      */
     public function store(StatusRequest $request): JsonResponse
     {
@@ -43,9 +39,6 @@ class StatusController extends Controller
 
     /**
      * Update the post.
-     * @param StatusUpdateRequest $request
-     * @param Status $status
-     * @return JsonResponse
      */
     public function update(StatusUpdateRequest $request, Status $status): JsonResponse
     {
@@ -54,8 +47,8 @@ class StatusController extends Controller
 
     /**
      * Delete the post.
-     * @param Post $post
-     * @return JsonResponse
+     *
+     * @param  Post  $post
      */
     public function destroy(Status $status): JsonResponse
     {
@@ -63,12 +56,12 @@ class StatusController extends Controller
     }
 
     /**
-     * Delete completely the post.
-     * @param int $id
-     * @return JsonResponse
+     * Delete completely the status.
+     * Parameter name must match the route `{status}` so the raw id is used
+     * (soft-deleted rows are not available via Eloquent route binding).
      */
-    public function realDestroy(int $id): JsonResponse
+    public function realDestroy(int $status): JsonResponse
     {
-        return $this->repository->realDestroy($id);
+        return $this->repository->realDestroy($status);
     }
 }

@@ -11,7 +11,6 @@ class Advertise extends Model
 
     protected $guarded = [];
 
-
     public function getStatusNameAttribute()
     {
         return $this->status == 1 ? __('site.Active') : __('site.Inactive');

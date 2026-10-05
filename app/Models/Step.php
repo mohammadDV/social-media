@@ -11,11 +11,13 @@ class Step extends Model
 
     protected $guarded = [];
 
-    public function league() {
+    public function league()
+    {
         return $this->belongsTo(League::class);
     }
 
-    public function matches() {
+    public function matches()
+    {
         return $this->hasMany(Matches::class, 'step_id', 'id');
     }
 

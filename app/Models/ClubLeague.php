@@ -10,7 +10,8 @@ class ClubLeague extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $table = "club_league";
-    public $timestamps = false;
 
+    protected $table = 'club_league';
+
+    public $timestamps = false;
 }

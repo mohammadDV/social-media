@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+
 class LeagueRequest extends BaseRequest
 {
     /**
@@ -15,20 +17,20 @@ class LeagueRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'alias_id' => !empty($this->get('alias_id')) ? ['required','string','min:3','max:255'] : 'sometimes',
-            'title' => ['required','string','min:3','max:255'],
-            'alias_title' => !empty($this->get('alias_title')) ? ['required','string','min:3','max:255'] : 'sometimes',
-            'country_id' => ['required','integer','exists:countries,id'],
-            'sport_id' => ['required','integer','exists:sports,id'],
-            'image' => ['required','string'],
-            'status' => ['required', 'integer','in:0,1'],
-            'type' => ['required', 'integer','in:1,2'],
-            'priority' => !empty($this->get('priority')) ? ['required', 'integer','max:1000'] : 'sometimes'
+            'alias_id' => ! empty($this->get('alias_id')) ? ['required', 'string', 'min:3', 'max:255'] : 'sometimes',
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'alias_title' => ! empty($this->get('alias_title')) ? ['required', 'string', 'min:3', 'max:255'] : 'sometimes',
+            'country_id' => ['required', 'integer', 'exists:countries,id'],
+            'sport_id' => ['required', 'integer', 'exists:sports,id'],
+            'image' => ['required', 'string'],
+            'status' => ['required', 'integer', 'in:0,1'],
+            'type' => ['required', 'integer', 'in:1,2'],
+            'priority' => ! empty($this->get('priority')) ? ['required', 'integer', 'max:1000'] : 'sometimes',
         ];
     }
 }

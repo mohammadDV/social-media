@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\SearchRequest;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
@@ -17,7 +16,7 @@ class UserController extends Controller
     /**
      * Constructor of UserController.
      */
-    public function __construct(protected  IUserRepository $repository)
+    public function __construct(protected IUserRepository $repository)
     {
         //
     }
@@ -46,7 +45,6 @@ class UserController extends Controller
 
     /**
      * Search users.
-     * @param SearchRequest $request
      */
     public function search(SearchRequest $request): JsonResponse
     {
@@ -55,11 +53,10 @@ class UserController extends Controller
 
     /**
      * Get the user.
-     * @param int $id
-     * @param ?User $user
-     * @return JsonResponse
+     *
+     * @param  int  $id
      */
-    public function show(?User $user) :JsonResponse
+    public function show(?User $user): JsonResponse
     {
         return response()->json($this->repository->show($user), Response::HTTP_OK);
     }

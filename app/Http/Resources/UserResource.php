@@ -17,7 +17,7 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'email' => $this->email,
-            'fullname' => !empty($this->nickname) ? $this->nickname : trim($this->first_name . ' ' . $this->last_name),
+            'fullname' => ! empty($this->nickname) ? $this->nickname : trim($this->first_name.' '.$this->last_name),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
@@ -39,7 +39,7 @@ class UserResource extends JsonResource
                 'sha256', // hash function
                 $this->id, // IMPORTANT: a UUID to identify your user
                 config('intercom.secret') // IMPORTANT: your web Identity Verification secret key - keep it safe!
-            )
+            ),
         ];
     }
 }

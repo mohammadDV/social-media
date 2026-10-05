@@ -1,11 +1,12 @@
 <?php
+
 namespace App;
 
 class HelperClass
 {
     public static function sluggableCustomSlugMethod($string, $separator = '-')
     {
-        $_transliteration = array(
+        $_transliteration = [
             '/ä|æ|ǽ/' => 'ae',
             '/ö|œ/' => 'oe',
             '/ü/' => 'ue',
@@ -55,16 +56,17 @@ class HelperClass
             '/Ĳ/' => 'IJ',
             '/ĳ/' => 'ij',
             '/Œ/' => 'OE',
-            '/ƒ/' => 'f'
-        );
+            '/ƒ/' => 'f',
+        ];
         $quotedReplacement = preg_quote($separator, '/');
-        $merge = array(
+        $merge = [
             '/[^\s\p{Zs}\p{Ll}\p{Lm}\p{Lo}\p{Lt}\p{Lu}\p{Nd}]/mu' => ' ',
             '/[\s\p{Zs}]+/mu' => $separator,
             sprintf('/^[%s]+|[%s]+$/', $quotedReplacement, $quotedReplacement) => '',
-        );
+        ];
         $map = $_transliteration + $merge;
         unset($_transliteration);
+
         return preg_replace(array_keys($map), array_values($map), $string);
     }
 }

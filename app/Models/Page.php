@@ -12,12 +12,12 @@ class Page extends Model
 
     protected $guarded = [];
 
-    public function sluggable() : array
+    public function sluggable(): array
     {
         return [
-          'slug' => [
-              'source' => 'title'
-          ]
+            'slug' => [
+                'source' => 'title',
+            ],
         ];
     }
 

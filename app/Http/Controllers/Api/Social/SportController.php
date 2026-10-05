@@ -19,7 +19,6 @@ class SportController extends Controller
 
     /**
      * Get all of sports
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {

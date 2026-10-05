@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\Profile\LiveController;
 use App\Http\Controllers\Api\Profile\AdvertiseController;
-use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\ClubController;
 use App\Http\Controllers\Api\Profile\CountryController;
 use App\Http\Controllers\Api\Profile\LeagueController;
+use App\Http\Controllers\Api\Profile\LiveController;
+use App\Http\Controllers\Api\Profile\MatchController;
 use App\Http\Controllers\Api\Profile\NotificationController;
 use App\Http\Controllers\Api\Profile\PageController;
 use App\Http\Controllers\Api\Profile\PlayerController;
@@ -24,8 +24,7 @@ use App\Http\Controllers\Api\Profile\VideoController;
 use App\Http\Controllers\Api\Social\ChatController;
 use Illuminate\Support\Facades\Route;
 
-
-Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->prefix('profile')->group(function() {
+Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->prefix('profile')->group(function () {
 
     // Posts
     Route::prefix('posts')->group(function () {
@@ -152,8 +151,8 @@ Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->prefix('profile')
         // Route::post('/{step}', [MatchController::class, 'store'])->name('profile.match.store');
     });
 
-     // advertises
-     Route::prefix('advertise')->group(function () {
+    // advertises
+    Route::prefix('advertise')->group(function () {
         Route::get('/places', [AdvertiseController::class, 'getPlaces'])->name('profile.advertise.places')->middleware('permission:advertise_show');
         Route::get('/', [AdvertiseController::class, 'indexPaginate'])->name('profile.advertise.index')->middleware('permission:advertise_show');
         Route::get('/{advertise}', [AdvertiseController::class, 'show'])->name('profile.advertise.show')->middleware('permission:advertise_show');
@@ -162,15 +161,14 @@ Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->prefix('profile')
         Route::delete('/{advertise}', [AdvertiseController::class, 'destroy'])->name('profile.advertise.delete')->middleware('permission:advertise_delete');
     });
 
-     // advertise form
-     Route::prefix('advertise-form')->group(function () {
+    // advertise form
+    Route::prefix('advertise-form')->group(function () {
         Route::get('/', [AdvertiseController::class, 'indexFormPaginate'])->name('profile.advertise-form.index')->middleware('permission:advertise_show');
         Route::delete('/{advertiseForm}', [AdvertiseController::class, 'destroyForm'])->name('profile.advertise-form.delete')->middleware('permission:advertise_delete');
     });
 
-
-     // roles
-     Route::prefix('role')->group(function () {
+    // roles
+    Route::prefix('role')->group(function () {
         Route::get('/', [RoleController::class, 'roles'])->name('profile.roles.index')->middleware('permission:role_show');
         Route::get('/permissions', [RoleController::class, 'permissions'])->name('profile.permissions.index')->middleware('permission:permission_show');
     });
@@ -209,10 +207,10 @@ Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->prefix('profile')
     // tickets
     Route::prefix('tickets')->group(function () {
         Route::get('/', [TicketController::class, 'indexPaginate'])->name('profile.ticket.index')->middleware('permission:ticket_show');
-        Route::get('/{ticket}', [TicketController::class, 'show'])->name('profile.ticket.show')->middleware('permission:ticket_show');
         Route::post('/', [TicketController::class, 'store'])->name('profile.ticket.store')->middleware('permission:ticket_store');
-        Route::post('/{ticket}', [TicketController::class, 'storeMessage'])->name('profile.ticket.store.message')->middleware('permission:ticket_store');
         Route::post('/status/{ticket}', [TicketController::class, 'changeStatus'])->name('profile.ticket.change-status')->middleware('permission:ticket_store');
+        Route::get('/{ticket}', [TicketController::class, 'show'])->name('profile.ticket.show')->middleware('permission:ticket_show');
+        Route::post('/{ticket}', [TicketController::class, 'storeMessage'])->name('profile.ticket.store.message')->middleware('permission:ticket_store');
     });
 
     // ticket subjects

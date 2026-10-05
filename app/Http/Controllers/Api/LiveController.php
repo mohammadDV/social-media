@@ -24,5 +24,4 @@ class LiveController extends Controller
     {
         return response()->json($this->repository->index(), Response::HTTP_OK);
     }
-
 }

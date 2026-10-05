@@ -4,33 +4,28 @@ namespace App\Repositories\Contracts;
 
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
- /**
+/**
  * Interface ICategoryRepository.
  */
-interface ICategoryRepository  {
-
+interface ICategoryRepository
+{
     /**
      * Get the active categories.
-     * @return AnonymousResourceCollection
      */
-    public function getActives() :AnonymousResourceCollection;
+    public function getActives(): AnonymousResourceCollection;
 
     /**
      * Get the poular categories.
-     * @return AnonymousResourceCollection
      */
-    public function popularCategories() :AnonymousResourceCollection;
+    public function popularCategories(): AnonymousResourceCollection;
 
     /**
      * Get the team categories.
-     * @return AnonymousResourceCollection
      */
-    public function getTeamCategories() :AnonymousResourceCollection;
+    public function getTeamCategories(): AnonymousResourceCollection;
 
     /**
      * Get all.
-     * @return AnonymousResourceCollection
      */
-    public function index() :AnonymousResourceCollection;
-
+    public function index(): AnonymousResourceCollection;
 }

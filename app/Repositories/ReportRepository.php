@@ -18,24 +18,16 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
-class ReportRepository implements IReportRepository {
-
-
+class ReportRepository implements IReportRepository
+{
     use GlobalFunc;
 
-    /**
-     * @param TelegramNotificationService $service
-     */
-    public function __construct(protected TelegramNotificationService $service)
-    {
-
-    }
+    public function __construct(protected TelegramNotificationService $service) {}
 
     /**
      * Get the report.
-     * @return array
      */
-    public function index() :array
+    public function index(): array
     {
         return [];
 
@@ -43,19 +35,18 @@ class ReportRepository implements IReportRepository {
 
     /**
      * Get the reports pagination.
-     * @param TableRequest $request
-     * @return LengthAwarePaginator
      */
-    public function indexPaginate(TableRequest $request) :LengthAwarePaginator
+    public function indexPaginate(TableRequest $request): LengthAwarePaginator
     {
         $search = $request->get('query');
+
         return Report::query()
             ->with('model')
             ->when(Auth::user()->level != 3, function ($query) {
                 return $query->where('user_id', Auth::user()->id);
             })
-            ->when(!empty($search), function ($query) use ($search) {
-                return $query->where('message', 'like', '%' . $search . '%')
+            ->when(! empty($search), function ($query) use ($search) {
+                return $query->where('message', 'like', '%'.$search.'%')
                     ->orWhere('id', $search);
             })
             ->orderBy($request->get('sortBy', 'status'), $request->get('sortType', 'desc'))
@@ -64,24 +55,21 @@ class ReportRepository implements IReportRepository {
 
     /**
      * Get the report.
-     * @param Report $report
-     * @return Report
      */
-    public function show(Report $report) :Report
+    public function show(Report $report): Report
     {
         return Report::query()
-                ->with('model')
-                ->where('id', $report->id)
-                ->first();
+            ->with('model')
+            ->where('id', $report->id)
+            ->first();
     }
 
     /**
      * Store the report.
-     * @param ReportRequest $request
-     * @return JsonResponse
+     *
      * @throws \Exception
      */
-    public function store(ReportRequest $request) :JsonResponse
+    public function store(ReportRequest $request): JsonResponse
     {
 
         $report = Report::query()
@@ -97,59 +85,56 @@ class ReportRepository implements IReportRepository {
             if ($createdAt->diffInMinutes(Carbon::now()) < config('times.report_time_min')) {
                 return response()->json([
                     'status' => 0,
-                    'message' => __('site.You are not allowed to resend messages. Please try again in 2 minutes.', ['number' => config('times.report_time_min')])
+                    'message' => __('site.You are not allowed to resend messages. Please try again in 2 minutes.', ['number' => config('times.report_time_min')]),
                 ]);
             }
         }
 
-
         $type = ucfirst($request->input('type'));
 
         $report = Report::updateOrCreate([
-            'model_id'   => $request->input('id'),
-            'model_type' => "App\\Models\\" . $type,
-            'status'     => Report::STATUS_PENDING
+            'model_id' => $request->input('id'),
+            'model_type' => 'App\\Models\\'.$type,
+            'status' => Report::STATUS_PENDING,
         ], [
-            'message'    => $request->input('message'),
-            'user_id'    => Auth::user()->id,
+            'message' => $request->input('message'),
+            'user_id' => Auth::user()->id,
         ]);
 
         $report->increment('count');
 
         $this->service->sendNotification(
             config('telegram.chat_id'),
-            sprintf('ارسال یک گزارش از %s با نام کاربری %s', Auth::user()->id, Auth::user()->nickname) . PHP_EOL .
+            sprintf('ارسال یک گزارش از %s با نام کاربری %s', Auth::user()->id, Auth::user()->nickname).PHP_EOL.
             $request->input('message')
         );
 
         if ($report) {
             return response()->json([
                 'status' => 1,
-                'message' => __('site.The operation has been successfully')
+                'message' => __('site.The operation has been successfully'),
             ], Response::HTTP_CREATED);
         }
 
-        throw new \Exception();
+        throw new \Exception;
     }
 
     /**
      * Update the report.
-     * @param ReportCloseRequest $request
-     * @param Report $report
-     * @return JsonResponse
+     *
      * @throws \Exception
      */
-    public function close(ReportCloseRequest $request, Report $report) :JsonResponse
+    public function close(ReportCloseRequest $request, Report $report): JsonResponse
     {
         $this->checkLevelAccess();
 
         if ($report->status != Report::STATUS_PENDING) {
-            throw new \Exception();
+            throw new \Exception;
         }
 
-        if (!empty($request->is_delete)) {
+        if (! empty($request->is_delete)) {
             $report->model->update([
-                'is_report' => $request->is_delete
+                'is_report' => $request->is_delete,
             ]);
 
             $this->sendNotification($report->model);
@@ -166,31 +151,32 @@ class ReportRepository implements IReportRepository {
             return response()->json([
                 'status' => 1,
                 'message' => __('site.The operation has been successfully'),
-                'data' => $report
+                'data' => $report,
             ], Response::HTTP_OK);
         }
 
-        throw new \Exception();
+        throw new \Exception;
     }
 
     /**
-    * Delete the report.
-    * @return JsonResponse
-    */
-   public function sendNotification($model) :void
-   {
+     * Delete the report.
+     *
+     * @return JsonResponse
+     */
+    public function sendNotification($model): void
+    {
         switch ($model::class) {
-            case Comment::class;
+            case Comment::class:
                 $status = true;
                 $message = __('site.Dear user. According to user reports, your media has been removed from public view due to violation of application rules. Please try to publish the content within the framework of the defined rules. Thank you for your cooperation.',
                     ['media' => __('site.Comment')]);
-            break;
-            case Status::class;
+                break;
+            case Status::class:
                 $status = true;
                 $message = __('site.Dear user. According to user reports, your media has been removed from public view due to violation of application rules. Please try to publish the content within the framework of the defined rules. Thank you for your cooperation.',
                     ['media' => __('site.Status post')]);
-            break;
-            default;
+                break;
+            default:
                 $status = false;
         }
 
@@ -204,16 +190,15 @@ class ReportRepository implements IReportRepository {
                 'model_type' => $model::class,
             ]);
         }
-   }
+    }
 
     /**
-    * Delete the report.
-    * @param UpdatePasswordRequest $request
-    * @param Report $report
-    * @return JsonResponse
-    */
-   public function destroy(Report $report) :JsonResponse
-   {
+     * Delete the report.
+     *
+     * @param  UpdatePasswordRequest  $request
+     */
+    public function destroy(Report $report): JsonResponse
+    {
         $this->checkLevelAccess(Auth::user()->id == $report->user_id);
 
         $report->delete();
@@ -221,10 +206,10 @@ class ReportRepository implements IReportRepository {
         if ($report) {
             return response()->json([
                 'status' => 1,
-                'message' => __('site.The operation has been successfully')
+                'message' => __('site.The operation has been successfully'),
             ], Response::HTTP_OK);
         }
 
-        throw new \Exception();
-   }
+        throw new \Exception;
+    }
 }

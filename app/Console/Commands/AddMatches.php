@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
-class AddCategories extends Command
+class AddMatches extends Command
 {
     /**
      * The name and signature of the console command.
@@ -34,8 +34,7 @@ class AddCategories extends Command
     {
         $user = User::where('level', 3)->firstOrFail();
 
-
-        die();
+        exit();
         // $leagueId = '3'; // Bondesliga
         // $seasonId = 'eq.45'; // Bondesliga
         // $leagueId = '8'; // Bondesliga
@@ -91,23 +90,22 @@ class AddCategories extends Command
                     ];
 
                     $step = Step::updateOrCreate([
-                        'title' => 'هفته' . ' ' . $round,
-                        "league_id" => $leagueId,
+                        'title' => 'هفته'.' '.$round,
+                        'league_id' => $leagueId,
                     ], [
-                        "current"   => 0,
-                        "priority"  => 1,
-                        "status"  => 1,
-                        "user_id"   => $user->id,
+                        'current' => 0,
+                        'priority' => 1,
+                        'status' => 1,
+                        'user_id' => $user->id,
                     ]);
 
                     if (empty($step->id)) {
 
-                        dd("step problem " . var_export($item, true));
+                        dd('step problem '.var_export($item, true));
                         break;
                     } else {
                         $result['step_id'] = $step->id;
                     }
-
 
                     $status = trim($item['status']['type']); // finished
                     $homeId = $item['home_team_id'];
@@ -117,7 +115,7 @@ class AddCategories extends Command
 
                     if ($teams->count() != 2) {
                         continue;
-                        dd("teams problem " . var_export($item, true));
+                        dd('teams problem '.var_export($item, true));
                     }
 
                     foreach ($teams as $team) {
@@ -141,17 +139,17 @@ class AddCategories extends Command
                     $result['date'] = str_replace('T', ' ', explode('+00', $item['start_time'])[0]); // 2023-10-22T13:30:00+00:00
 
                     $add = Matches::updateOrCreate([
-                        "home_id"   => $result['home_id'],
-                        "away_id"   => $result['away_id'],
-                        "step_id"   => $step->id,
-                    ],[
-                        "hsc"       => $result['hsc'],
-                        "asc"       => $result['asc'],
-                        "link"      => $result['link'],
-                        "status"    => $result['status'],
-                        "date"      => $result['date'],
-                        "priority"  => $result['priority'],
-                        "user_id"   => $user->id,
+                        'home_id' => $result['home_id'],
+                        'away_id' => $result['away_id'],
+                        'step_id' => $step->id,
+                    ], [
+                        'hsc' => $result['hsc'],
+                        'asc' => $result['asc'],
+                        'link' => $result['link'],
+                        'status' => $result['status'],
+                        'date' => $result['date'],
+                        'priority' => $result['priority'],
+                        'user_id' => $user->id,
                     ]);
 
                     if ($add) {
@@ -160,15 +158,13 @@ class AddCategories extends Command
 
                 }
             } else {
-                dd('Error: ' . $response->status());
+                dd('Error: '.$response->status());
             }
 
-
-            $this->info(PHP_EOL.'Done' . $i);
+            $this->info(PHP_EOL.'Done'.$i);
             $x++;
             sleep(5);
         }
-
 
         return Command::SUCCESS;
     }

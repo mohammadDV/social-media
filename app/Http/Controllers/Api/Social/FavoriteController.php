@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Social;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LikeStoreRequest;
 use App\Http\Requests\SearchClubRequest;
 use App\Models\Club;
 use App\Models\User;
@@ -24,8 +23,6 @@ class FavoriteController extends Controller
 
     /**
      * Get favorite clubs of the user
-     * @param ?User $user
-     * @return JsonResponse
      */
     public function getClubs(?User $user): JsonResponse
     {
@@ -34,8 +31,6 @@ class FavoriteController extends Controller
 
     /**
      * Get favorite clubs of the user with limitation
-     * @param ?User $user
-     * @return JsonResponse
      */
     public function getClubsLimited(?User $user): JsonResponse
     {
@@ -44,8 +39,8 @@ class FavoriteController extends Controller
 
     /**
      * Store favorite club for the user
-     * @param Club $request
-     * @return JsonResponse
+     *
+     * @param  Club  $request
      */
     public function storeClub(Club $club): JsonResponse
     {
@@ -54,7 +49,7 @@ class FavoriteController extends Controller
 
     /**
      * Search to choose favorite club for the user
-     * @param SearchClubRequest $request
+     *
      * @return JsonResponse
      */
     public function search(SearchClubRequest $request): LengthAwarePaginator

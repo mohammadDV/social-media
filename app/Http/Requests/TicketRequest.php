@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+
 class TicketRequest extends BaseRequest
 {
     /**
@@ -15,14 +17,14 @@ class TicketRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'subject_id' => ['required','exists:ticket_subjects,id'],
-            'message' => ['required','string','min:3','max:255'],
-            'file' => !empty($this->get('file')) ? ['required','string'] : ['sometimes'],
+            'subject_id' => ['required', 'exists:ticket_subjects,id'],
+            'message' => ['required', 'string', 'min:3', 'max:255'],
+            'file' => ! empty($this->get('file')) ? ['required', 'string'] : ['sometimes'],
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class ReportCloseRequest extends BaseRequest
 {
@@ -16,12 +17,12 @@ class ReportCloseRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'is_delete' => ['required','in:0,1'],
+            'is_delete' => ['required', 'in:0,1'],
         ];
     }
 }

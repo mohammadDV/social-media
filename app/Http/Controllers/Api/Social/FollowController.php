@@ -23,8 +23,6 @@ class FollowController extends Controller
 
     /**
      * Get the follow info.
-     * @param ?User $user
-     * @return JsonResponse
      */
     public function index(?User $user): JsonResponse
     {
@@ -33,8 +31,6 @@ class FollowController extends Controller
 
     /**
      * Specify whether to be a follower or not.
-     * @param User $user
-     * @return JsonResponse
      */
     public function isFollower(User $user): JsonResponse
     {
@@ -43,9 +39,6 @@ class FollowController extends Controller
 
     /**
      * Get the followers.
-     * @param ?User $user
-     * @param SearchRequest $request
-     * @return JsonResponse
      */
     public function getFollowers(?User $user, SearchRequest $request): JsonResponse
     {
@@ -54,9 +47,6 @@ class FollowController extends Controller
 
     /**
      * Get the followings.
-     * @param ?User $user
-     * @param SearchRequest $request
-     * @return JsonResponse
      */
     public function getFollowings(?User $user, SearchRequest $request): JsonResponse
     {
@@ -65,8 +55,6 @@ class FollowController extends Controller
 
     /**
      * Store the follow.
-     * @param User $user
-     * @return JsonResponse
      */
     public function store(User $user): JsonResponse
     {
@@ -75,9 +63,6 @@ class FollowController extends Controller
 
     /**
      * Change status of the follow.
-     * @param User $user
-     * @param FollowChangeStatusRequest $request
-     * @return JsonResponse
      */
     public function changeFollowStatus(User $user, FollowChangeStatusRequest $request): JsonResponse
     {

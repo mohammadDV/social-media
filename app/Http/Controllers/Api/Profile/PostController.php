@@ -47,9 +47,6 @@ class PostController extends Controller
 
     /**
      * Update the post.
-     * @param PostUpdateRequest $request
-     * @param Post $post
-     * @return JsonResponse
      */
     public function update(PostUpdateRequest $request, Post $post): JsonResponse
     {
@@ -58,8 +55,6 @@ class PostController extends Controller
 
     /**
      * Delete the post.
-     * @param Post $post
-     * @return JsonResponse
      */
     public function destroy(Post $post): JsonResponse
     {
@@ -68,8 +63,6 @@ class PostController extends Controller
 
     /**
      * Delete completely the post.
-     * @param int $id
-     * @return JsonResponse
      */
     public function realDestroy(int $id): JsonResponse
     {

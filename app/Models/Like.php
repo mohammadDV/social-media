@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Like extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
     protected $hidden = [
-        'likeable_type'
+        'likeable_type',
     ];
 
     public function likeable()

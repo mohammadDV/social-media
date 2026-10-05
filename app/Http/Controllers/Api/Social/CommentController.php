@@ -23,8 +23,6 @@ class CommentController extends Controller
 
     /**
      * Get the post comment
-     * @param Post $post
-     * @return JsonResponse
      */
     public function getPostComments(Post $post): JsonResponse
     {
@@ -33,9 +31,6 @@ class CommentController extends Controller
 
     /**
      * Store the post comment
-     * @param StoreCommentRequest $request
-     * @param Post $post
-     * @return JsonResponse
      */
     public function storePostComment(StoreCommentRequest $request, Post $post): JsonResponse
     {
@@ -44,8 +39,6 @@ class CommentController extends Controller
 
     /**
      * Get the status comments.
-     * @param Status $status
-     * @return JsonResponse
      */
     public function getStatusComments(Status $status): JsonResponse
     {
@@ -54,9 +47,6 @@ class CommentController extends Controller
 
     /**
      * Store the status comment
-     * @param StoreCommentRequest $request
-     * @param Status $status
-     * @return JsonResponse
      */
     public function storeStatusComment(StoreCommentRequest $request, Status $status): JsonResponse
     {
@@ -65,9 +55,6 @@ class CommentController extends Controller
 
     /**
      * Update the post.
-     * @param PostUpdateRequest $request
-     * @param Post $post
-     * @return JsonResponse
      */
     public function update(PostUpdateRequest $request, Post $post): JsonResponse
     {
@@ -76,8 +63,6 @@ class CommentController extends Controller
 
     /**
      * Delete the post.
-     * @param Post $post
-     * @return JsonResponse
      */
     public function destroy(Post $post): JsonResponse
     {
@@ -86,8 +71,6 @@ class CommentController extends Controller
 
     /**
      * Delete completely the post.
-     * @param int $id
-     * @return JsonResponse
      */
     public function realDestroy(int $id): JsonResponse
     {

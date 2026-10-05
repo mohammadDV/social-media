@@ -1,0 +1,2224 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Console/Commands/AddClubs.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" in empty\(\) is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Console/Commands/AddClubs.php
+
+		-
+			message: '#^Variable \$id might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Console/Commands/AddCountries.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Console/Commands/AddMatches.php
+
+		-
+			message: '#^Call to an undefined static method App\\Libraries\\OpenAI\\ClientFacade\:\:chat\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Console/Commands/AddPosts.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$attempt$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Console/Commands/AddPosts.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Console/Commands/AddPosts.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Models\\Page is incompatible with native type Illuminate\\Http\\JsonResponse\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Http/Controllers/Api/PageController.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\ICountryRepository\:\:index\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Http/Controllers/Api/Profile/CountryController.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$request with type App\\Http\\Controllers\\Api\\Profile\\LiveUpdateRequest is not subtype of native type App\\Http\\Requests\\LiveRequest\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: app/Http/Controllers/Api/Profile/LiveController.php
+
+		-
+			message: '#^Parameter \$request of method App\\Http\\Controllers\\Api\\Profile\\LiveController\:\:update\(\) has invalid type App\\Http\\Controllers\\Api\\Profile\\LiveUpdateRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Profile/LiveController.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$match$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Profile/MatchController.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\INotificationRepository\:\:indexPaginate\(\) invoked with 2 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Http/Controllers/Api/Profile/NotificationController.php
+
+		-
+			message: '#^Call to an undefined method App\\Repositories\\Contracts\\IPlayerRepository\:\:isActive\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Profile/PlayerController.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$post$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Profile/StatusController.php
+
+		-
+			message: '#^Call to an undefined method App\\Repositories\\Contracts\\ITicketRepository\:\:storeMessage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Profile/TicketController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\Profile\\TicketController\:\:destroy\(\) should return Illuminate\\Http\\JsonResponse but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: app/Http/Controllers/Api/Profile/TicketController.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\ITicketSubjectRepository\:\:index\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Http/Controllers/Api/Profile/TicketSubjectController.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$subject$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Http/Controllers/Api/Profile/TicketSubjectController.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\IVideoRepository\:\:index\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Http/Controllers/Api/Profile/VideoController.php
+
+		-
+			message: '''
+				#^PHPDoc tag @param has invalid value \(VideoFormRequest
+				Store the video\.\)\: Unexpected token "\\n     \* ", expected variable at offset 34 on line 2$#
+			'''
+			identifier: phpDoc.parseError
+			count: 1
+			path: app/Http/Controllers/Api/Profile/VideoController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\Social\\ChatController\:\:destroy\(\) should return Illuminate\\Http\\JsonResponse but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: app/Http/Controllers/Api/Social/ChatController.php
+
+		-
+			message: '#^Call to an undefined method App\\Repositories\\Contracts\\ICommentRepository\:\:destroy\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Social/CommentController.php
+
+		-
+			message: '#^Call to an undefined method App\\Repositories\\Contracts\\ICommentRepository\:\:realDestroy\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Social/CommentController.php
+
+		-
+			message: '#^Call to an undefined method App\\Repositories\\Contracts\\ICommentRepository\:\:update\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Social/CommentController.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Social/FavoriteController.php
+
+		-
+			message: '#^PHPDoc tag @return with type Illuminate\\Http\\JsonResponse is not subtype of native type Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Http/Controllers/Api/Social/FavoriteController.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$user$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Social/NotificationController.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$user$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Social/StatusController.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$id$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Http/Controllers/Api/UserController.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(string The request name\)\: Unexpected token "The", expected variable at offset 97 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: app/Http/Controllers/Api/ValidationController.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Category\>\:\:orderby\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/SitemapController.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Page\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/SitemapController.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Post\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Http/Controllers/SitemapController.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Tag\>\:\:orderby\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/SitemapController.php
+
+		-
+			message: '#^Relation ''categories'' is not found in App\\Models\\Post model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Http/Controllers/SitemapController.php
+
+		-
+			message: '#^Relation ''posts'' is not found in App\\Models\\Category model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Http/Controllers/SitemapController.php
+
+		-
+			message: '#^Relation ''posts'' is not found in App\\Models\\Tag model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Http/Controllers/SitemapController.php
+
+		-
+			message: '#^Parameter \#2 \$values of method Symfony\\Component\\HttpFoundation\\ResponseHeaderBag\:\:set\(\) expects array\<string\>\|string\|null, true given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Middleware/CorsMiddleware.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CategoryResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CategoryResource\:\:\$image\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CategoryResource\:\:\$posts_count\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CategoryResource\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CategoryResource\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CommentResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CommentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CommentResource\:\:\$reply\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CommentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CommentResource\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CommentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$category\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$comments\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$image\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$pre_title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$slide\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$special\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$summary\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$user\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$video\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$view\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Array has 2 duplicate keys with value ''image'' \(''image'', ''image''\)\.$#'
+			identifier: array.duplicateKey
+			count: 1
+			path: app/Http/Resources/PostResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TagResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TagResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TagResource\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TagResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$bg_photo_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$biography\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$first_name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$is_private\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$is_report\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$last_name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$level\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$mobile\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$national_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$nickname\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$point\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$profile_photo_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\UserResource\:\:getPermissionRoleNames\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\UserResource\:\:getRoleNames\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$attribute1\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/SendNotifiaction.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$attribute2\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/SendNotifiaction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/SendNotifiaction.php
+
+		-
+			message: '#^PHPDoc tag @return with type array is incompatible with native type string\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Libraries/OpenAI/Client.php
+
+		-
+			message: '#^Relation ''likes'' is not found in App\\Models\\Comment model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/Comment.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Comment model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/Comment.php
+
+		-
+			message: '#^Relation ''league'' is not found in App\\Models\\Step model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/Matches.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Like model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/Post.php
+
+		-
+			message: '#^Relation ''likes'' is not found in App\\Models\\Comment model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/Status.php
+
+		-
+			message: '#^Relation ''parents'' is not found in App\\Models\\Comment model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/Status.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Like model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/Status.php
+
+		-
+			message: '#^Class Laravel\\Jetstream\\Events\\TeamCreated not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			message: '#^Class Laravel\\Jetstream\\Events\\TeamDeleted not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			message: '#^Class Laravel\\Jetstream\\Events\\TeamUpdated not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\TeamInvitation\:\:belongsTo\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/TeamInvitation.php
+
+		-
+			message: '#^Call to static method teamModel\(\) on an unknown class Laravel\\Jetstream\\Jetstream\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/TeamInvitation.php
+
+		-
+			message: '#^Call to function method_exists\(\) with \$this\(App\\Models\\User\) and ''roles'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^PHPDoc type array of property App\\Models\\User\:\:\$appends is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$appends\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^PHPDoc type array of property App\\Models\\User\:\:\$casts is not covariant with PHPDoc type array\<string, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$casts\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^PHPDoc type array of property App\\Models\\User\:\:\$visible is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$visible\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^PHPDoc type array\<string\> of property App\\Models\\User\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Property ''profile_photo_url'' does not exist in model\.$#'
+			identifier: rules.modelAppends
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Relation ''country'' is not found in App\\Models\\Club model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Relation ''sport'' is not found in App\\Models\\Club model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\AdvertiseForm\>\:\:orWwhere\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Repositories/AdvertiseRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 3
+			path: app/Repositories/AdvertiseRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\AdvertiseRepository\:\:show\(\) has invalid return type App\\Repositories\\Matches\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/AdvertiseRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\AdvertiseRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/AdvertiseRepository.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$request with type App\\Http\\Requests\\AdvertiseRequest is incompatible with native type App\\Http\\Requests\\AdvertiseUpdateRequest\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: app/Repositories/AdvertiseRepository.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(array %%places\)\: Unexpected token "%%places", expected variable at offset 54 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: app/Repositories/AdvertiseRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/AdvertiseRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Repositories\\Matches is not subtype of native type App\\Models\\Advertise\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Repositories/AdvertiseRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 3
+			path: app/Repositories/AdvertiseRepository.php
+
+		-
+			message: '#^Relation ''blocks'' is not found in App\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/BlockRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Category\>\:\:orderby\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Repositories/CategoryRepository.php
+
+		-
+			message: '#^Relation ''posts'' is not found in App\\Models\\Category model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/CategoryRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Chat\:\:\$banned\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Chat\:\:\$block\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\ChatRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Repositories\\ChatRepository\:\:areBothBlocked\(\) expects App\\Models\\User\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^Relation ''messages'' is not found in App\\Models\\Chat model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/ChatRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Club\:\:\$sport\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\League\:\:\$clubs\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\ClubRepository\:\:getInfo\(\) should return App\\Models\\Club but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\ClubRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Club\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''ASC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Post\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Relation ''categories'' is not found in App\\Models\\Post model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Relation ''clubs'' is not found in App\\Models\\League model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Relation ''clubs'' is not found in App\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Relation ''country'' is not found in App\\Models\\Club model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Relation ''sport'' is not found in App\\Models\\Club model\.$#'
+			identifier: larastan.relationExistence
+			count: 4
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Relation ''step'' is not found in App\\Models\\Matches model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Relation ''teamAway'' is not found in App\\Models\\Matches model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Relation ''teamHome'' is not found in App\\Models\\Matches model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/ClubRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Comment\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Comment\>\:\:\$user\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Repositories/CommentRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Post\:\:\$user\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/CommentRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Status\:\:\$user\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/CommentRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Comment\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 3
+			path: app/Repositories/CommentRepository.php
+
+		-
+			message: '#^Relation ''likes'' is not found in App\\Models\\Comment model\.$#'
+			identifier: larastan.relationExistence
+			count: 6
+			path: app/Repositories/CommentRepository.php
+
+		-
+			message: '#^Relation ''parents'' is not found in App\\Models\\Comment model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/CommentRepository.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Comment model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/CommentRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/Contracts/IAdvertiseRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/IChatRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/IClubRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/ICountryRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\IFollowRepository\:\:isFollower\(\) has invalid return type App\\Repositories\\Contracts\\JsonResponse\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/Contracts/IFollowRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Repositories\\Contracts\\JsonResponse is incompatible with native type array\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Repositories/Contracts/IFollowRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\ILeagueRepository\:\:getAllSteps\(\) has invalid return type App\\Repositories\\Contracts\\collectoin\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/Contracts/ILeagueRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\ILeagueRepository\:\:getClubs\(\) has invalid return type App\\Repositories\\Contracts\\collectoin\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/Contracts/ILeagueRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/ILeagueRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Repositories\\Contracts\\collectoin is not subtype of native type Illuminate\\Database\\Eloquent\\Collection\.$#'
+			identifier: return.phpDocType
+			count: 2
+			path: app/Repositories/Contracts/ILeagueRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/ILiveRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/IMatchRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/INotificationRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type Illuminate\\Http\\JsonResponse is incompatible with native type array\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Repositories/Contracts/INotificationRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/IPageRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/IPlayerRepository.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$user with type App\\Models\\User\|null is not subtype of native type App\\Models\\User\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: app/Repositories/Contracts/IPostRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/Contracts/IReportRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\IStatusRepository\:\:getInfo\(\) has invalid return type App\\Repositories\\Contracts\\StatusResource\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/Contracts/IStatusRepository.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$user with type App\\Models\\User\|null is not subtype of native type App\\Models\\User\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: app/Repositories/Contracts/IStatusRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\IStepRepository\:\:getAllClubs\(\) has invalid return type App\\Repositories\\Contracts\\collectoin\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/Contracts/IStepRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\Contracts\\IStepRepository\:\:getAllMatches\(\) has invalid return type App\\Repositories\\Contracts\\collectoin\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/Contracts/IStepRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Repositories\\Contracts\\collectoin is not subtype of native type Illuminate\\Database\\Eloquent\\Collection\.$#'
+			identifier: return.phpDocType
+			count: 2
+			path: app/Repositories/Contracts/IStepRepository.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$request with type Illuminate\\Pagination\\LengthAwarePaginator is incompatible with native type App\\Http\\Requests\\SearchRequest\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: app/Repositories/Contracts/IUserRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/CountryRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\CountryRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/CountryRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/CountryRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/CountryRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/CountryRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$clubs\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Repositories/FavoriteRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$clubsLimited\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Repositories/FavoriteRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\FavoriteRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/FavoriteRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/FavoriteRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Club\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''ASC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/FavoriteRepository.php
+
+		-
+			message: '#^Relation ''country'' is not found in App\\Models\\Club model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/FavoriteRepository.php
+
+		-
+			message: '#^Relation ''sport'' is not found in App\\Models\\Club model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/FavoriteRepository.php
+
+		-
+			message: '#^Variable \$fileResult in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: app/Repositories/FileRepository.php
+
+		-
+			message: '#^Variable \$imageResult in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: app/Repositories/FileRepository.php
+
+		-
+			message: '#^Variable \$videoResult in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: app/Repositories/FileRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\FollowRepository\:\:isFollower\(\) has invalid return type App\\Repositories\\JsonResponse\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/FollowRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\FollowRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/FollowRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/FollowRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Repositories\\JsonResponse is incompatible with native type array\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Repositories/FollowRepository.php
+
+		-
+			message: '#^Relation ''follower'' is not found in App\\Models\\Follow model\.$#'
+			identifier: larastan.relationExistence
+			count: 4
+			path: app/Repositories/FollowRepository.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Follow model\.$#'
+			identifier: larastan.relationExistence
+			count: 4
+			path: app/Repositories/FollowRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\League\:\:\$clubs\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\League\:\:\$country\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\League\:\:\$sport\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\League\:\:\$steps\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\LeagueRepository\:\:getAllSteps\(\) has invalid return type App\\Repositories\\collectoin\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\LeagueRepository\:\:getClubs\(\) has invalid return type App\\Repositories\\collectoin\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\LeagueRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Repositories\\collectoin is not subtype of native type Illuminate\\Database\\Eloquent\\Collection\.$#'
+			identifier: return.phpDocType
+			count: 2
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\League\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''ASC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Relation ''country'' is not found in App\\Models\\League model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Relation ''sport'' is not found in App\\Models\\League model\.$#'
+			identifier: larastan.relationExistence
+			count: 4
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/LeagueRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/LiveRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\LiveRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/LiveRepository.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$request with type App\\Repositories\\LiveUpdateRequest is not subtype of native type App\\Http\\Requests\\LiveRequest\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: app/Repositories/LiveRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/LiveRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/LiveRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Live\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''ASC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/LiveRepository.php
+
+		-
+			message: '#^Parameter \$request of method App\\Repositories\\LiveRepository\:\:update\(\) has invalid type App\\Repositories\\LiveUpdateRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/LiveRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/LiveRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/MatchRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\MatchRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/MatchRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/MatchRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$match$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/MatchRepository.php
+
+		-
+			message: '#^Relation ''teamAway'' is not found in App\\Models\\Matches model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/MatchRepository.php
+
+		-
+			message: '#^Relation ''teamHome'' is not found in App\\Models\\Matches model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/MatchRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/MatchRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$clubs\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Repositories/MemberRepository.php
+
+		-
+			message: '#^Relation ''blocked'' is not found in App\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/MemberRepository.php
+
+		-
+			message: '#^Relation ''clubs'' is not found in App\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/MemberRepository.php
+
+		-
+			message: '#^Relation ''followers'' is not found in App\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/MemberRepository.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 2
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\NotificationRepository\:\:sendNotification\(\) should return Illuminate\\Http\\JsonResponse but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\NotificationRepository\:\:show\(\) has invalid return type App\\Repositories\\Matches\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\NotificationRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$roles$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$users$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Repositories\\Matches is not subtype of native type App\\Models\\Notification\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type Illuminate\\Http\\JsonResponse is incompatible with native type array\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^Property App\\Models\\NotificationSend\:\:\$status \(bool\) does not accept int\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^Relation ''model'' is not found in App\\Models\\Notification model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/NotificationRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 2
+			path: app/Repositories/PageRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\PageRepository\:\:show\(\) has invalid return type App\\Repositories\\Matches\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/PageRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\PageRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/PageRepository.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$request with type App\\Http\\Requests\\PageRequest is incompatible with native type App\\Http\\Requests\\PageUpdateRequest\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: app/Repositories/PageRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/PageRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Repositories\\Matches is not subtype of native type App\\Models\\Page\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Repositories/PageRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Repositories/PageRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\League\:\:\$players\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Player\:\:\$sport\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Player\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Player\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\PlayerRepository\:\:getInfo\(\) should return App\\Models\\Player but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\PlayerRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Player\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''ASC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Relation ''club'' is not found in App\\Models\\Player model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Relation ''country'' is not found in App\\Models\\Player model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Relation ''players'' is not found in App\\Models\\League model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Relation ''sport'' is not found in App\\Models\\Player model\.$#'
+			identifier: larastan.relationExistence
+			count: 4
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Relation ''step'' is not found in App\\Models\\Matches model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Relation ''tags'' is not found in App\\Models\\Post model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Relation ''teamAway'' is not found in App\\Models\\Matches model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Relation ''teamHome'' is not found in App\\Models\\Matches model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/PlayerRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Repositories\\PostRepository\:\:\$fileService\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Repositories\\PostRepository\:\:\$imageService\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\PostRepository\:\:authorPosts\(\) should return array but returns Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Post\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\PostRepository\:\:show\(\) should return array but returns App\\Models\\Post\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\PostRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Method Carbon\\Carbon\:\:addMinute\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 2
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$user with type App\\Models\\User\|null is not subtype of native type App\\Models\\User\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$categories$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$category$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type array is incompatible with native type object\.$#'
+			identifier: return.phpDocType
+			count: 2
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Category\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Post\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 5
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Tag\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Relation ''advertise'' is not found in App\\Models\\Post model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Relation ''categories'' is not found in App\\Models\\Post model\.$#'
+			identifier: larastan.relationExistence
+			count: 7
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Relation ''comments'' is not found in App\\Models\\Post model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Relation ''tags'' is not found in App\\Models\\Post model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Post model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/PostRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Report\:\:\$model\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Repositories/ReportRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/ReportRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\ReportRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/ReportRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/ReportRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/ReportRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type Illuminate\\Http\\JsonResponse is incompatible with native type void\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: app/Repositories/ReportRepository.php
+
+		-
+			message: '#^Relation ''model'' is not found in App\\Models\\Report model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/ReportRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/ReportRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\RoleRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/RoleRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/RoleRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\RpcRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/RpcRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/RpcRepository.php
+
+		-
+			message: '#^Relation ''model'' is not found in App\\Models\\Notification model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/RpcRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/SportRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\SportRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/SportRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/SportRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/SportRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/SportRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\StatusRepository\:\:getInfo\(\) has invalid return type App\\Repositories\\StatusResource\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\StatusRepository\:\:getInfo\(\) should return App\\Repositories\\StatusResource but returns App\\Models\\Status\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\StatusRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$user with type App\\Models\\User\|null is not subtype of native type App\\Models\\User\.$#'
+			identifier: parameter.phpDocType
+			count: 2
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Status\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 3
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^Relation ''comments'' is not found in App\\Models\\Status model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^Relation ''favorites'' is not found in App\\Models\\Status model\.$#'
+			identifier: larastan.relationExistence
+			count: 4
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^Relation ''likes'' is not found in App\\Models\\Status model\.$#'
+			identifier: larastan.relationExistence
+			count: 4
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Status model\.$#'
+			identifier: larastan.relationExistence
+			count: 5
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type App\\Models\\User\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Repositories/StatusRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\League\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\League\>\:\:\$clubs\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Step\:\:\$clubs\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Step\:\:\$league\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Step\:\:\$matches\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 2
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\StepRepository\:\:getAllClubs\(\) has invalid return type App\\Repositories\\collectoin\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\StepRepository\:\:getAllMatches\(\) has invalid return type App\\Repositories\\collectoin\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\StepRepository\:\:getClubs\(\) has invalid return type App\\Repositories\\collectoin\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\StepRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$league$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^PHPDoc tag @return with type App\\Repositories\\collectoin is not subtype of native type Illuminate\\Database\\Eloquent\\Collection\.$#'
+			identifier: return.phpDocType
+			count: 3
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Relation ''league'' is not found in App\\Models\\Step model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Repositories/StepRepository.php
+
+		-
+			message: '#^Method Carbon\\Carbon\:\:addMinute\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Repositories/TagRepository.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Post\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/TagRepository.php
+
+		-
+			message: '#^Relation ''tags'' is not found in App\\Models\\Post model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/TagRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/TicketRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\TicketRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/TicketRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/TicketRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/TicketRepository.php
+
+		-
+			message: '#^Relation ''messages'' is not found in App\\Models\\Ticket model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/TicketRepository.php
+
+		-
+			message: '#^Relation ''subject'' is not found in App\\Models\\Ticket model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/TicketRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/TicketRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/TicketSubjectRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\TicketSubjectRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/TicketSubjectRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/TicketSubjectRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$request$#'
+			identifier: parameter.notFound
+			count: 1
+			path: app/Repositories/TicketSubjectRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/TicketSubjectRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Role\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Role\>\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Repositories/UserRepository.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: app/Repositories/UserRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\UserRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/UserRepository.php
+
+		-
+			message: '#^Method App\\Services\\TelegramNotificationService\:\:sendNotification\(\) invoked with 8 parameters, 2 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Repositories/UserRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/UserRepository.php
+
+		-
+			message: '#^Relation ''blocked'' is not found in App\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/UserRepository.php
+
+		-
+			message: '#^Relation ''clubs'' is not found in App\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/UserRepository.php
+
+		-
+			message: '#^Relation ''sport'' is not found in App\\Models\\Club model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/UserRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Repositories/UserRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\VideoRepository\:\:show\(\) should return array but returns App\\Models\\Video\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Repositories/VideoRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\VideoRepository\:\:uploadImage\(\) with return type void returns mixed but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: app/Repositories/VideoRepository.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$conditions$#'
+			identifier: parameter.notFound
+			count: 2
+			path: app/Repositories/VideoRepository.php
+
+		-
+			message: '#^Offset int\<0, max\> does not exist on null\.$#'
+			identifier: offsetAccess.notFound
+			count: 2
+			path: app/Services/MatchService.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\ClubLeague\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/MatchService.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\ClubStep\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/MatchService.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Matches\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''ASC'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/MatchService.php
+
+		-
+			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Step\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''ASC'' given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Services/MatchService.php
+
+		-
+			message: '#^Result of method Illuminate\\Cache\\Repository\:\:remember\(\) \(void\) is used\.$#'
+			identifier: method.void
+			count: 1
+			path: app/Services/MatchService.php

@@ -17,10 +17,10 @@ class LikeFactory extends Factory
     public function definition()
     {
         return [
-            "user_id"           => User::factory(),
-            "likeable_id"    => Post::factory(),
-            "likeable_type"  => Post::class,
-            "type"              => Arr::random([1,2]),
+            'user_id' => User::factory(),
+            'likeable_id' => Post::factory(),
+            'likeable_type' => Post::class,
+            'type' => Arr::random([1, 2]),
         ];
     }
 }

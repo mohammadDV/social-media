@@ -15,16 +15,15 @@ class NotificationController extends Controller
     /**
      * Constructor of NotificationController.
      */
-    public function __construct(protected  INotificationRepository $repository)
+    public function __construct(protected INotificationRepository $repository)
     {
         //
     }
 
     /**
      * Get all of notification with pagination
-     * @param TableRequest $request
-     * @param ?User $user
-     * @return JsonResponse
+     *
+     * @param  ?User  $user
      */
     public function indexPaginate(TableRequest $request): JsonResponse
     {

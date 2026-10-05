@@ -19,7 +19,6 @@ class CountryController extends Controller
 
     /**
      * Get all of countries
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {

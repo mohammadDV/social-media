@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Status extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $dates        = ['deleted_at'];
-    protected $guarded      = [];
+
+    protected $dates = ['deleted_at'];
+
+    protected $guarded = [];
 
     protected $casts = [
-        'file' => 'array'
+        'file' => 'array',
     ];
 
     public function comments()
@@ -21,7 +23,7 @@ class Status extends Model
         return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id')
             ->where('parent_id', 0)
             ->where('is_report', 0)
-            ->with(['likes','parents']);
+            ->with(['likes', 'parents']);
     }
 
     public function likes()
@@ -38,5 +40,4 @@ class Status extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }

@@ -9,16 +9,19 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    CONST STATUS_ACTIVE = 'active';
-    CONST STATUS_CLOSED = 'closed';
+    const STATUS_ACTIVE = 'active';
+
+    const STATUS_CLOSED = 'closed';
 
     protected $guarded = [];
 
-    public function subject() {
+    public function subject()
+    {
         return $this->belongsTo(TicketSubject::class, 'subject_id', 'id');
     }
 
-    public function messages() {
+    public function messages()
+    {
         return $this->hasMany(TicketMessage::class);
     }
 }

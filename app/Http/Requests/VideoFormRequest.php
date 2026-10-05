@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class VideoFormRequest extends BaseRequest
 {
@@ -17,16 +17,16 @@ class VideoFormRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'title' => ['required','string','min:5','max:255'],
+            'title' => ['required', 'string', 'min:5', 'max:255'],
             // 'image' => ['required','string'],
             // 'type' => ['integer','min:0','max:1'],
-            'file' =>  ['required','string'],
-            'status' => ['required','in:0,1'],
+            'file' => ['required', 'string'],
+            'status' => ['required', 'in:0,1'],
         ];
     }
 }

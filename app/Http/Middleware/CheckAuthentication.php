@@ -12,16 +12,14 @@ class CheckAuthentication
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            // User is authenticated
-            // You can access Auth::user() information here
             $user = Auth::user();
-            // Pass the user to the request if needed
-            $request->user = $user;
+            $request->setUserResolver(fn () => $user);
+            $request->attributes->set('auth_user', $user);
         }
 
         return $next($request);

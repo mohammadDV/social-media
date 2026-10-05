@@ -11,15 +11,18 @@ class Player extends Model
 
     protected $guarded = [];
 
-    public function country(){
+    public function country()
+    {
         return $this->belongsTo(Country::class);
     }
 
-    public function sport(){
+    public function sport()
+    {
         return $this->belongsTo(Sport::class);
     }
 
-    public function club(){
+    public function club()
+    {
         return $this->belongsTo(Club::class);
     }
 }

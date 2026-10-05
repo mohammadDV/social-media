@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Favorite extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
     protected $hidden = [
-        'favoritable_type'
+        'favoritable_type',
     ];
 
     public function favoritable()
@@ -23,5 +24,4 @@ class Favorite extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }

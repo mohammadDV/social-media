@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+
 class ChatRequest extends BaseRequest
 {
     /**
@@ -15,13 +17,13 @@ class ChatRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
             'message' => ['required', 'string', 'max:255'],
-            'file' => !empty($this->get('file')) ? ['required','string'] : ['sometimes'],
+            'file' => ! empty($this->get('file')) ? ['required', 'string'] : ['sometimes'],
         ];
     }
 }

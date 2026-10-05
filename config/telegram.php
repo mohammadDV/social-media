@@ -40,7 +40,7 @@ return [
              */
             'allowed_updates' => null,
             'commands' => [
-                //Acme\Project\Commands\MyTelegramBot\BotCommand::class
+                // Acme\Project\Commands\MyTelegramBot\BotCommand::class
             ],
         ],
 
@@ -216,6 +216,6 @@ return [
         // 'status' => Acme\Project\Commands\StatusCommand::class,
     ],
 
-    'chat_id' => env('TELEGRAM_CHAT_ID','1184138863'),
-    'telegram_channel_id' => env('TELEGRAM_CHANNEL_ID','@Varzeshpod'),
+    'chat_id' => env('TELEGRAM_CHAT_ID', '1184138863'),
+    'telegram_channel_id' => env('TELEGRAM_CHANNEL_ID', '@Varzeshpod'),
 ];

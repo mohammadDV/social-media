@@ -9,21 +9,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory, SoftDeletes, Sluggable;
+    use HasFactory, Sluggable, SoftDeletes;
 
-    public function sluggable() : array
+    public function sluggable(): array
     {
         return [
-          'slug' => [
-              'source' => 'title'
-          ]
+            'slug' => [
+                'source' => 'title',
+            ],
         ];
     }
 
+    protected $dates = ['deleted_at'];
 
-    protected $dates        = ['deleted_at'];
-    protected $guarded      = ['id'];
-    protected $casts        = ['image' => 'array'];
+    protected $guarded = ['id'];
+
+    protected $casts = ['image' => 'array'];
 
     public function tags()
     {
@@ -32,14 +33,14 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->morphMany(Comment::class,"Commentable",'commentable_type', 'commentable_id')
+        return $this->morphMany(Comment::class, 'Commentable', 'commentable_type', 'commentable_id')
             ->where('parent_id', 0)
             ->where('is_report', 0);
     }
 
     public function likes()
     {
-        return $this->morphMany(Like::class,"Likeable",'likeable_type', 'likeable_id')->with('user');
+        return $this->morphMany(Like::class, 'Likeable', 'likeable_type', 'likeable_id')->with('user');
     }
 
     public function user()
@@ -64,12 +65,11 @@ class Post extends Model
 
     public function getTypeNameAttribute()
     {
-        return __('site.' . Config('custom.POST_TYPE')[$this->type]);
+        return __('site.'.Config('custom.POST_TYPE')[$this->type]);
     }
 
     public function getStatusNameAttribute()
     {
         return $this->status == 1 ? __('site.Active') : __('site.Inactive');
     }
-
 }

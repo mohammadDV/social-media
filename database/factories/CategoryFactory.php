@@ -15,11 +15,11 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'title'     => $this->faker->title(),
-            'image'     => $this->faker->imageUrl(),
-            'user_id'   => User::factory(),
+            'title' => $this->faker->title(),
+            'image' => $this->faker->imageUrl(),
+            'user_id' => User::factory(),
             'parent_id' => 0,
-            'status'    => 1,
+            'status' => 1,
         ];
     }
 }

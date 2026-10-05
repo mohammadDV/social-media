@@ -12,14 +12,13 @@ class RoleController extends Controller
     /**
      * Constructor of RoleController.
      */
-    public function __construct(protected  IRoleRepository $repository)
+    public function __construct(protected IRoleRepository $repository)
     {
         //
     }
 
     /**
      * Get all of roles
-     * @return JsonResponse
      */
     public function roles(): JsonResponse
     {
@@ -28,7 +27,6 @@ class RoleController extends Controller
 
     /**
      * Get all of permissions
-     * @return JsonResponse
      */
     public function permissions(): JsonResponse
     {

@@ -21,8 +21,6 @@ class StatusController extends Controller
 
     /**
      * Get all of statuses
-     * @param ?User $user
-     * @return JsonResponse
      */
     public function index(?User $user): JsonResponse
     {
@@ -31,8 +29,6 @@ class StatusController extends Controller
 
     /**
      * Get all of statuses
-     * @param User $user
-     * @return JsonResponse
      */
     public function getAllPerUser(User $user): JsonResponse
     {
@@ -41,8 +37,6 @@ class StatusController extends Controller
 
     /**
      * Get favorite of statuses
-     * @param User $user
-     * @return JsonResponse
      */
     public function getFavorite(User $user): JsonResponse
     {
@@ -51,8 +45,6 @@ class StatusController extends Controller
 
     /**
      * Add status to favorites
-     * @param Status $status
-     * @return JsonResponse
      */
     public function addFavorite(Status $status): JsonResponse
     {
@@ -61,8 +53,8 @@ class StatusController extends Controller
 
     /**
      * Get the status info
-     * @param ?User $user
-     * @return JsonResponse
+     *
+     * @param  ?User  $user
      */
     public function getInfo(Status $status): JsonResponse
     {

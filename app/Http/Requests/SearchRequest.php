@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class SearchRequest extends BaseRequest
 {
@@ -16,13 +17,13 @@ class SearchRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'search' => !empty($this->get('search')) ? 'required|string' : 'sometimes',
-            'page' => !empty($this->get('page')) ? 'required|integer' : 'sometimes'
+            'search' => ! empty($this->get('search')) ? 'required|string' : 'sometimes',
+            'page' => ! empty($this->get('page')) ? 'required|integer' : 'sometimes',
         ];
     }
 }

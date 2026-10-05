@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class PageRequest extends BaseRequest
 {
@@ -16,7 +17,7 @@ class PageRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -25,7 +26,7 @@ class PageRequest extends BaseRequest
             'content' => 'required|string',
             'status' => 'required|integer|in:0,1',
             'priority' => 'required|integer|min:0|max:100',
-            'image' => ['required','string'],
+            'image' => ['required', 'string'],
         ];
     }
 }

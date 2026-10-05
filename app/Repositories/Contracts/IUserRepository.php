@@ -8,65 +8,49 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
- /**
+/**
  * Interface IUserRepository.
  */
-interface IUserRepository  {
-
+interface IUserRepository
+{
     /**
      * Get the users
-     * @param Request $request
-     * @return LengthAwarePaginator
      */
-    public function indexPaginate(Request $request) :LengthAwarePaginator;
+    public function indexPaginate(Request $request): LengthAwarePaginator;
 
     /**
      * Get the user.
-     * @param ?User $user
-     * @return UserResource
      */
-    public function show(?User $user) :UserResource;
+    public function show(?User $user): UserResource;
 
     /**
      * Store the user.
-     * @param UserRequest $request
-     * @return JsonResponse
      */
-    public function store(UserRequest $request) :JsonResponse;
+    public function store(UserRequest $request): JsonResponse;
 
     /**
      * Update the user.
-     * @param UpdateUserRequest $request
-     * @param User $user
-     * @return JsonResponse
      */
-    public function update(UpdateUserRequest $request, User $user) :JsonResponse;
+    public function update(UpdateUserRequest $request, User $user): JsonResponse;
 
     /**
-    * Update the password of user.
-    * @param UpdatePasswordRequest $request
-    * @param User $user
-    * @return JsonResponse
-    */
-   public function updatePassword(UpdatePasswordRequest $request, User $user) :JsonResponse;
+     * Update the password of user.
+     */
+    public function updatePassword(UpdatePasswordRequest $request, User $user): JsonResponse;
 
     /**
-    * Search users.
-    * @param LengthAwarePaginator $request
-    * @return LengthAwarePaginator|array
-    */
-   public function search(SearchRequest $request) :LengthAwarePaginator|array;
+     * Search users.
+     *
+     * @param  LengthAwarePaginator  $request
+     */
+    public function search(SearchRequest $request): LengthAwarePaginator|array;
 
     /**
-    * Report the user.
-    * @param User $user
-    * @return JsonResponse
-    */
-   public function destroy(User $user) :JsonResponse;
-
+     * Report the user.
+     */
+    public function destroy(User $user): JsonResponse;
 }
