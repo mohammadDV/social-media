@@ -16,13 +16,13 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            "text"              => $this->faker->text(),
-            "user_id"           => User::factory(),
-            "parent_id"         => 0,
-            "status"            => 1,
-            "image"             => $this->faker->imageUrl(),
-            "commentable_id"    => Post::factory(),
-            "commentable_type"  => Post::class,
+            'text' => $this->faker->text(),
+            'user_id' => User::factory(),
+            'parent_id' => 0,
+            'status' => 1,
+            'image' => $this->faker->imageUrl(),
+            'commentable_id' => Post::factory(),
+            'commentable_type' => Post::class,
         ];
     }
 }

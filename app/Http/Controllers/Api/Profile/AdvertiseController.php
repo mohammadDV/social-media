@@ -8,7 +8,6 @@ use App\Http\Requests\AdvertiseUpdateRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Advertise;
 use App\Models\AdvertiseForm;
-use App\Models\Step;
 use App\Repositories\Contracts\IAdvertiseRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -18,7 +17,7 @@ class AdvertiseController extends Controller
     /**
      * Constructor of AdvertiseController.
      */
-    public function __construct(protected  IAdvertiseRepository $repository)
+    public function __construct(protected IAdvertiseRepository $repository)
     {
         //
     }
@@ -33,8 +32,6 @@ class AdvertiseController extends Controller
 
     /**
      * Get all of advertise with pagination
-     * @param TableRequest $request
-     * @return JsonResponse
      */
     public function indexPaginate(TableRequest $request): JsonResponse
     {
@@ -43,8 +40,6 @@ class AdvertiseController extends Controller
 
     /**
      * Get all of advertise form with pagination
-     * @param TableRequest $request
-     * @return JsonResponse
      */
     public function indexFormPaginate(TableRequest $request): JsonResponse
     {
@@ -53,10 +48,8 @@ class AdvertiseController extends Controller
 
     /**
      * Get the advertise.
-     * @param Advertise $advertise
-     * @return JsonResponse
      */
-    public function show(Advertise $advertise) :JsonResponse
+    public function show(Advertise $advertise): JsonResponse
     {
 
         return response()->json($this->repository->show($advertise), Response::HTTP_OK);
@@ -64,41 +57,32 @@ class AdvertiseController extends Controller
 
     /**
      * Store the advertise.
-     * @param AdvertiseRequest $request
-     * @return JsonResponse
      */
-    public function store(AdvertiseRequest $request) :JsonResponse
+    public function store(AdvertiseRequest $request): JsonResponse
     {
         return $this->repository->store($request);
     }
 
     /**
      * Update the advertise.
-     * @param AdvertiseUpdateRequest $request
-     * @param Advertise $advertise
-     * @return JsonResponse
      */
-    public function update(AdvertiseUpdateRequest $request, Advertise $advertise) :JsonResponse
+    public function update(AdvertiseUpdateRequest $request, Advertise $advertise): JsonResponse
     {
         return $this->repository->update($request, $advertise);
     }
 
     /**
      * Delete the advertise.
-     * @param Advertise $advertise
-     * @return JsonResponse
      */
-    public function destroy(Advertise $advertise) :JsonResponse
+    public function destroy(Advertise $advertise): JsonResponse
     {
         return $this->repository->destroy($advertise);
     }
 
     /**
      * Delete the advertise form.
-     * @param AdvertiseForm $advertiseForm
-     * @return JsonResponse
      */
-    public function destroyForm(advertiseForm $advertiseForm) :JsonResponse
+    public function destroyForm(AdvertiseForm $advertiseForm): JsonResponse
     {
         return $this->repository->destroyForm($advertiseForm);
     }

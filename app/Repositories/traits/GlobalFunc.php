@@ -12,30 +12,33 @@ trait GlobalFunc
 {
     /**
      * Check the level access
-     * @param bool $conditions
+     *
+     * @param  bool  $conditions
      * @return void
      */
-    public function checkLevelAccess(bool $condition = false) {
+    public function checkLevelAccess(bool $condition = false)
+    {
 
-        if (!$condition && Auth::user()->level != 3) {
-            throw New \Exception('Unauthorized', 403);
+        if (! $condition && Auth::user()->level != 3) {
+            throw new \Exception('Unauthorized', 403);
         }
     }
 
     /**
      * Check the level access
-     * @param bool $conditions
-     * @return bool
+     *
+     * @param  bool  $conditions
      */
-    public function checkNickname(string $nickname, int $userId = 0) : bool {
+    public function checkNickname(string $nickname, int $userId = 0): bool
+    {
 
         if (User::query()
             ->where('nickname', $nickname)
-            ->when(!empty($userId), function ($query) use($userId) {
+            ->when(! empty($userId), function ($query) use ($userId) {
                 $query->where('id', '!=', $userId);
             })
             ->count() > 0) {
-                return false;
+            return false;
         }
 
         return true;
@@ -43,12 +46,10 @@ trait GlobalFunc
 
     /**
      * Check the user blocked or not.
-     * @param ?User $user
-     * @return bool
      */
-    public function isUserBlocked(?User $user) :bool
+    public function isUserBlocked(?User $user): bool
     {
-        return !empty($user->id) && Block::query()
+        return ! empty($user->id) && Block::query()
             ->where('user_id', Auth::user()->id)
             ->where('blocker_id', $user->id)
             ->count() > 0;
@@ -56,12 +57,10 @@ trait GlobalFunc
 
     /**
      * Check both users blocked or not.
-     * @param ?User $user
-     * @return bool
      */
-    public function areBothBlocked(?User $user) :bool
+    public function areBothBlocked(?User $user): bool
     {
-        return !empty($user->id) && Block::query()
+        return ! empty($user->id) && Block::query()
             ->where([
                 ['user_id', $user->id],
                 ['blocker_id', Auth::user()->id],
@@ -75,19 +74,18 @@ trait GlobalFunc
 
     /**
      * Check the level access
-     * @param ImageService $imageService
-     * @param $file
-     * @param string $url
-     * @param string $image
+     *
+     * @param  string  $image
      * @return void
      */
-    public function uploadImage(ImageService $imageService, $file,string $url, $image){
+    public function uploadImage(ImageService $imageService, $file, string $url, $image)
+    {
         $imageService->setExclusiveDirectory($url);
         $result = $imageService->save($file);
-        if ($result && !empty($image)){
-            if(config('app.env') == "production"){
+        if ($result && ! empty($image)) {
+            if (config('app.env') == 'production') {
                 Storage::disk('s3')->delete($image);
-            }else{
+            } else {
                 $imageService->deleteImage($image);
             }
         }
@@ -96,4 +94,3 @@ trait GlobalFunc
         return $result;
     }
 }
-;

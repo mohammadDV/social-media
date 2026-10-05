@@ -9,8 +9,9 @@ class Report extends Model
 {
     use HasFactory;
 
-    const STATUS_PENDING = "pending";
-    const STATUS_CLOSED = "closed";
+    const STATUS_PENDING = 'pending';
+
+    const STATUS_CLOSED = 'closed';
 
     protected $guarded = [];
 
@@ -19,10 +20,8 @@ class Report extends Model
         'model_id',
     ];
 
-
     public function model()
     {
         return $this->morphTo();
     }
-
 }

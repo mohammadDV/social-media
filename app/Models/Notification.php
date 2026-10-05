@@ -10,9 +10,10 @@ class Notification extends Model
     use HasFactory;
 
     public const STATUS_SIMPLE = 'simple';
+
     public const STATUS_FORCE = 'force';
 
-    protected $guarded      = [];
+    protected $guarded = [];
 
     protected $hidden = [
         'model_type',

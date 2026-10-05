@@ -17,14 +17,13 @@ class UserController extends Controller
     /**
      * Constructor of UserController.
      */
-    public function __construct(protected  IUserRepository $repository)
+    public function __construct(protected IUserRepository $repository)
     {
         //
     }
 
     /**
      * Get all of users with pagination
-     * @param Request $request
      */
     public function indexPaginate(Request $request): JsonResponse
     {
@@ -33,54 +32,41 @@ class UserController extends Controller
 
     /**
      * Get the user.
-     * @param ?User $user
-     * @return JsonResponse
      */
-    public function show(?User $user) :JsonResponse
+    public function show(?User $user): JsonResponse
     {
         return response()->json($this->repository->show($user), Response::HTTP_OK);
     }
 
     /**
      * Store the user.
-     * @param UserRequest $request
-     * @return JsonResponse
      */
-    public function store(UserRequest $request) :JsonResponse
+    public function store(UserRequest $request): JsonResponse
     {
         return $this->repository->store($request);
     }
 
     /**
      * Update the user.
-     * @param UpdateUserRequest $request
-     * @param User $user
-     * @return JsonResponse
      */
-    public function update(UpdateUserRequest $request, User $user) :JsonResponse
+    public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
         return $this->repository->update($request, $user);
     }
 
     /**
-    * Update the password of user.
-    * @param UpdatePasswordRequest $request
-    * @param User $user
-    * @return JsonResponse
-    */
-   public function updatePassword(UpdatePasswordRequest $request, User $user) :JsonResponse
-   {
+     * Update the password of user.
+     */
+    public function updatePassword(UpdatePasswordRequest $request, User $user): JsonResponse
+    {
         return $this->repository->updatePassword($request, $user);
-   }
+    }
 
-   /**
-    * Report the user.
-    * @param User $user
-    * @return JsonResponse
-    */
-   public function destroy(User $user) :JsonResponse
-   {
-       return $this->repository->destroy($user);
-   }
-
+    /**
+     * Report the user.
+     */
+    public function destroy(User $user): JsonResponse
+    {
+        return $this->repository->destroy($user);
+    }
 }

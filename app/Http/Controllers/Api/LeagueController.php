@@ -7,8 +7,8 @@ use App\Models\League;
 use App\Models\Step;
 use App\Repositories\Contracts\ILeagueRepository;
 use App\Repositories\Contracts\IStepRepository;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class LeagueController extends Controller
 {
@@ -22,8 +22,6 @@ class LeagueController extends Controller
 
     /**
      * Get all of leagues.
-     *
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
@@ -32,8 +30,6 @@ class LeagueController extends Controller
 
     /**
      * Get the league info.
-     * @param League $league
-     * @return JsonResponse
      */
     public function getLeagueInfo(League $league): JsonResponse
     {
@@ -42,8 +38,6 @@ class LeagueController extends Controller
 
     /**
      * Get the league info.
-     * @param Step $step
-     * @return JsonResponse
      */
     public function getStepInfo(Step $step): JsonResponse
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class SearchClubRequest extends BaseRequest
 {
@@ -16,14 +17,14 @@ class SearchClubRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
             'sport_id' => 'required|integer|exists:sports,id',
-            'country_id' => !empty($this->get('country_id')) ? 'required|integer|exists:countries,id' : 'sometimes',
-            'search' => !empty($this->get('search')) ? 'required|string' : 'sometimes'
+            'country_id' => ! empty($this->get('country_id')) ? 'required|integer|exists:countries,id' : 'sometimes',
+            'search' => ! empty($this->get('search')) ? 'required|string' : 'sometimes',
         ];
     }
 }

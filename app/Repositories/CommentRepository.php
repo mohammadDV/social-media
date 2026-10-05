@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Http\Requests\StoreCommentRequest;
-use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\Post;
@@ -15,43 +14,36 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
-class CommentRepository implements ICommentRepository {
-
-    /**
-     * @param TelegramNotificationService $service
-     */
-    public function __construct(protected TelegramNotificationService $service)
-    {
-
-    }
+class CommentRepository implements ICommentRepository
+{
+    public function __construct(protected TelegramNotificationService $service) {}
 
     /**
      * Get the post comment
-     * @param Post $post
      */
     public function getPostComments(Post $post)
     {
 
-        $cacheKey = "post.comment.pagination." . $post->id;
+        $cacheKey = 'post.comment.pagination.'.$post->id;
 
-        if (!empty(request()->submit)) {
+        if (! empty(request()->submit)) {
 
             if (cache()->has($cacheKey)) {
                 cache()->forget($cacheKey);
             }
 
             return Comment::query()
-                    ->where('is_report', 0)
-                    ->where('parent_id', 0)
-                    ->where('commentable_id', $post->id)
-                    ->where('status', 1)
-                    ->where('commentable_type', "App\\Models\\Post")
-                    ->with('user')
-                    ->with('parents.user')
-                    ->with('likes')
-                    ->with('likes.user')
-                    ->orderBy('id', 'DESC')
-                    ->paginate(10);
+                ->where('is_report', 0)
+                ->where('parent_id', 0)
+                ->where('commentable_id', $post->id)
+                ->where('status', 1)
+                ->where('commentable_type', 'App\\Models\\Post')
+                ->with('user')
+                ->with('parents.user')
+                ->with('likes')
+                ->with('likes.user')
+                ->orderBy('id', 'DESC')
+                ->paginate(10);
         }
 
         return cache()->remember($cacheKey, now()->addMinutes(2), function () use ($post) {
@@ -60,7 +52,7 @@ class CommentRepository implements ICommentRepository {
                 ->where('parent_id', 0)
                 ->where('commentable_id', $post->id)
                 ->where('status', 1)
-                ->where('commentable_type', "App\\Models\\Post")
+                ->where('commentable_type', 'App\\Models\\Post')
                 ->with('user')
                 ->with('parents.user')
                 ->with('likes')
@@ -73,35 +65,33 @@ class CommentRepository implements ICommentRepository {
 
     /**
      * Get the post comment
-     * @param StoreCommentRequest $request
-     * @param Post $post
-     * @return JsonResponse
+     *
      * @throws \Exception
      */
-    public function storePostComment(StoreCommentRequest $request, Post $post) :JsonResponse
+    public function storePostComment(StoreCommentRequest $request, Post $post): JsonResponse
     {
 
-        $parentId = $request->input('parent_id',0);
+        $parentId = $request->input('parent_id', 0);
 
         // Store the comment
         $comment = Auth::user()->comments()->create([
-            "text"              => $request->input('comment'),
-            "parent_id"         => $parentId,
-            "status"            => 1,
-            "commentable_id"    => $post->id,
-            "commentable_type"  => Post::class,
+            'text' => $request->input('comment'),
+            'parent_id' => $parentId,
+            'status' => 1,
+            'commentable_id' => $post->id,
+            'commentable_type' => Post::class,
         ]);
 
-        if ($comment){
+        if ($comment) {
 
-            if (!empty($parentId)) {
+            if (! empty($parentId)) {
                 $parentComment = Comment::find($parentId);
                 $commentOwner = $parentComment->user;
                 // Add a notification for comment owner
-                if (!empty($commentOwner->id)) {
+                if (! empty($commentOwner->id)) {
                     $this->addNotification(
                         $commentOwner,
-                        '/news/' . $post->id . '/' . $post->slug,
+                        '/news/'.$post->id.'/'.$post->slug,
                         __('site.Someone sent a replay to your comment.', ['someone' => Auth::user()->nickname])
                     );
                 }
@@ -111,28 +101,26 @@ class CommentRepository implements ICommentRepository {
             // Add a notification for status owner
             $this->addNotification(
                 $post->user,
-                '/news/' . $post->id . '/' . $post->slug,
+                '/news/'.$post->id.'/'.$post->slug,
                 __('site.Someone sent a comment to your post.', ['someone' => Auth::user()->nickname])
             );
 
             $this->service->sendNotification(
                 config('telegram.chat_id'),
-                sprintf('انتشار یک کامنت در پست با شماره %s از %s با شماره کاربری %s', $post->id, Auth::user()->nickname, Auth::user()->id) . PHP_EOL . $request->input('comment')
+                sprintf('انتشار یک کامنت در پست با شماره %s از %s با شماره کاربری %s', $post->id, Auth::user()->nickname, Auth::user()->id).PHP_EOL.$request->input('comment')
             );
 
             return response()->json([
-                'status'    => 1,
-                'message'   => __('site.Your comment has been stored successfully'),
+                'status' => 1,
+                'message' => __('site.Your comment has been stored successfully'),
             ], Response::HTTP_CREATED);
         }
 
-        throw new \Exception();
-
+        throw new \Exception;
     }
 
     /**
      * Get the status comments.
-     * @param Status $status
      */
     public function getStatusComments(Status $status)
     {
@@ -142,7 +130,7 @@ class CommentRepository implements ICommentRepository {
             ->where('parent_id', 0)
             ->where('commentable_id', $status->id)
             ->where('status', 1)
-            ->where('commentable_type', "App\\Models\\Status")
+            ->where('commentable_type', 'App\\Models\\Status')
             ->with('user')
             ->with('parents.user')
             ->with('likes')
@@ -154,34 +142,31 @@ class CommentRepository implements ICommentRepository {
 
     /**
      * Get the status comment
-     * @param StoreCommentRequest $request
-     * @param Status $status
-     * @return JsonResponse
      */
-    public function storeStatusComment(StoreCommentRequest $request, Status $status) :JsonResponse
+    public function storeStatusComment(StoreCommentRequest $request, Status $status): JsonResponse
     {
 
-        $parentId = $request->input('parent_id',0);
+        $parentId = $request->input('parent_id', 0);
 
         // Store the comment
         $comment = Auth::user()->comments()->create([
-            "text"              => $request->input('comment'),
-            "parent_id"         => $parentId,
-            "status"            => 1,
-            "commentable_id"    => $status->id,
-            "commentable_type"  => Status::class,
+            'text' => $request->input('comment'),
+            'parent_id' => $parentId,
+            'status' => 1,
+            'commentable_id' => $status->id,
+            'commentable_type' => Status::class,
         ]);
 
-        if ($comment){
+        if ($comment) {
 
-            if (!empty($parentId)) {
+            if (! empty($parentId)) {
                 $parentComment = Comment::find($parentId);
                 $commentOwner = $parentComment->user;
                 // Add a notification for comment owner
-                if (!empty($commentOwner->id)) {
+                if (! empty($commentOwner->id)) {
                     $this->addNotification(
                         $commentOwner,
-                        '/profile/' . $status->id,
+                        '/profile/'.$status->id,
                         __('site.Someone sent a replay to your comment.', ['someone' => Auth::user()->nickname])
                     );
                 }
@@ -191,42 +176,37 @@ class CommentRepository implements ICommentRepository {
             // Add a notification for status owner
             $this->addNotification(
                 $status->user,
-                '/profile/' . $status->id,
+                '/profile/'.$status->id,
                 __('site.Someone sent a comment to your status.', ['someone' => Auth::user()->nickname])
             );
 
             $this->service->sendNotification(
                 config('telegram.chat_id'),
-                sprintf('انتشار یک کامنت در استتوس با شماره %s از %s با شماره کاربری %s', $status->id, Auth::user()->nickname, Auth::user()->id) . PHP_EOL . $request->input('comment')
+                sprintf('انتشار یک کامنت در استتوس با شماره %s از %s با شماره کاربری %s', $status->id, Auth::user()->nickname, Auth::user()->id).PHP_EOL.$request->input('comment')
             );
 
             return response()->json([
-                'status'    => 1,
-                'message'   => __('site.Your comment has been stored successfully'),
+                'status' => 1,
+                'message' => __('site.Your comment has been stored successfully'),
             ], Response::HTTP_CREATED);
         }
 
-        throw new \Exception();
-
+        throw new \Exception;
     }
 
     /**
      * Add a notification
-     * @param $model
-     * @param string $link
-     * @param string $message
-     * @return void
      */
-    public function addNotification($model, string $link, string $message) :void
+    public function addNotification($model, string $link, string $message): void
     {
         if ($model->id == Auth::user()->id) {
             return;
         }
 
         cache()->remember(
-            'notification.status.comment' . Auth::user()->id . '.' . $model->id,
+            'notification.status.comment'.Auth::user()->id.'.'.$model->id,
             now()->addMinutes(1),
-            function () use($model, $link, $message) {
+            function () use ($model, $link, $message) {
                 // Add notification
                 return Notification::create([
                     'message' => $message,

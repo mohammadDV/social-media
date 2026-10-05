@@ -16,15 +16,13 @@ class SportController extends Controller
     /**
      * Constructor of SportController.
      */
-    public function __construct(protected  ISportRepository $repository)
+    public function __construct(protected ISportRepository $repository)
     {
         //
     }
 
     /**
      * Get all of sports with pagination
-     * @param TableRequest $request
-     * @return JsonResponse
      */
     public function indexPaginate(TableRequest $request): JsonResponse
     {
@@ -33,41 +31,32 @@ class SportController extends Controller
 
     /**
      * Get the sport.
-     * @param
-     * @return JsonResponse
      */
-    public function show(Sport $sport) :JsonResponse
+    public function show(Sport $sport): JsonResponse
     {
         return response()->json($this->repository->show($sport), Response::HTTP_OK);
     }
 
     /**
      * Store the sport.
-     * @param SportRequest $request
-     * @return JsonResponse
      */
-    public function store(SportRequest $request) :JsonResponse
+    public function store(SportRequest $request): JsonResponse
     {
         return $this->repository->store($request);
     }
 
     /**
      * Update the sport.
-     * @param SportUpdateRequest $request
-     * @param Sport $sport
-     * @return JsonResponse
      */
-    public function update(SportUpdateRequest $request, Sport $sport) :JsonResponse
+    public function update(SportUpdateRequest $request, Sport $sport): JsonResponse
     {
         return $this->repository->update($request, $sport);
     }
 
     /**
      * Delete the sport.
-     * @param Sport $sport
-     * @return JsonResponse
      */
-    public function destroy(Sport $sport) :JsonResponse
+    public function destroy(Sport $sport): JsonResponse
     {
         return $this->repository->destroy($sport);
     }

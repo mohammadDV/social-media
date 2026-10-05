@@ -5,7 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use OpenAIClient;
-use Goutte\Client;
+use Symfony\Component\BrowserKit\HttpBrowser;
+use Symfony\Component\HttpClient\HttpClient;
 
 class AddPosts extends Command
 {
@@ -31,8 +32,7 @@ class AddPosts extends Command
     public function handle()
     {
 
-
-        $client = new Client();
+        $client = new HttpBrowser(HttpClient::create());
         $crawler = $client->request('GET', 'https://www.fourfourtwo.com/news');
 
         $articles = [];
@@ -43,7 +43,7 @@ class AddPosts extends Command
                 $title = $node->filter('a.article-link')->attr('aria-label');
                 $url = $node->filter('a.article-link')->attr('href');
 
-                if (!in_array($url, [
+                if (! in_array($url, [
                     'https://www.fourfourtwo.com/premier-league',
                     'https://www.fourfourtwo.com/championship',
                     'https://www.fourfourtwo.com/champions-league',
@@ -58,14 +58,14 @@ class AddPosts extends Command
                     $articleCrawler = $client->request('GET', $url);
 
                     $articleCrawler->filter('#content p')->each(function ($pNode) use (&$content) {
-                        $content .= '<p>' . $pNode->text() . '</p>';
+                        $content .= '<p>'.$pNode->text().'</p>';
                     });
 
                     // Extract <img> tags
                     $articleCrawler->filter('#content img')->each(function ($imgNode) use (&$content) {
                         $src = $imgNode->attr('src');
                         $alt = $imgNode->attr('alt');
-                        $content .= '<img src="' . $src . '" alt="' . $alt . '">';
+                        $content .= '<img src="'.$src.'" alt="'.$alt.'">';
                     });
 
                     $translate = '';
@@ -90,19 +90,18 @@ class AddPosts extends Command
 
         Log::info(var_export($articles[0], true));
 
-
-
         // return response()->json($articles);
 
         // $this->getMessage();
         $this->info(PHP_EOL.'Done');
+
         return Command::SUCCESS;
     }
 
     /**
      * Get the payload to send to the OpenAI API
      *
-     * @param array $messages The messages to send
+     * @param  array  $messages  The messages to send
      * @return array The payload to send to the OpenAI API
      */
     private function apiPayload(array $messages): array
@@ -128,8 +127,9 @@ class AddPosts extends Command
 
     /**
      * Generate situations that are relevant to the poll using Open AI.
-     * @param $product
-     * @param int $attempt
+     *
+     * @param  $product
+     * @param  int  $attempt
      */
     private function getMessage($text)
     {
@@ -162,7 +162,7 @@ class AddPosts extends Command
                 من میخواهم یک مقاله شامل ۱۰۰۰ لغات از این متن ایجاد کنی. با ساختاری درست و مفهومی.
                 لطفا از تمامی تگ های p استفاده کن
                 Start
-                ' . $text . '
+                '.$text.'
 
                 End
 
@@ -174,7 +174,7 @@ class AddPosts extends Command
                 { ...
                 }
                 ```
-                Only reply in JSON nothing else!'
+                Only reply in JSON nothing else!',
             ],
         ];
 
@@ -186,9 +186,9 @@ class AddPosts extends Command
         // get response content
         $stringResult = $response->choices[0]->message->content;
 
-
         Log::info('---------tttttt');
         Log::info(var_export($stringResult, true));
+
         return $stringResult;
         // dd($stringResult);
 

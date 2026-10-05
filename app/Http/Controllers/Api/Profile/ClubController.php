@@ -18,16 +18,13 @@ class ClubController extends Controller
     /**
      * Constructor of ClubController.
      */
-    public function __construct(protected  IClubRepository $repository)
+    public function __construct(protected IClubRepository $repository)
     {
         //
     }
 
     /**
      * Get all of clubs with pagination
-     * @param Sport $sport
-     * @param Country $country
-     * @return JsonResponse
      */
     public function index(?Sport $sport, ?Country $country): JsonResponse
     {
@@ -36,8 +33,6 @@ class ClubController extends Controller
 
     /**
      * Get all of clubs with pagination
-     * @param TableRequest $request
-     * @return JsonResponse
      */
     public function indexPaginate(TableRequest $request): JsonResponse
     {
@@ -46,51 +41,40 @@ class ClubController extends Controller
 
     /**
      * Get the club.
-     * @param
-     * @return JsonResponse
      */
-    public function show(Club $club) :JsonResponse
+    public function show(Club $club): JsonResponse
     {
         return response()->json($this->repository->show($club), Response::HTTP_OK);
     }
 
     /**
      * Store the club.
-     * @param ClubRequest $request
-     * @return JsonResponse
      */
-    public function store(ClubRequest $request) :JsonResponse
+    public function store(ClubRequest $request): JsonResponse
     {
         return $this->repository->store($request);
     }
 
     /**
      * Update the club.
-     * @param ClubUpdateRequest $request
-     * @param Club $club
-     * @return JsonResponse
      */
-    public function update(ClubUpdateRequest $request, Club $club) :JsonResponse
+    public function update(ClubUpdateRequest $request, Club $club): JsonResponse
     {
         return $this->repository->update($request, $club);
     }
 
     /**
      * Does the user follow the club or not.
-     * @param Club $club
-     * @return JsonResponse
      */
-    public function isActive(Club $club) :JsonResponse
+    public function isActive(Club $club): JsonResponse
     {
         return response()->json($this->repository->isActive($club), Response::HTTP_OK);
     }
 
     /**
      * Delete the club.
-     * @param Club $club
-     * @return JsonResponse
      */
-    public function destroy(Club $club) :JsonResponse
+    public function destroy(Club $club): JsonResponse
     {
         return $this->repository->destroy($club);
     }

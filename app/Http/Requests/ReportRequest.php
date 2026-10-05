@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class ReportRequest extends BaseRequest
 {
@@ -16,14 +17,14 @@ class ReportRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'id' => ['required','integer'],
-            'type' => ['required','string','in:status,comment,user'],
-            'message' => ['required','string','min:10','max:1000'],
+            'id' => ['required', 'integer'],
+            'type' => ['required', 'string', 'in:status,comment,user'],
+            'message' => ['required', 'string', 'min:10', 'max:1000'],
         ];
     }
 }

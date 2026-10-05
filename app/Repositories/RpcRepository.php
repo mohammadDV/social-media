@@ -7,15 +7,14 @@ use App\Repositories\Contracts\IRpcRepository;
 use App\Repositories\traits\GlobalFunc;
 use Illuminate\Support\Facades\Auth;
 
-class RpcRepository implements IRpcRepository {
-
+class RpcRepository implements IRpcRepository
+{
     use GlobalFunc;
 
     /**
      * Get the necessary thing for user.
-     * @return array
      */
-    public function index() :array
+    public function index(): array
     {
         $notifications = Notification::query()
             ->with('model')
@@ -26,7 +25,7 @@ class RpcRepository implements IRpcRepository {
             ->get();
 
         return [
-            'notifications' => $notifications
+            'notifications' => $notifications,
         ];
 
     }

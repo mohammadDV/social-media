@@ -16,16 +16,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class NotificationRepository implements INotificationRepository {
-
+class NotificationRepository implements INotificationRepository
+{
     use GlobalFunc;
 
     /**
      * Get the notification pagination.
-     * @param TableRequest $request
-     * @return LengthAwarePaginator
      */
-    public function indexPaginate(TableRequest $request) :LengthAwarePaginator
+    public function indexPaginate(TableRequest $request): LengthAwarePaginator
     {
 
         Notification::query()
@@ -33,9 +31,8 @@ class NotificationRepository implements INotificationRepository {
             ->where('status', 0)
             ->where('type', Notification::STATUS_SIMPLE)
             ->update([
-                'status' => 1
+                'status' => 1,
             ]);
-
 
         return Notification::query()
             ->with('model')
@@ -46,19 +43,18 @@ class NotificationRepository implements INotificationRepository {
 
     /**
      * Get all notification sends.
-     * @param TableRequest $request
-     * @return LengthAwarePaginator
      */
-    public function sendListPaginate(TableRequest $request) :LengthAwarePaginator
+    public function sendListPaginate(TableRequest $request): LengthAwarePaginator
     {
 
         $search = $request->get('query');
+
         return NotificationSend::query()
             ->when(Auth::user()->level != 3, function ($query) {
                 return $query->where('user_id', Auth::user()->id);
             })
-            ->when(!empty($search), function ($query) use ($search) {
-                return $query->where('message', 'like', '%' . $search . '%');
+            ->when(! empty($search), function ($query) use ($search) {
+                return $query->where('message', 'like', '%'.$search.'%');
             })
             ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
             ->paginate($request->get('rowsPerPage', 25));
@@ -66,20 +62,20 @@ class NotificationRepository implements INotificationRepository {
 
     /**
      * Get the notification info.
-     * @param Notification $notification
+     *
      * @return Matches
      */
-    public function show(Notification $notification) :Notification
+    public function show(Notification $notification): Notification
     {
         return $notification;
     }
 
     /**
      * Check the notification users count
-     * @param SendNotificationRequest $request
+     *
      * @return JsonResponse
      */
-    public function checkNotificationCount(SendNotificationRequest $request) :array
+    public function checkNotificationCount(SendNotificationRequest $request): array
     {
 
         $roleIds = $request->roles;
@@ -90,10 +86,8 @@ class NotificationRepository implements INotificationRepository {
 
     /**
      * Send a notification.
-     * @param SendNotificationRequest $request
-     * @return JsonResponse
      */
-    public function sendAsAdmin(SendNotificationRequest $request) :JsonResponse
+    public function sendAsAdmin(SendNotificationRequest $request): JsonResponse
     {
 
         $roleIds = $request->roles;
@@ -106,7 +100,7 @@ class NotificationRepository implements INotificationRepository {
             'roles' => $roleIds ?? '',
         ];
 
-        $notificationSend = new NotificationSend();
+        $notificationSend = new NotificationSend;
         $notificationSend->user_id = Auth::user()->id;
         $notificationSend->conditions = $data;
         $notificationSend->users_count = $users->count();
@@ -118,46 +112,44 @@ class NotificationRepository implements INotificationRepository {
 
             return response()->json([
                 'status' => 1,
-                'message' => __('site.The operation has been successfully')
+                'message' => __('site.The operation has been successfully'),
             ], Response::HTTP_OK);
         }
     }
 
     /**
-    * Get users for notification
-    * @param array|null $roles
-    * @param array|null $users
-    * @return Builder
-    */
-   private function getUsersForNotification(array|null $roleIds, array|null $userIds) :Builder
-   {
+     * Get users for notification
+     *
+     * @param  array|null  $roles
+     * @param  array|null  $users
+     */
+    private function getUsersForNotification(?array $roleIds, ?array $userIds): Builder
+    {
         return User::query()
-                ->where('role_id', '!=', 1)
-                ->when(!empty($roleIds), function ($query) use($roleIds) {
-                    $query->whereIn('role_id', $roleIds);
-                })
-                ->when(!empty($userIds), function ($query) use($userIds) {
-                    $query->whereIn('id', $userIds);
-                });
-   }
+            ->where('role_id', '!=', 1)
+            ->when(! empty($roleIds), function ($query) use ($roleIds) {
+                $query->whereIn('role_id', $roleIds);
+            })
+            ->when(! empty($userIds), function ($query) use ($userIds) {
+                $query->whereIn('id', $userIds);
+            });
+    }
 
     /**
-    * Send notifications.
-    * @param NotificationSend $notificationSend
-    * @param Builder $users
-    * @param SendNotificationRequest $request
-    * @return JsonResponse
-    */
-   private function sendNotification(NotificationSend $notificationSend, Builder $users, SendNotificationRequest $request)
-   {
+     * Send notifications.
+     *
+     * @return JsonResponse
+     */
+    private function sendNotification(NotificationSend $notificationSend, Builder $users, SendNotificationRequest $request)
+    {
 
-    DB::beginTransaction();
+        DB::beginTransaction();
 
         try {
             $sendCount = 0;
 
             // Chunk the users and process them
-            $users->chunk(200, function ($rows) use($request, &$sendCount) {
+            $users->chunk(200, function ($rows) use ($request, &$sendCount) {
                 $dataToInsert = [];
 
                 // Prepare data for bulk insertion
@@ -194,15 +186,13 @@ class NotificationRepository implements INotificationRepository {
             var_dump($e->getMessage());
             DB::rollBack();
         }
-   }
+    }
 
     /**
-    * Delete the notification.
-    * @param Notification $notification
-    * @return JsonResponse
-    */
-   public function destroy(Notification $notification) :JsonResponse
-   {
+     * Delete the notification.
+     */
+    public function destroy(Notification $notification): JsonResponse
+    {
         $this->checkLevelAccess(Auth::user()->id == $notification->user_id);
 
         $notification->delete();
@@ -210,10 +200,10 @@ class NotificationRepository implements INotificationRepository {
         if ($notification) {
             return response()->json([
                 'status' => 1,
-                'message' => __('site.The operation has been successfully')
+                'message' => __('site.The operation has been successfully'),
             ], Response::HTTP_OK);
         }
 
-        throw new \Exception();
-   }
+        throw new \Exception;
+    }
 }

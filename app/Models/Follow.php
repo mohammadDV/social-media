@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Follow extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
     const STATUS_PENDING = 'pending';
+
     const STATUS_ACCEPTED = 'accepted';
+
     const STATUS_REJECTED = 'rejected';
 
     public function user()

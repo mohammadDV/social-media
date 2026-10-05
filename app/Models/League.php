@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class League extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
     public function clubs()
@@ -20,18 +21,20 @@ class League extends Model
         return $this->hasMany(Step::class)->orderBy('priority', 'asc');
     }
 
-    public function sport() {
+    public function sport()
+    {
         return $this->belongsTo(Sport::class);
     }
 
-    public function country() {
+    public function country()
+    {
         return $this->belongsTo(Country::class);
     }
 
-    public function getTypeNameAttribute() {
+    public function getTypeNameAttribute()
+    {
         return $this->type == 1 ? __('site.League') : __('site.Tournament');
     }
-
 
     public function getStatusNameAttribute()
     {

@@ -31,7 +31,7 @@ class PostResource extends JsonResource
             'special' => $this->special,
             'video' => $this->video,
             'advertise' => $this->whenLoaded('advertise'),
-            'user' => $this->whenLoaded('user', function() {
+            'user' => $this->whenLoaded('user', function () {
                 return [
                     'id' => $this->user->id,
                     'nickname' => $this->user->nickname,

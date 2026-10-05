@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PermissionFactory extends Factory
 {
     protected $model = Permission::class;
+
     /**
      * Define the model's default state.
      *
@@ -16,7 +17,7 @@ class PermissionFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->title()
+            'title' => $this->faker->title(),
         ];
     }
 }

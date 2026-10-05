@@ -1,0 +1,15 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    paths:
+        - app
+    level: 5
+    treatPhpDocTypesAsCertain: false
+    excludePaths:
+        - app/helper.php
+        - app/HelperClass.php
+        - app/Models/TeamInvitation.php
+        - app/Models/Membership.php
+        - app/Models/Team.php

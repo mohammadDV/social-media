@@ -19,7 +19,6 @@ class TicketSubjectController extends Controller
 
     /**
      * Get all of TicketSubject
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {

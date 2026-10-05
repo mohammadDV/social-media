@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'maximum_favorite_clubs' => 50
+    'maximum_favorite_clubs' => 50,
 ];

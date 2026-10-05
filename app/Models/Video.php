@@ -10,12 +10,12 @@ class Video extends Model
 {
     use HasFactory, Sluggable;
 
-    public function sluggable() : array
+    public function sluggable(): array
     {
         return [
-          'slug' => [
-              'source' => 'title'
-          ]
+            'slug' => [
+                'source' => 'title',
+            ],
         ];
     }
 
@@ -32,5 +32,4 @@ class Video extends Model
     {
         return $this->status == 1 ? __('site.Active') : __('site.Inactive');
     }
-
 }

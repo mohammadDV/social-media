@@ -28,7 +28,6 @@ class TagController extends Controller
 
     /**
      * Get all contents that has this tag
-     * @param Tag $tag
      */
     public function index(Tag $tag): JsonResponse
     {

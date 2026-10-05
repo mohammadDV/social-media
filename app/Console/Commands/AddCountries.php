@@ -32,21 +32,21 @@ class AddCountries extends Command
 
         $user = User::where('level', 3)->firstOrFail();
 
-        if (($open = fopen(public_path('excel/countries.csv'), "r")) !== FALSE) {
+        if (($open = fopen(public_path('excel/countries.csv'), 'r')) !== false) {
 
             $id = 1;
-            while (($data = fgetcsv($open)) !== FALSE) {
+            while (($data = fgetcsv($open)) !== false) {
 
-                $country = explode(";", $data[0]);
-                if (!empty($country[2])) {
+                $country = explode(';', $data[0]);
+                if (! empty($country[2])) {
 
                     Country::create([
                         'title' => $country[2],
                         'user_id' => $user->id,
                         'alias_title' => $country[1],
-                        'image' => 'https://prod-data-sport.s3.eu-central-1.amazonaws.com/country/' . $id . '.png',
+                        'image' => 'https://prod-data-sport.s3.eu-central-1.amazonaws.com/country/'.$id.'.png',
                         'status' => 1,
-                        'created_at' => '2023-11-25 07:39:56'
+                        'created_at' => '2023-11-25 07:39:56',
                     ]);
                     $id++;
                 }
@@ -54,7 +54,8 @@ class AddCountries extends Command
             fclose($open);
         }
 
-        $this->info(PHP_EOL.'Done' . $id);
+        $this->info(PHP_EOL.'Done'.$id);
+
         return Command::SUCCESS;
     }
 }

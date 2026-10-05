@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\App;
 
 class ValidationController extends Controller
 {
@@ -20,9 +19,9 @@ class ValidationController extends Controller
     /**
      * Get the base requests namespace
      *
-     * @return string               The base requests namespace
+     * @return string The base requests namespace
      */
-    protected function requestsNamespace() : string
+    protected function requestsNamespace(): string
     {
         return '\\App\Http\\Requests\\';
     }
@@ -30,9 +29,9 @@ class ValidationController extends Controller
     /**
      * Get the base requests namespace
      *
-     * @return string               The base requests namespace
+     * @return string The base requests namespace
      */
-    protected function requestsAuthNamespace() : string
+    protected function requestsAuthNamespace(): string
     {
         return '\\App\Http\\Requests\\Auth\\';
     }
@@ -49,15 +48,15 @@ class ValidationController extends Controller
      * Helper function to obtain the validation request object
      *
      * @param   string The request name
-     * @return  array Eroor message
+     * @return array Eroor message
      */
-    protected function validationRequestObject(string $requestName, Request $request) : array
+    protected function validationRequestObject(string $requestName, Request $request): array
     {
         // get the RequestValidator belongin to the requested class
-        $requestNameFull = $this->requestsNamespace()  . $requestName;
+        $requestNameFull = $this->requestsNamespace().$requestName;
 
-        if (!class_exists($requestNameFull)) {
-            $requestNameFull = $this->requestsAuthNamespace()  . $requestName;
+        if (! class_exists($requestNameFull)) {
+            $requestNameFull = $this->requestsAuthNamespace().$requestName;
         }
 
         $requestClass = new $requestNameFull;
@@ -72,16 +71,14 @@ class ValidationController extends Controller
             if (isset($errors[$request->get('field')])) {
                 return [
                     'status' => 1,
-                    'message' => reset($errors[$request->get('field')])
+                    'message' => reset($errors[$request->get('field')]),
                 ];
             }
         }
 
         return [
             'status' => 0,
-            'message' => ''
+            'message' => '',
         ];
     }
-
 }
-

@@ -2,6 +2,4 @@
 
 namespace App\Libraries\OpenAI\Interfaces;
 
-interface ExpectsJsonResponse
-{
-}
+interface ExpectsJsonResponse {}

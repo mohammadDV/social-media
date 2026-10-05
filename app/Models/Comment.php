@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Comment extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $dates        = ['deleted_at'];
-//    protected $dateFormat   = 'U';
-    protected $guarded      = [];
+
+    protected $dates = ['deleted_at'];
+
+    //    protected $dateFormat   = 'U';
+    protected $guarded = [];
 
     protected $hidden = [
         // 'commentable_type',
@@ -44,10 +46,11 @@ class Comment extends Model
 
     public function likes()
     {
-        return $this->morphMany(Like::class,"likeable",'likeable_type', 'likeable_id');
+        return $this->morphMany(Like::class, 'likeable', 'likeable_type', 'likeable_id');
     }
 
-    public function getReplyAttribute() {
+    public function getReplyAttribute()
+    {
         return false;
     }
 }

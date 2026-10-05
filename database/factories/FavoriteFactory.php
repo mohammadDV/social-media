@@ -17,7 +17,7 @@ class FavoriteFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'post_id' => Post::factory()
+            'post_id' => Post::factory(),
         ];
     }
 }

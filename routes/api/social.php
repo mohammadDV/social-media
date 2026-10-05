@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\Social\BlockController;
-use App\Http\Controllers\Api\Social\TicketController;
 use App\Http\Controllers\Api\Social\CommentController;
 use App\Http\Controllers\Api\Social\CountryController;
 use App\Http\Controllers\Api\Social\FavoriteController;
@@ -17,8 +16,7 @@ use App\Http\Controllers\Api\Social\TicketSubjectController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
-
-Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->group(function() {
+Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->group(function () {
     Route::post('/upload-image', [FileController::class, 'uploadImage'])->name('site.upload-image');
     Route::post('/upload-video', [FileController::class, 'uploadVideo'])->name('site.upload-video');
     Route::post('/upload-file', [FileController::class, 'uploadFile'])->name('site.upload-file');
@@ -90,6 +88,5 @@ Route::middleware(['auth:sanctum', 'auth', 'throttle:200,1'])->group(function() 
     Route::prefix('notifications')->group(function () {
         Route::get('/', [NotificationController::class, 'indexPaginate'])->name('profile.page.index');
     });
-
 
 });

@@ -23,14 +23,11 @@ class AdvertiseController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json($this->repository->index(range(1,7)), Response::HTTP_OK);
+        return response()->json($this->repository->index(range(1, 7)), Response::HTTP_OK);
     }
 
     /**
      * Submit form of advertise.
-     * @param AdvertiseFormRequest $request
-     *
-     * @return JsonResponse
      */
     public function advertiseForm(AdvertiseFormRequest $request): JsonResponse
     {

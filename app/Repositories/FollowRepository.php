@@ -12,20 +12,18 @@ use App\Repositories\Contracts\IFollowRepository;
 use App\Repositories\traits\GlobalFunc;
 use Illuminate\Support\Facades\Auth;
 
-class FollowRepository implements IFollowRepository {
-
+class FollowRepository implements IFollowRepository
+{
     use GlobalFunc;
 
     /**
      * Get the followers and followings
-     * @param User $user
-     * @return array
      */
-    public function index(User $user) :array
+    public function index(User $user): array
     {
 
         if ($this->isUserBlocked($user)) {
-                return [];
+            return [];
         }
 
         $user->is_private = Follow::query()
@@ -78,7 +76,7 @@ class FollowRepository implements IFollowRepository {
 
     /**
      * Specify whether to be a follower or not.
-     * @param User $user
+     *
      * @return JsonResponse
      */
     public function isFollower(User $user): array
@@ -103,14 +101,12 @@ class FollowRepository implements IFollowRepository {
             'notfound' => Block::query()
                 ->where('user_id', Auth::user()->id)
                 ->where('blocker_id', $user->id)
-                ->count() == 1
+                ->count() == 1,
         ];
     }
 
     /**
      * Get the followers
-     * @param User $user
-     * @param SearchRequest $request
      */
     public function getFollowers(User $user, SearchRequest $request)
     {
@@ -124,20 +120,20 @@ class FollowRepository implements IFollowRepository {
             ->where('user_id', $user->id)
             ->where('status', Follow::STATUS_ACCEPTED)
             ->count() == 0 && $user->is_private == 1 && Auth::user()->id != $user->id) {
-                return [];
-            }
+            return [];
+        }
 
         return Follow::query()
             ->where('user_id', $user->id)
             ->with('follower')
-            ->whereHas('follower', function ($query) use($request) {
+            ->whereHas('follower', function ($query) use ($request) {
                 $query->where(function ($subQuery) {
                     $subQuery->where('status', 1);
                 });
-                $query->where(function ($subQuery) use($request) {
-                    $subQuery->where('first_name', "like", "%" . $request->search . "%")
-                        ->orWhere('last_name', "like", "%" . $request->search . "%")
-                        ->orWhere('nickname', "like", "%" . $request->search . "%");
+                $query->where(function ($subQuery) use ($request) {
+                    $subQuery->where('first_name', 'like', '%'.$request->search.'%')
+                        ->orWhere('last_name', 'like', '%'.$request->search.'%')
+                        ->orWhere('nickname', 'like', '%'.$request->search.'%');
                 });
             })
             ->paginate(12);
@@ -145,8 +141,6 @@ class FollowRepository implements IFollowRepository {
 
     /**
      * Get the followers
-     * @param User $user
-     * @param SearchRequest $request
      */
     public function getFollowings(User $user, SearchRequest $request)
     {
@@ -160,21 +154,21 @@ class FollowRepository implements IFollowRepository {
             ->where('user_id', $user->id)
             ->where('status', Follow::STATUS_ACCEPTED)
             ->count() == 0 && $user->is_private == 1 && Auth::user()->id != $user->id) {
-                return [];
-            }
+            return [];
+        }
 
         return Follow::query()
             ->where('status', Follow::STATUS_ACCEPTED)
             ->where('follower_id', $user->id)
             ->with('user')
-            ->whereHas('user', function ($query) use($request) {
+            ->whereHas('user', function ($query) use ($request) {
                 $query->where(function ($subQuery) {
                     $subQuery->where('status', 1);
                 });
-                $query->where(function ($subQuery) use($request) {
-                    $subQuery->where('first_name', "like", "%" . $request->search . "%")
-                        ->orWhere('last_name', "like", "%" . $request->search . "%")
-                        ->orWhere('nickname', "like", "%" . $request->search . "%");
+                $query->where(function ($subQuery) use ($request) {
+                    $subQuery->where('first_name', 'like', '%'.$request->search.'%')
+                        ->orWhere('last_name', 'like', '%'.$request->search.'%')
+                        ->orWhere('nickname', 'like', '%'.$request->search.'%');
                 });
             })
             ->paginate(12);
@@ -182,35 +176,33 @@ class FollowRepository implements IFollowRepository {
 
     /**
      * Store the follow
-     * @param User $user
-     * @return array
      */
-    public function store(User $user) :array
+    public function store(User $user): array
     {
         if (Auth::user()->id == $user->id) {
             return [
                 'follow' => 1,
                 'status' => 1,
                 'active' => 1,
-                'message' => __('site.The operation has been successfully')
+                'message' => __('site.The operation has been successfully'),
             ];
         }
 
         if (Block::query()
-                ->where([
-                    ['blocker_id', $user->id],
-                    ['user_id', Auth::user()->id],
-                    ])
-                ->orWhere([
-                    ['blocker_id', Auth::user()->id],
-                    ['user_id', $user->id],
-                ])
-                ->count() > 0) {
+            ->where([
+                ['blocker_id', $user->id],
+                ['user_id', Auth::user()->id],
+            ])
+            ->orWhere([
+                ['blocker_id', Auth::user()->id],
+                ['user_id', $user->id],
+            ])
+            ->count() > 0) {
             return [
                 'follow' => 0,
                 'status' => 1,
                 'active' => 0,
-                'message' => __('site.The operation has been successfully')
+                'message' => __('site.The operation has been successfully'),
             ];
         }
 
@@ -225,14 +217,14 @@ class FollowRepository implements IFollowRepository {
             $data->delete();
         } else {
             $data = Follow::create([
-                "follower_id" => Auth::user()->id,
-                "user_id" => $user->id,
+                'follower_id' => Auth::user()->id,
+                'user_id' => $user->id,
             ]);
 
             cache()->remember(
-                'notification.follow.user' . Auth::user()->id . '.' . $user->id,
+                'notification.follow.user'.Auth::user()->id.'.'.$user->id,
                 now()->addMinutes(1),
-                function () use($user) {
+                function () use ($user) {
                     // Add notification
                     return Notification::create([
                         'message' => __('site.Someone sent a request to you.', ['someone' => Auth::user()->nickname]),
@@ -250,18 +242,16 @@ class FollowRepository implements IFollowRepository {
             'follow' => $active,
             'status' => 1,
             'active' => $active,
-            'message' => __('site.The operation has been successfully')
+            'message' => __('site.The operation has been successfully'),
         ];
     }
 
     /**
      * Chaneg status of the follow
-     * @param User $user
-     * @param FollowChangeStatusRequest $request
-     * @return array
+     *
      * @throws \Exception
      */
-    public function changeFollowStatus(User $user, FollowChangeStatusRequest $request) :array
+    public function changeFollowStatus(User $user, FollowChangeStatusRequest $request): array
     {
         if ($this->isUserBlocked($user)) {
             return [];
@@ -272,7 +262,7 @@ class FollowRepository implements IFollowRepository {
                 'follow' => 1,
                 'status' => 1,
                 'active' => 1,
-                'message' => __('site.The operation has been successfully')
+                'message' => __('site.The operation has been successfully'),
             ];
         }
 
@@ -283,7 +273,7 @@ class FollowRepository implements IFollowRepository {
             ->where('follower_id', $user->id)
             ->first();
 
-        if (is_null($data)){
+        if (is_null($data)) {
             throw new \Exception('Not found the follow');
         }
 
@@ -292,17 +282,17 @@ class FollowRepository implements IFollowRepository {
             $data->delete();
         } else {
             $data->update([
-                'status' => Follow::STATUS_ACCEPTED
+                'status' => Follow::STATUS_ACCEPTED,
             ]);
 
             cache()->remember(
-                'notification.follow.accepted' . Auth::user()->id . '.' . $user->id,
+                'notification.follow.accepted'.Auth::user()->id.'.'.$user->id,
                 now()->addMinutes(1),
-                function () use($user) {
+                function () use ($user) {
                     // Add notification
                     return Notification::create([
                         'message' => __('site.Someone accepted your request.', ['someone' => Auth::user()->nickname]),
-                        'link' => '/member/' . Auth::user()->id,
+                        'link' => '/member/'.Auth::user()->id,
                         'user_id' => $user->id,
                         'model_id' => Auth::user()->id,
                         'model_type' => User::class,
@@ -316,7 +306,7 @@ class FollowRepository implements IFollowRepository {
             'follow' => $active,
             'status' => 1,
             'active' => $active,
-            'message' => __('site.The operation has been successfully')
+            'message' => __('site.The operation has been successfully'),
         ];
     }
 }

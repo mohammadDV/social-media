@@ -34,7 +34,7 @@ class SitemapController extends Controller
         // Add each post URL
         foreach ($posts as $post) {
             $sitemap .= '<url>';
-            $sitemap .= '<loc>' . 'https://varzeshpod.com/news/' .$post->id . '/' . $post->slug . '</loc>';
+            $sitemap .= '<loc>'.'https://varzeshpod.com/news/'.$post->id.'/'.$post->slug.'</loc>';
             $sitemap .= '<priority>0.9</priority>';
             $sitemap .= '</url>';
         }
@@ -50,7 +50,7 @@ class SitemapController extends Controller
         // Add each category URL
         foreach ($categories as $category) {
             $sitemap .= '<url>';
-            $sitemap .= '<loc>' . 'https://varzeshpod.com/category/' .$category->id . '/' . $category->slug . '</loc>';
+            $sitemap .= '<loc>'.'https://varzeshpod.com/category/'.$category->id.'/'.$category->slug.'</loc>';
             $sitemap .= '<priority>0.8</priority>';
             $sitemap .= '</url>';
         }
@@ -64,7 +64,7 @@ class SitemapController extends Controller
         // Add each category URL
         foreach ($tags as $tag) {
             $sitemap .= '<url>';
-            $sitemap .= '<loc>' . 'https://varzeshpod.com/tag/' .$tag->id . '/' . $tag->title . '</loc>';
+            $sitemap .= '<loc>'.'https://varzeshpod.com/tag/'.$tag->id.'/'.$tag->title.'</loc>';
             $sitemap .= '<priority>0.8</priority>';
             $sitemap .= '</url>';
         }
@@ -82,11 +82,10 @@ class SitemapController extends Controller
         // Add each post URL
         foreach ($posts as $post) {
             $sitemap .= '<url>';
-            $sitemap .= '<loc>' . 'https://varzeshpod.com/news/' .$post->id . '/' . $post->slug . '</loc>';
+            $sitemap .= '<loc>'.'https://varzeshpod.com/news/'.$post->id.'/'.$post->slug.'</loc>';
             $sitemap .= '<priority>0.7</priority>';
             $sitemap .= '</url>';
         }
-
 
         $pages = Page::query()
             ->where('status', 1)
@@ -95,7 +94,7 @@ class SitemapController extends Controller
         // Add each post URL
         foreach ($pages as $page) {
             $sitemap .= '<url>';
-            $sitemap .= '<loc>' . 'https://varzeshpod.com/page/' . $page->slug . '</loc>';
+            $sitemap .= '<loc>'.'https://varzeshpod.com/page/'.$page->slug.'</loc>';
             $sitemap .= '<priority>0.6</priority>';
             $sitemap .= '</url>';
         }

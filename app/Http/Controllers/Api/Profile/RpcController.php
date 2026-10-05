@@ -12,14 +12,13 @@ class RpcController extends Controller
     /**
      * Constructor of NotificationController.
      */
-    public function __construct(protected  IRpcRepository $repository)
+    public function __construct(protected IRpcRepository $repository)
     {
         //
     }
 
     /**
      * Get the necessary thing for user.
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {

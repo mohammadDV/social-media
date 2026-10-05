@@ -4,18 +4,18 @@ namespace App\Repositories;
 
 use App\Models\Permission;
 use App\Models\Role;
-use App\Models\User;
 use App\Repositories\Contracts\IRoleRepository;
 use App\Repositories\traits\GlobalFunc;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
-class RoleRepository implements IRoleRepository {
-
+class RoleRepository implements IRoleRepository
+{
     use GlobalFunc;
 
     /**
      * Get the roles.
+     *
      * @return Collection
      */
     public function roles()
@@ -29,9 +29,8 @@ class RoleRepository implements IRoleRepository {
 
     /**
      * Get the permissions.
-     * @return Collection
      */
-    public function permissions() :Collection
+    public function permissions(): Collection
     {
         return Permission::all();
     }

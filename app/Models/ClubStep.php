@@ -9,7 +9,9 @@ class ClubStep extends Model
 {
     use HasFactory;
 
-    protected $guarded  = [];
-    protected $table    = "club_step";
-    public $timestamps  = false;
+    protected $guarded = [];
+
+    protected $table = 'club_step';
+
+    public $timestamps = false;
 }

@@ -16,16 +16,13 @@ class NotificationController extends Controller
     /**
      * Constructor of NotificationController.
      */
-    public function __construct(protected  INotificationRepository $repository)
+    public function __construct(protected INotificationRepository $repository)
     {
         //
     }
 
     /**
      * Get all of notification with pagination
-     * @param TableRequest $request
-     * @param ?User $user
-     * @return JsonResponse
      */
     public function indexPaginate(TableRequest $request, ?User $user): JsonResponse
     {
@@ -34,10 +31,8 @@ class NotificationController extends Controller
 
     /**
      * Get the notification.
-     * @param Notification $notification
-     * @return JsonResponse
      */
-    public function show(Notification $notification) :JsonResponse
+    public function show(Notification $notification): JsonResponse
     {
 
         return response()->json($this->repository->show($notification), Response::HTTP_OK);
@@ -45,10 +40,8 @@ class NotificationController extends Controller
 
     /**
      * Send a notification.
-     * @param SendNotificationRequest $request
-     * @return JsonResponse
      */
-    public function sendAsAdmin(SendNotificationRequest $request) :JsonResponse
+    public function sendAsAdmin(SendNotificationRequest $request): JsonResponse
     {
 
         return $this->repository->sendAsAdmin($request);
@@ -56,31 +49,25 @@ class NotificationController extends Controller
 
     /**
      * List of notification send.
-     * @param TableRequest $request
-     * @return JsonResponse
      */
-    public function sendListPaginate(TableRequest $request) :JsonResponse
+    public function sendListPaginate(TableRequest $request): JsonResponse
     {
         return response()->json($this->repository->sendListPaginate($request), Response::HTTP_OK);
     }
 
     /**
      * Send a notification.
-     * @param SendNotificationRequest $request
-     * @return JsonResponse
      */
-    public function checkNotificationCount(SendNotificationRequest $request) :JsonResponse
+    public function checkNotificationCount(SendNotificationRequest $request): JsonResponse
     {
 
-        return $this->repository->checkNotificationCount($request);
+        return response()->json($this->repository->checkNotificationCount($request), Response::HTTP_OK);
     }
 
     /**
      * Delete the notification.
-     * @param Notification $notification
-     * @return JsonResponse
      */
-    public function destroy(Notification $notification) :JsonResponse
+    public function destroy(Notification $notification): JsonResponse
     {
         return $this->repository->destroy($notification);
     }

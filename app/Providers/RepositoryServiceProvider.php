@@ -2,16 +2,15 @@
 
 namespace App\Providers;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
 /**
  * Class RepositoryServiceProvider
- *
  */
 class RepositoryServiceProvider extends ServiceProvider
 {
-
     /**
      * The base repository path
      *
@@ -28,10 +27,8 @@ class RepositoryServiceProvider extends ServiceProvider
 
     /**
      * RepositoryServiceProvider constructor.
-     *
-     * @param \Illuminate\Contracts\Foundation\Application $app
      */
-    public function __construct(\Illuminate\Contracts\Foundation\Application $app)
+    public function __construct(Application $app)
     {
         // call the parent
         parent::__construct($app);
@@ -45,6 +42,7 @@ class RepositoryServiceProvider extends ServiceProvider
      * Register the application services.
      *
      * @return void
+     *
      * @throws \ReflectionException
      */
     public function register()
@@ -76,18 +74,18 @@ class RepositoryServiceProvider extends ServiceProvider
     /**
      * Bind the given repository files for a given namespace to the implemented interfaces
      *
-     * @param   array                       $repositoryFiles    The repository files to bind
-     * @param   string                      $baseNamespace      The base namespace for the repositories
+     * @param  array  $repositoryFiles  The repository files to bind
+     * @param  string  $baseNamespace  The base namespace for the repositories
      *
-     * @throws  \ReflectionException
+     * @throws \ReflectionException
      */
-    protected function bindRepositoriesToInterfaces(array $repositoryFiles, string $baseNamespace) : void
+    protected function bindRepositoriesToInterfaces(array $repositoryFiles, string $baseNamespace): void
     {
-        foreach($repositoryFiles as $repositoryFile) {
+        foreach ($repositoryFiles as $repositoryFile) {
 
             // dd("xasxsax");
             // get the repository class namespace
-            $repositoryNamespace = $baseNamespace . $repositoryFile->getBasename('.' . $repositoryFile->getExtension());
+            $repositoryNamespace = $baseNamespace.$repositoryFile->getBasename('.'.$repositoryFile->getExtension());
 
             // create a repository class to evaluate the repository
             $repositoryReflectionClass = new \ReflectionClass($repositoryNamespace);
@@ -108,11 +106,11 @@ class RepositoryServiceProvider extends ServiceProvider
     /**
      * Helper method to get the interface information from a list of interfaces
      *
-     * @param   array                       $interfaces         Array of ReflectionClass information for all the available interfaces
-     * @param   string                      $baseNamespace      The base namespace
-     * @return  \ReflectionClass|null       The reflection class information for the namespace if available, otherwise null
+     * @param  array  $interfaces  Array of ReflectionClass information for all the available interfaces
+     * @param  string  $baseNamespace  The base namespace
+     * @return \ReflectionClass|null The reflection class information for the namespace if available, otherwise null
      */
-    protected function resolveInterface(array $interfaces, string $baseNamespace) : ?\ReflectionClass
+    protected function resolveInterface(array $interfaces, string $baseNamespace): ?\ReflectionClass
     {
         // if there are no interfaces, return null
         if (count($interfaces) == 0) {
@@ -121,7 +119,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
         // iterate over the interfaces, to check if there is one in the correct namespace
         foreach ($interfaces as $interface) {
-            if (Str::startsWith($interface->getName(), $baseNamespace . 'Contracts')) {
+            if (Str::startsWith($interface->getName(), $baseNamespace.'Contracts')) {
                 return $interface;
             }
         }
@@ -129,5 +127,4 @@ class RepositoryServiceProvider extends ServiceProvider
         // no interface found, return null
         return null;
     }
-
 }

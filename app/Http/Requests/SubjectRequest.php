@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+
 class SubjectRequest extends BaseRequest
 {
     /**
@@ -15,13 +17,13 @@ class SubjectRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'title' => ['required','string','min:3','max:255'],
-            'status' => ['required', 'integer','in:0,1']
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'status' => ['required', 'integer', 'in:0,1'],
         ];
     }
 }

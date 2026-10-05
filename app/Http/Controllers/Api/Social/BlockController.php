@@ -21,8 +21,6 @@ class BlockController extends Controller
 
     /**
      * Get the block users.
-     * @param SearchRequest $request
-     * @return JsonResponse
      */
     public function index(SearchRequest $request): JsonResponse
     {
@@ -31,8 +29,6 @@ class BlockController extends Controller
 
     /**
      * Store the block.
-     * @param User $user
-     * @return JsonResponse
      */
     public function store(User $user): JsonResponse
     {

@@ -9,13 +9,14 @@ class Matches extends Model
 {
     use HasFactory;
 
-    protected $table = "matches";
+    protected $table = 'matches';
 
     protected $guarded = [];
 
-    public function statusName(){
+    public function statusName()
+    {
 
-        switch($this->status){
+        switch ($this->status) {
             case 0:
                 $status = __('site.Waiting to start');
                 break;
@@ -25,24 +26,25 @@ class Matches extends Model
             case 2:
                 $status = __('site.Finish');
                 break;
-                default;
+            default:
                 $status = '';
         }
+
         return $status;
     }
 
-    public function teamHome() {
+    public function teamHome()
+    {
         return $this->belongsTo(Club::class, 'home_id');
     }
 
-    public function teamAway() {
+    public function teamAway()
+    {
         return $this->belongsTo(Club::class, 'away_id');
     }
 
-    public function step() {
+    public function step()
+    {
         return $this->belongsTo(Step::class)->with('league');
     }
-
-
-
 }

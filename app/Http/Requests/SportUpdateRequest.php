@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+
 class SportUpdateRequest extends BaseRequest
 {
     /**
@@ -15,16 +17,16 @@ class SportUpdateRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'alias_id' => !empty($this->get('alias_id')) ? ['required'] : 'sometimes',
-            'title' => ['required','string','min:3','max:255'],
-            'alias_title' => !empty($this->get('alias_title')) ? ['required','string','min:3','max:255'] : 'sometimes',
-            'image' => !empty($this->get('image')) ? ['required','string'] : 'sometimes',
-            'status' => ['required', 'integer','in:0,1']
+            'alias_id' => ! empty($this->get('alias_id')) ? ['required'] : 'sometimes',
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'alias_title' => ! empty($this->get('alias_title')) ? ['required', 'string', 'min:3', 'max:255'] : 'sometimes',
+            'image' => ! empty($this->get('image')) ? ['required', 'string'] : 'sometimes',
+            'status' => ['required', 'integer', 'in:0,1'],
         ];
     }
 }

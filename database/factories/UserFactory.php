@@ -6,10 +6,8 @@ use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
-use phpDocumentor\Reflection\Types\Integer;
 
 class UserFactory extends Factory
 {
@@ -28,24 +26,24 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'first_name'        => $this->faker->firstName(),
-            'last_name'         => $this->faker->lastName(),
-            'national_code'     => $this->faker->isbn10(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
+            'national_code' => $this->faker->isbn10(),
             // 'role_id'           => Role::factory(),
-            'role_id'           => 3,
-            'mobile'            => $this->faker->phoneNumber(),
-            'point'             => 0,
-            'email'             => $this->faker->unique()->safeEmail(),
+            'role_id' => 3,
+            'mobile' => $this->faker->phoneNumber(),
+            'point' => 0,
+            'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password'          => '$2y$10$0b.Jq4fE5DUtJB.WhT9RhORp.Fmev0CcvrSuZX5WrQ6Tk/tYfANZm', // password
-            'remember_token'    => Str::random(10),
+            'password' => '$2y$10$0b.Jq4fE5DUtJB.WhT9RhORp.Fmev0CcvrSuZX5WrQ6Tk/tYfANZm', // password
+            'remember_token' => Str::random(10),
         ];
     }
 
     /**
      * Indicate that the model's user type should be user.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
     public function user()
     {
@@ -59,7 +57,7 @@ class UserFactory extends Factory
     /**
      * Indicate that the model's user type should be admin.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
     public function admin()
     {
@@ -73,7 +71,7 @@ class UserFactory extends Factory
     /**
      * Indicate that the model's email address should be unverified.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
     public function unverified()
     {

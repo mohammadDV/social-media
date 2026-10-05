@@ -17,44 +17,36 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class StatusRepository implements IStatusRepository {
-
-
+class StatusRepository implements IStatusRepository
+{
     use GlobalFunc;
 
-    /**
-     * @param TelegramNotificationService $service
-     */
-    public function __construct(protected TelegramNotificationService $service)
-    {
-
-    }
+    public function __construct(protected TelegramNotificationService $service) {}
 
     /**
      * Get the status.
-     * @param ?User $user
      */
     public function index(?User $user)
     {
 
-        if (!empty($user->id) && Follow::query()
+        if (! empty($user->id) && Follow::query()
             ->where('follower_id', Auth::user()->id)
             ->where('user_id', $user->id)
             ->where('status', Follow::STATUS_ACCEPTED)
             ->count() == 0 && $user?->is_private == 1 && Auth::user()->id != $user->id) {
-                return [];
-            }
+            return [];
+        }
 
         // ->addMinutes('1'),
         // return cache()->remember("status.all" . !empty($user) ? $user?->id : '', now(),
         return Status::query()
-            ->when(!empty($user->id), function ($query) use($user) {
+            ->when(! empty($user->id), function ($query) use ($user) {
                 return $query->where('user_id', $user->id);
             })
-            ->when(empty($user->id) || $user->id != Auth::user()->id , function ($query) use($user) {
+            ->when(empty($user->id) || $user->id != Auth::user()->id, function ($query) {
                 return $query->where('is_report', 0);
             })
-            ->whereDoesntHave('user.blocked', function($query) {
+            ->whereDoesntHave('user.blocked', function ($query) {
                 $query->where('user_id', Auth::user()->id);
             })
             ->with(['likes', 'user', 'favorites'])
@@ -65,10 +57,10 @@ class StatusRepository implements IStatusRepository {
 
     /**
      * Get the status.
-     * @param ?User $user
-     * @return LengthAwarePaginator
+     *
+     * @param  ?User  $user
      */
-    public function getAllPerUser(User $user) :LengthAwarePaginator
+    public function getAllPerUser(User $user): LengthAwarePaginator
     {
         return Status::query()
             ->where('user_id', $user->id)
@@ -79,13 +71,13 @@ class StatusRepository implements IStatusRepository {
 
     /**
      * Get favorites.
-     * @param ?User $user
-     * @return LengthAwarePaginator
+     *
+     * @param  ?User  $user
      */
-    public function getFavorite(User $user) :LengthAwarePaginator
+    public function getFavorite(User $user): LengthAwarePaginator
     {
         return Status::query()
-            ->whereHas('favorites', function($query) use($user) {
+            ->whereHas('favorites', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
             ->with(['likes', 'user', 'favorites'])
@@ -95,10 +87,8 @@ class StatusRepository implements IStatusRepository {
 
     /**
      * Add the status to favorites.
-     * @param Status $status
-     * @return JsonResponse
      */
-    public function addFavorite(Status $status) :JsonResponse
+    public function addFavorite(Status $status): JsonResponse
     {
 
         // if (empty($status->status)) {
@@ -116,7 +106,7 @@ class StatusRepository implements IStatusRepository {
             return response()->json([
                 'status' => 1,
                 'active' => 0,
-                'message' => __('site.The operation has been successfully')
+                'message' => __('site.The operation has been successfully'),
             ], 200);
         }
 
@@ -129,41 +119,39 @@ class StatusRepository implements IStatusRepository {
         return response()->json([
             'status' => 1,
             'active' => 1,
-            'message' => __('site.The operation has been successfully')
+            'message' => __('site.The operation has been successfully'),
         ], 200);
     }
 
-     /**
+    /**
      * Get the status info.
-     * @param Status $status
+     *
      * @return StatusResource
      */
     public function getInfo(Status $status)
     {
         return Status::query()
-            ->with(['likes','user'])
+            ->with(['likes', 'user'])
             ->where('id', $status->id)
             ->where('status', 1)
             ->where('is_report', 0)
             ->first();
     }
 
-
     /**
      * Get all status.
-     * @param Request $request
-     * @return LengthAwarePaginator
      */
-    public function statusPaginate(Request $request) :LengthAwarePaginator
+    public function statusPaginate(Request $request): LengthAwarePaginator
     {
 
         $search = $request->get('query');
+
         return Status::query()
             ->when(Auth::user()->level != 3, function ($query) {
                 return $query->where('user_id', Auth::user()->id);
             })
-            ->when(!empty($search), function ($query) use ($search) {
-                return $query->where('text', 'like', '%' . $search . '%');
+            ->when(! empty($search), function ($query) use ($search) {
+                return $query->where('text', 'like', '%'.$search.'%');
             })
             ->withCount('comments')
             ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
@@ -174,24 +162,22 @@ class StatusRepository implements IStatusRepository {
     /**
      * Store the status.
      *
-     * @param  StatusRequest  $request
-     * @return JsonResponse
      * @throws \Exception
      */
-    public function store(StatusRequest $request) :JsonResponse
+    public function store(StatusRequest $request): JsonResponse
     {
 
         $imageResult = $request->get('file');
 
         Auth::user()->statuses()->create([
-            'text'        => $request->input('text'),
-            'file'        => $imageResult ?? null,
-            'status'      => $request->input('status',0)
+            'text' => $request->input('text'),
+            'file' => $imageResult ?? null,
+            'status' => $request->input('status', 0),
         ]);
 
-        $notif = sprintf('انتشار یک استتوس از %s با شماره کاربری %s', Auth::user()->nickname, Auth::user()->id) . PHP_EOL . $request->input('text');
+        $notif = sprintf('انتشار یک استتوس از %s با شماره کاربری %s', Auth::user()->nickname, Auth::user()->id).PHP_EOL.$request->input('text');
 
-        if (!empty($imageResult)) {
+        if (! empty($imageResult)) {
             $this->service->sendPhoto(
                 config('telegram.chat_id'),
                 $request->input('file', null),
@@ -206,25 +192,22 @@ class StatusRepository implements IStatusRepository {
 
         return response()->json([
             'status' => 1,
-            'message' => __('site.New status has been stored')
+            'message' => __('site.New status has been stored'),
         ], 200);
     }
 
     /**
      * Update the status.
      *
-     * @param  StatusUpdateRequest  $request
-     * @param  Status  $status
-     * @return JsonResponse
      * @throws \Exception
      */
-    public function update(StatusUpdateRequest $request, Status $status) :JsonResponse
+    public function update(StatusUpdateRequest $request, Status $status): JsonResponse
     {
 
-        if (!empty($status->is_report)) {
+        if (! empty($status->is_report)) {
             return response()->json([
                 'status' => 0,
-                'message' => __('site.This status is not changeable')
+                'message' => __('site.This status is not changeable'),
             ], 200);
         }
 
@@ -235,14 +218,14 @@ class StatusRepository implements IStatusRepository {
         DB::beginTransaction();
         try {
             $status->update([
-                'text'       => $request->input('text'),
-                'file'        => $imageResult ?? null,
-                'status'      => $request->input('status'),
+                'text' => $request->input('text'),
+                'file' => $imageResult ?? null,
+                'status' => $request->input('status'),
             ]);
 
-            $notif = sprintf('ویرایش یک استتوس از %s با شماره کاربری %s', Auth::user()->nickname, Auth::user()->id) . PHP_EOL . $request->input('title');
+            $notif = sprintf('ویرایش یک استتوس از %s با شماره کاربری %s', Auth::user()->nickname, Auth::user()->id).PHP_EOL.$request->input('title');
 
-            if (!empty($imageResult)) {
+            if (! empty($imageResult)) {
                 $this->service->sendPhoto(
                     config('telegram.chat_id'),
                     $request->input('file', null),
@@ -256,25 +239,23 @@ class StatusRepository implements IStatusRepository {
             }
 
             DB::commit();
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception($e);
         }
 
         return response()->json([
             'status' => 1,
-            'message' => __('site.The status has been updated')
+            'message' => __('site.The status has been updated'),
         ], 200);
     }
 
     /**
      * Delete the status.
      *
-     * @param  Status  $status
-     * @return JsonResponse
      * @throws \Exception
      */
-    public function destroy(Status $status) :JsonResponse
+    public function destroy(Status $status): JsonResponse
     {
 
         $this->checkLevelAccess($status->user_id == Auth::user()->id);
@@ -283,14 +264,12 @@ class StatusRepository implements IStatusRepository {
 
         return response()->json([
             'status' => 1,
-            'message' => __('site.The status has been deleted')
+            'message' => __('site.The status has been deleted'),
         ], 200);
     }
 
     /**
      * Delete completely the status.
-     * @param int $id
-     * @return JsonResponse
      */
     public function realDestroy(int $id): JsonResponse
     {
@@ -303,14 +282,15 @@ class StatusRepository implements IStatusRepository {
             $status = Status::withTrashed()->where('id', $id)->first();
 
             $delete = $status->forceDelete();
-            if ($delete){
+            if ($delete) {
                 DB::commit();
+
                 return response()->json([
                     'status' => 1,
-                    'message' => __('site.The status has been deleted')
+                    'message' => __('site.The status has been deleted'),
                 ], 200);
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception(__('site.Error in save data'));
         }

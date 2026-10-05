@@ -15,15 +15,13 @@ class LiveController extends Controller
     /**
      * Constructor of LiveController.
      */
-    public function __construct(protected  ILiveRepository $repository)
+    public function __construct(protected ILiveRepository $repository)
     {
         //
     }
 
     /**
      * Get all of lives with pagination
-     * @param TableRequest $request
-     * @return JsonResponse
      */
     public function indexPaginate(TableRequest $request): JsonResponse
     {
@@ -32,7 +30,6 @@ class LiveController extends Controller
 
     /**
      * Get all of lives
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
@@ -41,41 +38,34 @@ class LiveController extends Controller
 
     /**
      * Get the live.
-     * @param
-     * @return JsonResponse
      */
-    public function show(Live $live) :JsonResponse
+    public function show(Live $live): JsonResponse
     {
         return response()->json($this->repository->show($live), Response::HTTP_OK);
     }
 
     /**
      * Store the live.
-     * @param LiveRequest $request
-     * @return JsonResponse
      */
-    public function store(LiveRequest $request) :JsonResponse
+    public function store(LiveRequest $request): JsonResponse
     {
         return $this->repository->store($request);
     }
 
     /**
      * Update the live.
-     * @param LiveUpdateRequest $request
-     * @param Live $live
-     * @return JsonResponse
+     *
+     * @param  LiveUpdateRequest  $request
      */
-    public function update(LiveRequest $request, Live $live) :JsonResponse
+    public function update(LiveRequest $request, Live $live): JsonResponse
     {
         return $this->repository->update($request, $live);
     }
 
     /**
      * Delete the live.
-     * @param Live $live
-     * @return JsonResponse
      */
-    public function destroy(Live $live) :JsonResponse
+    public function destroy(Live $live): JsonResponse
     {
         return $this->repository->destroy($live);
     }

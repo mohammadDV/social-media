@@ -23,14 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::middleware(['auth:sanctum'])->get('/profile', function() {
+Route::middleware(['auth:sanctum'])->get('/profile', function () {
     return response()->json([
-        "title" => "yes"
+        'title' => 'yes',
     ]);
 });
-
-
 
 require __DIR__.'/api/auth.php';
 require __DIR__.'/api/site.php';

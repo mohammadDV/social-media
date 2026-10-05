@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+
 class StatusRequest extends BaseRequest
 {
     /**
@@ -15,14 +17,14 @@ class StatusRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'text' => ['required','string','min:5'],
-            'file' => !empty($this->get('file')) ? ['string', 'max:225'] : ['sometimes'],
-            'status' => ['required','min:0','max:1']
+            'text' => ['required', 'string', 'min:5'],
+            'file' => ! empty($this->get('file')) ? ['string', 'max:225'] : ['sometimes'],
+            'status' => ['required', 'min:0', 'max:1'],
         ];
     }
 }

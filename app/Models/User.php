@@ -12,8 +12,8 @@ class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
-    use Notifiable;
     use HasRoles;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -37,7 +37,7 @@ class User extends Authenticatable
         'is_private',
         'is_report',
         'google_id',
-        'password'
+        'password',
     ];
 
     /**
@@ -45,10 +45,8 @@ class User extends Authenticatable
      *
      * @var array
      */
-
-
     protected $visible = [
-        'id','first_name','last_name','nickname', 'clubs','biography','profile_photo_path','bg_photo_path','point','role_id', 'is_private', 'is_report', 'email', 'status', 'created_at'
+        'id', 'first_name', 'last_name', 'nickname', 'clubs', 'biography', 'profile_photo_path', 'bg_photo_path', 'point', 'role_id', 'is_private', 'is_report', 'email', 'status', 'created_at',
     ];
 
     protected $hidden = [
@@ -144,17 +142,17 @@ class User extends Authenticatable
 
     public function clubs()
     {
-        return $this->belongsToMany(Club::class, 'favorite_clubs','user_id', 'club_id')->with('sport', 'country');
+        return $this->belongsToMany(Club::class, 'favorite_clubs', 'user_id', 'club_id')->with('sport', 'country');
     }
 
     public function clubsLimited()
     {
-        return $this->belongsToMany(Club::class, 'favorite_clubs','user_id', 'club_id')->limit(2);
+        return $this->belongsToMany(Club::class, 'favorite_clubs', 'user_id', 'club_id')->limit(2);
     }
 
     public function getFullNameAttribute()
     {
-        return !empty($this->nickname) ? $this->nickname : "{$this->first_name} {$this->last_name}";
+        return ! empty($this->nickname) ? $this->nickname : "{$this->first_name} {$this->last_name}";
     }
 
     public function getStatusNameAttribute()

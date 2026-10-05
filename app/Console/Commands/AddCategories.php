@@ -54,13 +54,13 @@ class AddCategories extends Command
             ]);
         }
 
-        if (($open = fopen(public_path('excel/countries.csv'), "r")) !== FALSE) {
+        if (($open = fopen(public_path('excel/countries.csv'), 'r')) !== false) {
 
             $id = 1;
-            while (($data = fgetcsv($open)) !== FALSE) {
+            while (($data = fgetcsv($open)) !== false) {
 
-                $country = explode(";", $data[0]);
-                if (!empty($country[2])) {
+                $country = explode(';', $data[0]);
+                if (! empty($country[2])) {
 
                     Category::updateOrCreate([
                         'title' => $country[2],
@@ -70,8 +70,8 @@ class AddCategories extends Command
                         'status' => 1,
                         'alias_title' => $country[1],
                         'slug' => strtolower(str_replace(' ', '-', $country[1])),
-                        'image' => 'https://cdn.varzeshpod.com/country/' . $id . '.png',
-                        'created_at' => Carbon::now()
+                        'image' => 'https://cdn.varzeshpod.com/country/'.$id.'.png',
+                        'created_at' => Carbon::now(),
                     ]);
                     $id++;
                 }
@@ -79,13 +79,13 @@ class AddCategories extends Command
             fclose($open);
         }
 
-        if (($open = fopen(public_path('excel/clubs.csv'), "r")) !== FALSE) {
+        if (($open = fopen(public_path('excel/clubs.csv'), 'r')) !== false) {
 
             $id = 1;
-            while (($data = fgetcsv($open)) !== FALSE) {
+            while (($data = fgetcsv($open)) !== false) {
 
-                $country = explode(";", $data[0]);
-                if (!empty($country[2])) {
+                $country = explode(';', $data[0]);
+                if (! empty($country[2])) {
                     Category::updateOrCreate([
                         'title' => $country[2],
                     ], [
@@ -94,8 +94,8 @@ class AddCategories extends Command
                         'status' => 1,
                         'alias_title' => $country[1],
                         'slug' => strtolower(str_replace(' ', '-', $country[1])),
-                        'image' => 'https://cdn.varzeshpod.com/clubs/' . $id . '.png',
-                        'created_at' => Carbon::now()
+                        'image' => 'https://cdn.varzeshpod.com/clubs/'.$id.'.png',
+                        'created_at' => Carbon::now(),
                     ]);
                     $id++;
                 }
@@ -104,6 +104,7 @@ class AddCategories extends Command
         }
 
         $this->info(PHP_EOL.'Done');
+
         return Command::SUCCESS;
     }
 }

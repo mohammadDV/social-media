@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TableRequest;
 use App\Http\Requests\VideoFormRequest;
-use App\Http\Requests\VideoRequest;
-use App\Http\Requests\VideoUpdateRequest;
 use App\Models\Video;
 use App\Repositories\Contracts\IVideoRepository;
 use Illuminate\Http\JsonResponse;
@@ -32,8 +30,8 @@ class VideoController extends Controller
     }
 
     /**
-     * @param TableRequest $request
-     * Get all of video except newspaper.
+     * @param  TableRequest  $request
+     *                                 Get all of video except newspaper.
      */
     public function indexPaginate(TableRequest $request): JsonResponse
     {
@@ -59,9 +57,6 @@ class VideoController extends Controller
 
     /**
      * Update the video.
-     * @param VideoFormRequest $request
-     * @param Video $video
-     * @return JsonResponse
      */
     public function update(VideoFormRequest $request, Video $video): JsonResponse
     {
@@ -70,8 +65,6 @@ class VideoController extends Controller
 
     /**
      * Delete the video.
-     * @param Video $video
-     * @return JsonResponse
      */
     public function destroy(Video $video): JsonResponse
     {

@@ -21,7 +21,6 @@ class ClubController extends Controller
 
     /**
      * Get the club info.
-     * @param Club $club
      */
     public function getInfo(Club $club): JsonResponse
     {
@@ -30,12 +29,9 @@ class ClubController extends Controller
 
     /**
      * Get the club followers.
-     * @param TableRequest $request
-     * @param Club $club
      */
     public function getFollowers(TableRequest $request, Club $club): JsonResponse
     {
         return response()->json($this->repository->getFollowers($request, $club), Response::HTTP_OK);
     }
-
 }
