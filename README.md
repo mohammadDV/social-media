@@ -18,6 +18,6 @@ For more information and to stay updated on the latest sports news, visit varzes
 
 ## App version
 
-1. php: 8.1
-2. laravel/framework: 10.10
-3. laravel/sanctum: 3.2
+1. php: 8.5.12
+2. laravel/framework: 13.0
+3. laravel/sanctum: 4.0
