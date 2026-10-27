@@ -20,6 +20,33 @@ class Post extends Model
         ];
     }
 
+    /**
+     * Columns used by cards, sliders, and other lists.
+     * Article HTML stays on the single-post endpoint.
+     */
+    public function scopeForListing($query)
+    {
+        return $query->select([
+            'id',
+            'pre_title',
+            'title',
+            'slug',
+            'summary',
+            'image',
+            'thumbnail',
+            'slide',
+            'user_id',
+            'video_id',
+            'status',
+            'view',
+            'type',
+            'special',
+            'video',
+            'created_at',
+            'updated_at',
+        ]);
+    }
+
     protected $dates = ['deleted_at'];
 
     protected $guarded = ['id'];

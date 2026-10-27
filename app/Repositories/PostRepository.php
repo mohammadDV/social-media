@@ -86,6 +86,7 @@ class PostRepository implements IPostRepository
         return cache()->remember('author-posts.'.$user->id, now()->addMinutes(config('cache.default_min')),
             function () use ($user) {
                 return Post::query()
+                    ->forListing()
                     ->where('status', 1)
                     ->where('user_id', $user->id)
                     ->orderBy('view', 'DESC')
@@ -123,6 +124,7 @@ class PostRepository implements IPostRepository
         return cache()->remember('posts.latest.'.$count, now()->addMinutes(config('cache.default_min')),
             function () use ($count) {
                 return Post::query()
+                    ->forListing()
                     ->with('categories')
                     ->where('status', 1)
                     ->whereHas('categories', function ($query) {
@@ -146,6 +148,7 @@ class PostRepository implements IPostRepository
             $data[$categoryId] = cache()->remember('posts.categorized.'.$categoryId, now()->addMinutes(10),
                 function () use ($categoryId) {
                     return Post::query()
+                        ->forListing()
                         ->where('status', 1)
                         ->whereHas('categories', function ($query) use ($categoryId) {
                             $query->where('id', $categoryId);
@@ -167,6 +170,7 @@ class PostRepository implements IPostRepository
         return cache()->remember('posts.special.videos.', now()->addMinutes(config('cache.default_min')),
             function () {
                 return Post::query()
+                    ->forListing()
                     ->where('status', 1)
                     ->where('type', 1)
                     ->where('special', 1)
@@ -184,6 +188,7 @@ class PostRepository implements IPostRepository
         return cache()->remember('posts.special.posts.', now()->addMinutes(config('cache.default_min')),
             function () {
                 return Post::query()
+                    ->forListing()
                     ->where('status', 1)
                     ->where('special', 1)
                     ->where('type', 0)
@@ -207,6 +212,7 @@ class PostRepository implements IPostRepository
         return cache()->remember('posts.popular.', now()->addMinutes(config('cache.default_min')),
             function () {
                 return Post::query()
+                    ->forListing()
                     ->where('status', 1)
                     ->orderBy('view', 'DESC')
                     ->take($this->latestCount)
@@ -224,6 +230,7 @@ class PostRepository implements IPostRepository
         return cache()->remember('posts.challenged.', now()->addMinutes(config('cache.default_min')),
             function () {
                 return Post::query()
+                    ->forListing()
                     ->where('status', 1)
                     ->whereHas('comments')
                     ->withCount('comments')
@@ -258,7 +265,7 @@ class PostRepository implements IPostRepository
         // return cache()->remember("post.info." . $post->id, now()->addMinutes(config('cache.default_min')),
         //     function () use($post) {
         $post = Post::query()
-            ->with('user', 'tags', 'categories', 'advertise')
+            ->with('user', 'tags', 'categories', 'advertise', 'comments')
             ->find($post->id);
 
         return new PostResource($post);
@@ -274,18 +281,19 @@ class PostRepository implements IPostRepository
 
         $page = ! empty(request()->page) ? request()->page : 1;
 
-        $data = cache()->remember('posts.per.category.'.$category->id.'.'.$page, now()->addMinute(config('default_min')),
+        $posts = cache()->remember('posts.per.category.'.$category->id.'.'.$page, now()->addMinutes(config('cache.default_min')),
             function () use ($category) {
-                $posts = Post::query()
+                return Post::query()
+                    ->forListing()
                     ->whereHas('categories', function ($query) use ($category) {
                         $query->where('id', $category->id);
                     })
                     ->where('status', 1)
                     ->orderBy('id', 'desc')
                     ->paginate(20);
-
-                return PostResource::collection($posts);
             });
+
+        $data = PostResource::collection($posts);
 
         return [
             'data' => $data,
@@ -299,9 +307,11 @@ class PostRepository implements IPostRepository
     public function search(string $search): AnonymousResourceCollection
     {
         $page = ! empty(request()->page) ? request()->page : 1;
-        $posts = cache()->remember('posts.search.'.str_replace(' ', '', $search).'.'.$page, now()->addMinute(config('default_min')),
+        $posts = cache()->remember('posts.search.'.str_replace(' ', '', $search).'.'.$page, now()->addMinutes(config('cache.default_min')),
             function () use ($search) {
-                return Post::where('status', '=', 1)
+                return Post::query()
+                    ->forListing()
+                    ->where('status', '=', 1)
                     ->where(function ($query) use ($search) {
                         $query->where('title', 'like', '%'.$search.'%');
                         $query->orWhere('pre_title', 'like', '%'.$search.'%');
@@ -325,6 +335,7 @@ class PostRepository implements IPostRepository
         // cache()->remember("post.tag.search." . str_replace(' ', '', $search), now()->addMinute(config('default_min')),
         //     function () use($search) {
         $data['posts'] = PostResource::collection(Post::query()
+            ->forListing()
             ->where('status', '=', 1)
             ->where(function ($query) use ($search) {
                 $query->where('title', 'like', '%'.$search.'%');

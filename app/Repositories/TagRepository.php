@@ -30,9 +30,10 @@ class TagRepository implements ITagRepository
     public function index(Tag $tag): AnonymousResourceCollection
     {
         $page = ! empty(request()->page) ? request()->page : 1;
-        $posts = cache()->remember('site.tags.index.'.$tag->id.'.'.$page, now()->addMinute(config('default_min')),
+        $posts = cache()->remember('site.tags.index.'.$tag->id.'.'.$page, now()->addMinutes(config('cache.default_min')),
             function () use ($tag) {
                 return Post::query()
+                    ->forListing()
                     ->with('tags')
                     ->where('status', '=', 1)
                     ->whereHas('tags', function ($query) use ($tag) {

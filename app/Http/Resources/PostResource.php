@@ -20,11 +20,13 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'summary' => $this->summary,
-            'content' => $this->content,
+            'content' => $this->when(
+                array_key_exists('content', $this->resource->getAttributes()),
+                fn () => $this->content
+            ),
             'image' => $this->image,
             'thumbnail' => $this->thumbnail,
             'slide' => $this->slide,
-            'image' => $this->image,
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'view' => $this->view,
             'type' => $this->type,
@@ -39,7 +41,7 @@ class PostResource extends JsonResource
                 ];
             }),
             'created_at' => $this->created_at,
-            'comments' => CommentResource::collection($this->comments),
+            'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
             'category' => $this->category,
         ];

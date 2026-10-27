@@ -21,6 +21,16 @@ RUN apt-get update && apt-get install -y libjpeg62-turbo-dev libpng-dev libwebp-
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install gd
 RUN echo "upload_max_filesize=100M\npost_max_size=100M" > /usr/local/etc/php/conf.d/uploads.ini
+COPY php/zz-performance.ini /usr/local/etc/php/conf.d/zz-performance.ini
+# Default pool is 5 workers, which queues the whole site under normal page loads.
+RUN sed -i \
+    -e 's/^pm.max_children = .*/pm.max_children = 20/' \
+    -e 's/^pm.start_servers = .*/pm.start_servers = 4/' \
+    -e 's/^pm.min_spare_servers = .*/pm.min_spare_servers = 2/' \
+    -e 's/^pm.max_spare_servers = .*/pm.max_spare_servers = 8/' \
+    /usr/local/etc/php-fpm.d/www.conf \
+    && grep -q '^pm.max_requests' /usr/local/etc/php-fpm.d/www.conf || echo 'pm.max_requests = 500' >> /usr/local/etc/php-fpm.d/www.conf \
+    && grep -q '^request_terminate_timeout' /usr/local/etc/php-fpm.d/www.conf || echo 'request_terminate_timeout = 120s' >> /usr/local/etc/php-fpm.d/www.conf
 
 
 # Install composer (php package manager)
