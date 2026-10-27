@@ -292,12 +292,6 @@ parameters:
 			path: app/Http/Resources/PostResource.php
 
 		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$comments\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/PostResource.php
-
-		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$content\.$#'
 			identifier: property.notFound
 			count: 1
@@ -318,7 +312,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$image\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: app/Http/Resources/PostResource.php
 
 		-
@@ -384,12 +378,6 @@ parameters:
 		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\PostResource\:\:\$view\.$#'
 			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/PostResource.php
-
-		-
-			message: '#^Array has 2 duplicate keys with value ''image'' \(''image'', ''image''\)\.$#'
-			identifier: array.duplicateKey
 			count: 1
 			path: app/Http/Resources/PostResource.php
 
@@ -578,36 +566,6 @@ parameters:
 			identifier: larastan.relationExistence
 			count: 1
 			path: app/Models/Status.php
-
-		-
-			message: '#^Class Laravel\\Jetstream\\Events\\TeamCreated not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Team.php
-
-		-
-			message: '#^Class Laravel\\Jetstream\\Events\\TeamDeleted not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Team.php
-
-		-
-			message: '#^Class Laravel\\Jetstream\\Events\\TeamUpdated not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Team.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\TeamInvitation\:\:belongsTo\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Models/TeamInvitation.php
-
-		-
-			message: '#^Call to static method teamModel\(\) on an unknown class Laravel\\Jetstream\\Jetstream\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/TeamInvitation.php
 
 		-
 			message: '#^Call to function method_exists\(\) with \$this\(App\\Models\\User\) and ''roles'' will always evaluate to true\.$#'
@@ -1678,12 +1636,6 @@ parameters:
 			path: app/Repositories/PostRepository.php
 
 		-
-			message: '#^Method Carbon\\Carbon\:\:addMinute\(\) invoked with 1 parameter, 0 required\.$#'
-			identifier: arguments.count
-			count: 2
-			path: app/Repositories/PostRepository.php
-
-		-
 			message: '#^PHPDoc tag @param for parameter \$user with type App\\Models\\User\|null is not subtype of native type App\\Models\\User\.$#'
 			identifier: parameter.phpDocType
 			count: 1
@@ -1746,7 +1698,7 @@ parameters:
 		-
 			message: '#^Relation ''comments'' is not found in App\\Models\\Post model\.$#'
 			identifier: larastan.relationExistence
-			count: 3
+			count: 4
 			path: app/Repositories/PostRepository.php
 
 		-
@@ -2024,12 +1976,6 @@ parameters:
 			identifier: deadCode.unreachable
 			count: 2
 			path: app/Repositories/StepRepository.php
-
-		-
-			message: '#^Method Carbon\\Carbon\:\:addMinute\(\) invoked with 1 parameter, 0 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: app/Repositories/TagRepository.php
 
 		-
 			message: '#^Parameter \#2 \$direction of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Post\>\:\:orderBy\(\) expects ''asc''\|''desc''\|SortDirection, ''DESC'' given\.$#'
