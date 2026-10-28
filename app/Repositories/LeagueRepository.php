@@ -6,7 +6,10 @@ use App\Http\Requests\LeagueRequest;
 use App\Http\Requests\LeagueUpdateRequest;
 use App\Http\Requests\StoreClubRequest;
 use App\Http\Requests\TableRequest;
+use App\Models\Club;
+use App\Models\Country;
 use App\Models\League;
+use App\Models\Sport;
 use App\Repositories\Contracts\ILeagueRepository;
 use App\Repositories\traits\GlobalFunc;
 use App\Services\MatchService;
@@ -37,7 +40,7 @@ class LeagueRepository extends MatchService implements ILeagueRepository
                         ->where('sport_id', $matchTable['sport_id'])
                         ->where('table_id', $matchTable['id'])
                         ->where('status', 1)
-                        ->orderBy('priority', 'ASC')
+                        ->orderBy('priority', 'asc')
                         ->get();
                 });
 
@@ -124,10 +127,13 @@ class LeagueRepository extends MatchService implements ILeagueRepository
         $clubs = $clubs->take($limit)->skip($offset)->get();
 
         foreach ($clubs ?? [] as $key => $item) {
+            if (! $item instanceof Club) {
+                continue;
+            }
             $result[$key]['id'] = $item->id;
             $result[$key]['title'] = $item->title;
-            $result[$key]['sport'] = $item->sport->title;
-            $result[$key]['country'] = $item->country->title;
+            $result[$key]['sport'] = $item->sport instanceof Sport ? $item->sport->title : '';
+            $result[$key]['country'] = $item->country instanceof Country ? $item->country->title : '';
             $result[$key]['image'] = ! empty($item->image) ? asset($item->image) : asset('/assets/site/images/user-icon.png');
 
             if (in_array($result[$key]['id'], $favorites)) {
@@ -162,7 +168,7 @@ class LeagueRepository extends MatchService implements ILeagueRepository
                 $query->where('title', 'like', '%'.$search.'%')
                     ->orWhere('alias_title', 'like', '%'.$search.'%');
             })
-            ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
+            ->orderBy($request->get('sortBy', 'id'), strtolower((string) $request->get('sortType', 'desc')) === 'asc' ? 'asc' : 'desc')
             ->paginate($request->get('rowsPerPage', 25));
     }
 
@@ -179,8 +185,6 @@ class LeagueRepository extends MatchService implements ILeagueRepository
 
     /**
      * Delete the club.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(League $league): JsonResponse
     {
@@ -188,14 +192,10 @@ class LeagueRepository extends MatchService implements ILeagueRepository
 
         $league->delete();
 
-        if ($league) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -266,8 +266,6 @@ class LeagueRepository extends MatchService implements ILeagueRepository
 
     /**
      * Get the clubs of league.
-     *
-     * @return collectoin
      */
     public function getClubs(League $league): Collection
     {
@@ -279,8 +277,6 @@ class LeagueRepository extends MatchService implements ILeagueRepository
 
     /**
      * Get the steps of league.
-     *
-     * @return collectoin
      */
     public function getAllSteps(League $league): Collection
     {

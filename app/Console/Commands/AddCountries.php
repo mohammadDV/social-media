@@ -32,6 +32,8 @@ class AddCountries extends Command
 
         $user = User::where('level', 3)->firstOrFail();
 
+        $id = 0;
+
         if (($open = fopen(public_path('excel/countries.csv'), 'r')) !== false) {
 
             $id = 1;

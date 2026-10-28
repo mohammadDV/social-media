@@ -22,8 +22,6 @@ class MatchRepository extends MatchService implements IMatchRepository
 
     /**
      * Get the match info.
-     *
-     * @param  Matches  $match
      */
     public function show(Matches $matches): Matches
     {
@@ -103,13 +101,9 @@ class MatchRepository extends MatchService implements IMatchRepository
 
         $match->delete();
 
-        if ($match) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

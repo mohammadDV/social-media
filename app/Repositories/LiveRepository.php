@@ -23,7 +23,7 @@ class LiveRepository implements ILiveRepository
     {
         $livesRow = cache()->remember('live.all', now()->addMinutes(config('cache.default_min')),
             function () {
-                return Live::query()->orderBy('priority', 'ASC')->take(50)->get();
+                return Live::query()->orderBy('priority', 'asc')->take(50)->get();
             });
 
         $lives = [];
@@ -65,7 +65,7 @@ class LiveRepository implements ILiveRepository
                     ->orWhere('teams', 'like', '%'.$search.'%')
                     ->orWhere('date', 'like', '%'.$search.'%');
             })
-            ->orderBy($request->get('sortBy', 'priority'), $request->get('sortType', 'asc'))
+            ->orderBy($request->get('sortBy', 'priority'), strtolower((string) $request->get('sortType', 'asc')) === 'asc' ? 'asc' : 'desc')
             ->paginate($request->get('rowsPerPage', 25));
     }
 
@@ -112,7 +112,6 @@ class LiveRepository implements ILiveRepository
     /**
      * Update the live.
      *
-     * @param  LiveUpdateRequest  $request
      *
      * @throws \Exception
      */
@@ -143,8 +142,6 @@ class LiveRepository implements ILiveRepository
 
     /**
      * Delete the live.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Live $live): JsonResponse
     {
@@ -152,13 +149,9 @@ class LiveRepository implements ILiveRepository
 
         $live->delete();
 
-        if ($live) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

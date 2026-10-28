@@ -2,9 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin User
+ */
 class UserResource extends JsonResource
 {
     /**
@@ -37,7 +41,7 @@ class UserResource extends JsonResource
             'clubs' => new ClubResource($this->whenLoaded('clubs')),
             'intercom' => hash_hmac(
                 'sha256', // hash function
-                $this->id, // IMPORTANT: a UUID to identify your user
+                (string) $this->id, // IMPORTANT: a UUID to identify your user
                 config('intercom.secret') // IMPORTANT: your web Identity Verification secret key - keep it safe!
             ),
         ];

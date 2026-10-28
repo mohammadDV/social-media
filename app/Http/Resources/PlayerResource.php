@@ -2,10 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Player;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ClubResource extends JsonResource
+/**
+ * @mixin Player
+ */
+class PlayerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class League extends Model
 {
@@ -11,22 +14,27 @@ class League extends Model
 
     protected $guarded = [];
 
-    public function clubs()
+    public function clubs(): BelongsToMany
     {
         return $this->belongsToMany(Club::class)->withPivot('points', 'games_count')->orderBy('points', 'desc');
     }
 
-    public function steps()
+    public function players(): BelongsToMany
+    {
+        return $this->belongsToMany(Player::class);
+    }
+
+    public function steps(): HasMany
     {
         return $this->hasMany(Step::class)->orderBy('priority', 'asc');
     }
 
-    public function sport()
+    public function sport(): BelongsTo
     {
         return $this->belongsTo(Sport::class);
     }
 
-    public function country()
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
     }

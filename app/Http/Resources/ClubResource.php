@@ -2,9 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Club;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Club
+ */
 class ClubResource extends JsonResource
 {
     /**

@@ -129,7 +129,6 @@ class AddPosts extends Command
      * Generate situations that are relevant to the poll using Open AI.
      *
      * @param  $product
-     * @param  int  $attempt
      */
     private function getMessage($text)
     {
@@ -190,41 +189,5 @@ class AddPosts extends Command
         Log::info(var_export($stringResult, true));
 
         return $stringResult;
-        // dd($stringResult);
-
-        $this->info(PHP_EOL.'Done');
-
-        // Extract the JSON string
-        // preg_match('/\{(?:[^{}]|(?R))*\}/', $stringResult, $matches);
-        // $jsonString = $matches[0] ?? '';
-
-        // Parse the JSON string
-        // $data = json_decode($jsonString, true);
-
-        // // Validate the data
-        // // @todo: we should find a way to also fix typing for $data later.
-        // Validator::make($data, [
-        //     'situations' => 'required|array',
-        //     'situations.*' => 'string',
-        // ])->validate();
-
-        // // set id manually
-        // $i = 1;
-
-        // // Numbering that we want to remove from the suggestion
-        // $extraWord = ["1.", "2.", "3.", "4.", "5.", "1)", "2)", "3)", "4)", "5)", "Suggestion 1:", "Suggestion 2:", "Suggestion 3:"];
-
-        // // Check if the 'situations' attribute exists and is an array
-        // foreach ($data['situations'] as $situation) {
-        //     // Append clear data to result
-        //     $situations[] = [
-        //         "id" => $i,
-        //         "body" => Str::of($situation)->replace($extraWord, "")->trim(), // Clear the suggestion
-        //         "selected" => false,
-        //     ];
-        //     $i++;
-        // }
-
-        // return $situations;
     }
 }

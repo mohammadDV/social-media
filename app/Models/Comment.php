@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
@@ -20,22 +24,22 @@ class Comment extends Model
         // 'commentable_id',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function reports()
+    public function reports(): MorphMany
     {
         return $this->morphMany(Comment::class, 'model', 'model_type', 'model_id');
     }
 
-    public function commentable()
+    public function commentable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function parents()
+    public function parents(): HasMany
     {
         return $this->hasMany(Comment::class, 'parent_id')
             ->with('user')
@@ -44,7 +48,7 @@ class Comment extends Model
             ->where('status', 1);
     }
 
-    public function likes()
+    public function likes(): MorphMany
     {
         return $this->morphMany(Like::class, 'likeable', 'likeable_type', 'likeable_id');
     }

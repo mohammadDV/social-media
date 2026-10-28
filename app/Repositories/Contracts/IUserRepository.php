@@ -44,8 +44,6 @@ interface IUserRepository
 
     /**
      * Search users.
-     *
-     * @param  LengthAwarePaginator  $request
      */
     public function search(SearchRequest $request): LengthAwarePaginator|array;
 

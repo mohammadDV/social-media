@@ -66,8 +66,6 @@ class PageRepository implements IPageRepository
 
     /**
      * Get the page info.
-     *
-     * @return Matches
      */
     public function show(Page $page): Page
     {
@@ -103,8 +101,6 @@ class PageRepository implements IPageRepository
     /**
      * Update the page.
      *
-     * @param  PageRequest  $request
-     *
      * @throws \Exception
      */
     public function update(PageUpdateRequest $request, Page $page): JsonResponse
@@ -120,14 +116,10 @@ class PageRepository implements IPageRepository
             'priority' => $request->input('priority'),
         ]);
 
-        if ($page) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -139,13 +131,9 @@ class PageRepository implements IPageRepository
 
         $page->delete();
 
-        if ($page) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

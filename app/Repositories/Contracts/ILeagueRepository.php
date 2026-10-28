@@ -6,7 +6,6 @@ use App\Http\Requests\LeagueRequest;
 use App\Http\Requests\LeagueUpdateRequest;
 use App\Http\Requests\StoreClubRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\League;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -58,8 +57,6 @@ interface ILeagueRepository
 
     /**
      * Delete the league.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(League $league): JsonResponse;
 
@@ -70,15 +67,11 @@ interface ILeagueRepository
 
     /**
      * Get the clubs of league.
-     *
-     * @return collectoin
      */
     public function getClubs(League $league): Collection;
 
     /**
      * Get the steps of league.
-     *
-     * @return collectoin
      */
     public function getAllSteps(League $league): Collection;
 }

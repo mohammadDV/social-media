@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Repositories\Contracts\ICategoryRepository;
 use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\traits\GlobalFunc;
+use App\Services\File\FileService;
+use App\Services\Image\ImageService;
 use App\Services\TelegramNotificationService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -40,17 +42,18 @@ class PostRepository implements IPostRepository
     /**
      * Constructor of PostController.
      */
-    public function __construct(protected TelegramNotificationService $service)
-    {
+    public function __construct(
+        protected TelegramNotificationService $service,
+        protected ImageService $imageService,
+        protected FileService $fileService,
+    ) {
         //
     }
 
     /**
      * Get the post.
-     *
-     * @return array
      */
-    public function show(Post $post)
+    public function show(Post $post): ?Post
     {
 
         $this->checkLevelAccess($post->user_id == Auth::user()->id);
@@ -78,10 +81,8 @@ class PostRepository implements IPostRepository
 
     /**
      * Get the author posts.
-     *
-     * @return array
      */
-    public function authorPosts(User $user)
+    public function authorPosts(User $user): Collection
     {
         return cache()->remember('author-posts.'.$user->id, now()->addMinutes(config('cache.default_min')),
             function () use ($user) {
@@ -89,7 +90,7 @@ class PostRepository implements IPostRepository
                     ->forListing()
                     ->where('status', 1)
                     ->where('user_id', $user->id)
-                    ->orderBy('view', 'DESC')
+                    ->orderBy('view', 'desc')
                     ->latest()
                     ->take(5)
                     ->get();
@@ -99,8 +100,6 @@ class PostRepository implements IPostRepository
 
     /**
      * Get the posts.
-     *
-     * @param  array  $categories
      */
     public function index(array $categoryIds, int $count): array
     {
@@ -204,17 +203,15 @@ class PostRepository implements IPostRepository
 
     /**
      * Get the popular posts.
-     *
-     * @return array
      */
-    private function getPopular(): object
+    private function getPopular(): Collection
     {
         return cache()->remember('posts.popular.', now()->addMinutes(config('cache.default_min')),
             function () {
                 return Post::query()
                     ->forListing()
                     ->where('status', 1)
-                    ->orderBy('view', 'DESC')
+                    ->orderBy('view', 'desc')
                     ->take($this->latestCount)
                     ->get();
             });
@@ -222,10 +219,8 @@ class PostRepository implements IPostRepository
 
     /**
      * Get the challenged posts.
-     *
-     * @return array
      */
-    private function getChallenged(): object
+    private function getChallenged(): Collection
     {
         return cache()->remember('posts.challenged.', now()->addMinutes(config('cache.default_min')),
             function () {
@@ -242,15 +237,13 @@ class PostRepository implements IPostRepository
 
     /**
      * Get the posts for the user.
-     *
-     * @param  ?User  $user
      */
     public function getAllPerUser(User $user): LengthAwarePaginator
     {
         return Post::query()
             ->with('user')
             ->where('user_id', $user->id)
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->paginate(20);
     }
 
@@ -317,7 +310,7 @@ class PostRepository implements IPostRepository
                         $query->orWhere('pre_title', 'like', '%'.$search.'%');
                         $query->orWhere('content', 'like', '%'.$search.'%');
                         $query->orWhere('summary', 'like', '%'.$search.'%');
-                    })->orderBy('id', 'DESC')->paginate(20);
+                    })->orderBy('id', 'desc')->paginate(20);
             });
 
         return PostResource::collection($posts);
@@ -326,8 +319,6 @@ class PostRepository implements IPostRepository
 
     /**
      * Get searched posts.
-     *
-     * @param  string  $category
      */
     public function searchPostTag(string $search): array
     {
@@ -343,7 +334,7 @@ class PostRepository implements IPostRepository
                 $query->orWhere('content', 'like', '%'.$search.'%');
                 $query->orWhere('summary', 'like', '%'.$search.'%');
             })
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->limit(6)
             ->get());
         // });
@@ -354,7 +345,7 @@ class PostRepository implements IPostRepository
             ->where(function ($query) use ($search) {
                 $query->where('title', 'like', '%'.$search.'%');
             })
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->limit(10)
             ->get();
 
@@ -363,7 +354,7 @@ class PostRepository implements IPostRepository
                 $query->where('title', 'like', '%'.$search.'%');
                 $query->orWhere('alias_title', 'like', '%'.$search.'%');
             })
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->limit(10)
             ->get();
         // });
@@ -405,7 +396,8 @@ class PostRepository implements IPostRepository
         $title = $request->input('title');
         $content = $request->input('content');
 
-        $post = DB::transaction(function () use ($request, $title, $content) {
+        /** @var Post $post */
+        $post = DB::transaction(function () use ($request, $title, $content): Post {
             $existing = auth()->user()->posts()
                 ->where('title', $title)
                 ->where('content', $content)
@@ -413,7 +405,7 @@ class PostRepository implements IPostRepository
                 ->lockForUpdate()
                 ->first();
 
-            if ($existing) {
+            if ($existing instanceof Post) {
                 return $existing;
             }
 
@@ -428,6 +420,7 @@ class PostRepository implements IPostRepository
                 $slide = str_replace($filename, 'slides/'.$filename, $image);
             }
 
+            /** @var Post $post */
             $post = auth()->user()->posts()->create([
                 'pre_title' => $request->input('pre_title'),
                 'title' => $title,

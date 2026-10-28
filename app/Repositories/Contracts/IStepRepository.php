@@ -48,15 +48,11 @@ interface IStepRepository
 
     /**
      * Get the clubs of step.
-     *
-     * @return collectoin
      */
     public function getAllClubs(Step $step): Collection;
 
     /**
      * Get the matches of step.
-     *
-     * @return collectoin
      */
     public function getAllMatches(Step $step): Collection;
 }

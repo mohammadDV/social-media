@@ -160,8 +160,6 @@ class ReportRepository implements IReportRepository
 
     /**
      * Delete the report.
-     *
-     * @return JsonResponse
      */
     public function sendNotification($model): void
     {
@@ -194,8 +192,6 @@ class ReportRepository implements IReportRepository
 
     /**
      * Delete the report.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Report $report): JsonResponse
     {
@@ -203,13 +199,9 @@ class ReportRepository implements IReportRepository
 
         $report->delete();
 
-        if ($report) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

@@ -38,8 +38,6 @@ class TicketSubjectController extends Controller
 
     /**
      * Get the subject.
-     *
-     * @param  TicketSubject  $subject
      */
     public function show(TicketSubject $ticketSubject): JsonResponse
     {
@@ -64,8 +62,6 @@ class TicketSubjectController extends Controller
 
     /**
      * Delete the subject.
-     *
-     * @param  TicketSubject  $subject
      */
     public function destroy(TicketSubject $ticketSubject): JsonResponse
     {

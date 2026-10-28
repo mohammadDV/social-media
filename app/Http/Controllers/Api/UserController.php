@@ -53,8 +53,6 @@ class UserController extends Controller
 
     /**
      * Get the user.
-     *
-     * @param  int  $id
      */
     public function show(?User $user): JsonResponse
     {

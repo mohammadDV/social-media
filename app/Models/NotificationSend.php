@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class NotificationSend extends Model
 {
@@ -15,7 +16,7 @@ class NotificationSend extends Model
         'conditions' => 'json',
     ];
 
-    public function notification()
+    public function notification(): BelongsTo
     {
         return $this->belongsTo(Notification::class);
     }

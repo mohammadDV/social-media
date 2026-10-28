@@ -86,7 +86,7 @@ class Client
     /**
      *  Prepare response data
      *
-     * @return array the response
+     * @return string the response
      */
     private function processResponse(object $data): string
     {

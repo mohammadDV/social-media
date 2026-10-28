@@ -3,7 +3,6 @@
 namespace App\Repositories\Contracts;
 
 use App\Http\Requests\ChatRequest;
-use App\Http\Requests\ChatStatusRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Chat;
 use App\Models\User;
@@ -29,8 +28,6 @@ interface IChatRepository
 
     /**
      * Change status of the chat
-     *
-     * @param  ChatStatusRequest  $request
      */
     public function deleteMessages(Chat $chat): JsonResponse;
 

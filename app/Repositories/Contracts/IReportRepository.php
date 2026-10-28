@@ -45,8 +45,6 @@ interface IReportRepository
 
     /**
      * Delete the report.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Report $report): JsonResponse;
 }

@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Http\Requests\PlayerRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Country;
 use App\Models\League;
 use App\Models\Matches;
@@ -41,7 +40,7 @@ class PlayerRepository implements IPlayerRepository
                 return $query->where('country_id', $country->id);
             })
             ->with('sport', 'country', 'club')
-            ->orderBy('title', 'ASC')
+            ->orderBy('title', 'asc')
             ->get();
     }
 
@@ -68,11 +67,11 @@ class PlayerRepository implements IPlayerRepository
     /**
      * Get the player info.
      *
-     * @return Player
+     * @return array<string, mixed>
      *
      * @throws Exception
      */
-    public function getInfo(Player $player)
+    public function getInfo(Player $player): array
     {
 
         if ($player->status != 1) {
@@ -86,8 +85,9 @@ class PlayerRepository implements IPlayerRepository
 
         $tag = trim($player->title);
 
-        if ($player?->sport_id != 1) {
-            $tag = trim($player?->sport?->title.' '.$player->title);
+        $sport = $player->sport;
+        if ($player->sport_id != 1 && $sport instanceof Sport) {
+            $tag = trim($sport->title.' '.$player->title);
         }
 
         $tag = Tag::firstOrCreate(['title' => $tag]);
@@ -146,6 +146,16 @@ class PlayerRepository implements IPlayerRepository
     }
 
     /**
+     * Whether the player is active.
+     */
+    public function isActive(Player $player): array
+    {
+        return [
+            'active' => (int) $player->status === 1,
+        ];
+    }
+
+    /**
      * Get the player.
      */
     public function show(Player $player): Player
@@ -200,8 +210,6 @@ class PlayerRepository implements IPlayerRepository
 
     /**
      * Delete the player.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Player $player): JsonResponse
     {
@@ -209,13 +217,9 @@ class PlayerRepository implements IPlayerRepository
 
         $player->delete();
 
-        if ($player) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

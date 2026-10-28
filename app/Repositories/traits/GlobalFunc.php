@@ -11,23 +11,17 @@ use Illuminate\Support\Facades\Storage;
 trait GlobalFunc
 {
     /**
-     * Check the level access
-     *
-     * @param  bool  $conditions
-     * @return void
+     * Check the level access.
      */
-    public function checkLevelAccess(bool $condition = false)
+    public function checkLevelAccess(bool $condition = false): void
     {
-
         if (! $condition && Auth::user()->level != 3) {
             throw new \Exception('Unauthorized', 403);
         }
     }
 
     /**
-     * Check the level access
-     *
-     * @param  bool  $conditions
+     * Check whether the nickname is available.
      */
     public function checkNickname(string $nickname, int $userId = 0): bool
     {
@@ -60,7 +54,11 @@ trait GlobalFunc
      */
     public function areBothBlocked(?User $user): bool
     {
-        return ! empty($user->id) && Block::query()
+        if (! $user instanceof User) {
+            return false;
+        }
+
+        return Block::query()
             ->where([
                 ['user_id', $user->id],
                 ['blocker_id', Auth::user()->id],
@@ -73,12 +71,9 @@ trait GlobalFunc
     }
 
     /**
-     * Check the level access
-     *
-     * @param  string  $image
-     * @return void
+     * Upload an image and optionally delete the previous one.
      */
-    public function uploadImage(ImageService $imageService, $file, string $url, $image)
+    public function uploadImage(ImageService $imageService, $file, string $url, $image): mixed
     {
         $imageService->setExclusiveDirectory($url);
         $result = $imageService->save($file);

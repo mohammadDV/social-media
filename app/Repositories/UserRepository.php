@@ -106,7 +106,7 @@ class UserRepository implements IUserRepository
 
         if ($user) {
 
-            $role = Role::findOrFail($role_id);
+            $role = Role::query()->whereKey($role_id)->firstOrFail();
             $user->syncRoles([$role->name]);
 
             return response()->json([
@@ -190,19 +190,19 @@ class UserRepository implements IUserRepository
 
         if ($update) {
 
-            $role = Role::findOrFail($role_id);
+            $role = Role::query()->whereKey($role_id)->firstOrFail();
             $user->syncRoles([$role->name]);
 
             $this->service->sendNotification(
                 config('telegram.chat_id'),
                 'ویرایش اطلاعات برای کاربر'.PHP_EOL.
                 'first_name '.$request->input('first_name').PHP_EOL.
-                'last_name '.$request->input('last_name'),
-                'nickname '.$request->input('nickname'),
-                'mobile '.$request->input('mobile'),
-                'national_code '.$request->input('national_code'),
-                'biography '.$request->input('biography'),
-                'profile_photo_path '.$request->input('profile_photo_path', config('image.default-profile-image')),
+                'last_name '.$request->input('last_name').PHP_EOL.
+                'nickname '.$request->input('nickname').PHP_EOL.
+                'mobile '.$request->input('mobile').PHP_EOL.
+                'national_code '.$request->input('national_code').PHP_EOL.
+                'biography '.$request->input('biography').PHP_EOL.
+                'profile_photo_path '.$request->input('profile_photo_path', config('image.default-profile-image')).PHP_EOL.
                 'bg_photo_path '.$request->input('bg_photo_path', config('image.default-background-image')),
             );
 
@@ -267,13 +267,9 @@ class UserRepository implements IUserRepository
             'is_report' => 1,
         ]);
 
-        if ($user) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Follow extends Model
 {
@@ -17,12 +18,12 @@ class Follow extends Model
 
     const STATUS_REJECTED = 'rejected';
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function follower()
+    public function follower(): BelongsTo
     {
         return $this->belongsTo(User::class, 'follower_id');
     }

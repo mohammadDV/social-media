@@ -6,7 +6,6 @@ use App\Http\Requests\TableRequest;
 use App\Http\Requests\TicketMessageRequest;
 use App\Http\Requests\TicketRequest;
 use App\Http\Requests\TicketStatusRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Sport;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
@@ -176,8 +175,6 @@ class TicketRepository implements ITicketRepository
 
     /**
      * Delete the sport.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Sport $sport): JsonResponse
     {
@@ -185,13 +182,9 @@ class TicketRepository implements ITicketRepository
 
         $sport->delete();
 
-        if ($sport) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

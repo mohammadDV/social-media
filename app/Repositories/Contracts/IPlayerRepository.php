@@ -4,7 +4,6 @@ namespace App\Repositories\Contracts;
 
 use App\Http\Requests\PlayerRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Country;
 use App\Models\Player;
 use App\Models\Sport;
@@ -30,9 +29,14 @@ interface IPlayerRepository
     /**
      * Get the player info.
      *
-     * @return Player
+     * @return array<string, mixed>
      */
-    public function getInfo(Player $player);
+    public function getInfo(Player $player): array;
+
+    /**
+     * Whether the player is active.
+     */
+    public function isActive(Player $player): array;
 
     /**
      * Get the player.
@@ -55,8 +59,6 @@ interface IPlayerRepository
 
     /**
      * Delete the player.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Player $player): JsonResponse;
 }

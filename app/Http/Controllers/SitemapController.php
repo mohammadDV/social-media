@@ -29,7 +29,7 @@ class SitemapController extends Controller
                 $query->whereIn('id', [5])
                     ->orwhereIn('id', [1]);
             })
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->get();
         // Add each post URL
         foreach ($posts as $post) {
@@ -44,7 +44,7 @@ class SitemapController extends Controller
             ->where('status', 1)
             ->whereHas('posts')
             ->withCount('posts')
-            ->orderby('posts_count', 'DESC')
+            ->orderby('posts_count', 'desc')
             ->limit(50)
             ->get();
         // Add each category URL
@@ -58,7 +58,7 @@ class SitemapController extends Controller
         // Fetch categories
         $tags = Tag::query()
             ->withCount('posts')
-            ->orderby('posts_count', 'DESC')
+            ->orderby('posts_count', 'desc')
             ->limit(20)
             ->get();
         // Add each category URL
@@ -72,7 +72,7 @@ class SitemapController extends Controller
         // Fetch posts from the database (adjust the query based on your schema)
         $posts = Post::query()
             ->where('status', 1)
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->whereDoesntHave('categories', function ($query) {
                 $query->whereIn('id', [5])
                     ->orwhereIn('id', [1]);
@@ -89,7 +89,7 @@ class SitemapController extends Controller
 
         $pages = Page::query()
             ->where('status', 1)
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->get();
         // Add each post URL
         foreach ($pages as $page) {

@@ -22,8 +22,6 @@ class MatchController extends Controller
 
     /**
      * Get the match.
-     *
-     * @param  Matches  $match
      */
     public function show(Matches $matches): JsonResponse
     {

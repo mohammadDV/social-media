@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Http\Requests\SportRequest;
 use App\Http\Requests\SportUpdateRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Sport;
 use App\Repositories\Contracts\ISportRepository;
 use App\Repositories\traits\GlobalFunc;
@@ -114,8 +113,6 @@ class SportRepository implements ISportRepository
 
     /**
      * Delete the sport.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Sport $sport): JsonResponse
     {
@@ -123,13 +120,9 @@ class SportRepository implements ISportRepository
 
         $sport->delete();
 
-        if ($sport) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

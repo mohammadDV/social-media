@@ -18,7 +18,7 @@ class MatchService
             function () use ($league_id) {
                 return Step::query()
                     ->where('league_id', $league_id)
-                    ->orderBy('priority', 'ASC')->get();
+                    ->orderBy('priority', 'asc')->get();
             });
 
         $current = [];
@@ -54,7 +54,7 @@ class MatchService
         if (empty($current->id)) {
             $current = cache()->remember('steps.league.current.priority.'.$league_id, now()->addMinutes(config('cache.default_min')),
                 function () use ($league_id) {
-                    return Step::where(['league_id', $league_id])->orderBy('priority', 'ASC')->first();
+                    return Step::where(['league_id', $league_id])->orderBy('priority', 'asc')->first();
                 });
         }
 
@@ -70,7 +70,7 @@ class MatchService
                 return Matches::query()
                     ->where([['step_id', $step_id]])
                     ->take(100)
-                    ->orderBy('priority', 'ASC')
+                    ->orderBy('priority', 'asc')
                     ->get();
             });
 
@@ -108,12 +108,12 @@ class MatchService
 
         $clubStep = cache()->remember('Tournament.steps.'.$step_id, now()->addMinutes(config('cache.default_min')),
             function () use ($step_id) {
-                return ClubStep::where('step_id', $step_id)->take(100)->orderBy('points', 'DESC')->get();
+                return ClubStep::where('step_id', $step_id)->take(100)->orderBy('points', 'desc')->get();
             });
 
         $clubs = cache()->remember('tournament.club.'.$step_id, now()->addMinutes(config('cache.default_min')),
             function () use ($clubStep) {
-                Club::whereIn('id', array_merge(array_column($clubStep->toArray(), 'club_id')))->get()->keyBy('id');
+                return Club::whereIn('id', array_merge(array_column($clubStep->toArray(), 'club_id')))->get()->keyBy('id');
             });
 
         foreach ($clubStep ?? [] as $key => $item) {
@@ -134,7 +134,7 @@ class MatchService
 
         $clubLeague = cache()->remember('per.tournament.league.'.$league_id, now()->addMinutes(config('cache.default_min')),
             function () use ($league_id) {
-                return ClubLeague::where('league_id', $league_id)->take(100)->orderBy('points', 'DESC')->get();
+                return ClubLeague::where('league_id', $league_id)->take(100)->orderBy('points', 'desc')->get();
             });
 
         $clubs = cache()->remember('per.tournament.club.'.$league_id, now()->addMinutes(config('cache.default_min')),

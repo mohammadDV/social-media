@@ -18,8 +18,6 @@ interface IFollowRepository
 
     /**
      * Specify whether to be a follower or not.
-     *
-     * @return JsonResponse
      */
     public function isFollower(User $user): array;
 

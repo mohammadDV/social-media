@@ -39,7 +39,7 @@ class TagRepository implements ITagRepository
                     ->whereHas('tags', function ($query) use ($tag) {
                         $query->where('id', $tag->id);
                     })
-                    ->orderBy('id', 'DESC')
+                    ->orderBy('id', 'desc')
                     ->paginate(20);
             });
 

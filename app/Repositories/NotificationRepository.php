@@ -23,11 +23,12 @@ class NotificationRepository implements INotificationRepository
     /**
      * Get the notification pagination.
      */
-    public function indexPaginate(TableRequest $request): LengthAwarePaginator
+    public function indexPaginate(TableRequest $request, ?User $user = null): LengthAwarePaginator
     {
+        $userId = $user !== null ? $user->id : Auth::user()->id;
 
         Notification::query()
-            ->where('user_id', Auth::user()->id)
+            ->where('user_id', $userId)
             ->where('status', 0)
             ->where('type', Notification::STATUS_SIMPLE)
             ->update([
@@ -36,7 +37,7 @@ class NotificationRepository implements INotificationRepository
 
         return Notification::query()
             ->with('model')
-            ->where('user_id', Auth::user()->id)
+            ->where('user_id', $userId)
             ->orderBy('id', 'desc')
             ->paginate($request->get('rowsPerNotification', 25));
     }
@@ -62,8 +63,6 @@ class NotificationRepository implements INotificationRepository
 
     /**
      * Get the notification info.
-     *
-     * @return Matches
      */
     public function show(Notification $notification): Notification
     {
@@ -72,8 +71,6 @@ class NotificationRepository implements INotificationRepository
 
     /**
      * Check the notification users count
-     *
-     * @return JsonResponse
      */
     public function checkNotificationCount(SendNotificationRequest $request): array
     {
@@ -108,20 +105,14 @@ class NotificationRepository implements INotificationRepository
 
         $this->sendNotification($notificationSend, $users, $request);
 
-        if ($notificationSend) {
-
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 
     /**
      * Get users for notification
-     *
-     * @param  array|null  $roles
-     * @param  array|null  $users
      */
     private function getUsersForNotification(?array $roleIds, ?array $userIds): Builder
     {
@@ -137,10 +128,8 @@ class NotificationRepository implements INotificationRepository
 
     /**
      * Send notifications.
-     *
-     * @return JsonResponse
      */
-    private function sendNotification(NotificationSend $notificationSend, Builder $users, SendNotificationRequest $request)
+    private function sendNotification(NotificationSend $notificationSend, Builder $users, SendNotificationRequest $request): void
     {
 
         DB::beginTransaction();
@@ -154,6 +143,9 @@ class NotificationRepository implements INotificationRepository
 
                 // Prepare data for bulk insertion
                 foreach ($rows as $user) {
+                    if (! $user instanceof User) {
+                        continue;
+                    }
                     $dataToInsert[] = [
                         'link' => $request->link,
                         'message' => $request->message,
@@ -177,7 +169,7 @@ class NotificationRepository implements INotificationRepository
 
             if ($sendCount) {
                 $notificationSend->send_count = $sendCount;
-                $notificationSend->status = 1;
+                $notificationSend->status = true;
                 $notificationSend->save();
             }
 
@@ -197,13 +189,9 @@ class NotificationRepository implements INotificationRepository
 
         $notification->delete();
 
-        if ($notification) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

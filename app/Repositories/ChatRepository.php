@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Http\Requests\ChatRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Block;
 use App\Models\Chat;
 use App\Models\ChatMessage;
@@ -111,6 +110,9 @@ class ChatRepository implements IChatRepository
             ->first();
 
         $user = Auth::user()->id == $chat->user_id ? $chat->target : $chat->user;
+        if (! $user instanceof User) {
+            throw new \RuntimeException('Chat participant not found.');
+        }
         $chat->block = Block::query()
             ->where('user_id', $user->id)
             ->where('blocker_id', Auth::user()->id)
@@ -255,8 +257,6 @@ class ChatRepository implements IChatRepository
 
     /**
      * Delete the sport.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Sport $sport): JsonResponse
     {
@@ -264,13 +264,9 @@ class ChatRepository implements IChatRepository
 
         $sport->delete();
 
-        if ($sport) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

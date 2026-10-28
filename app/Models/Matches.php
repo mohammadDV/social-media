@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Matches extends Model
 {
@@ -33,17 +34,17 @@ class Matches extends Model
         return $status;
     }
 
-    public function teamHome()
+    public function teamHome(): BelongsTo
     {
         return $this->belongsTo(Club::class, 'home_id');
     }
 
-    public function teamAway()
+    public function teamAway(): BelongsTo
     {
         return $this->belongsTo(Club::class, 'away_id');
     }
 
-    public function step()
+    public function step(): BelongsTo
     {
         return $this->belongsTo(Step::class)->with('league');
     }

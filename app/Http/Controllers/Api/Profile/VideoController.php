@@ -47,7 +47,6 @@ class VideoController extends Controller
     }
 
     /**
-     * @param VideoFormRequest
      * Store the video.
      */
     public function store(VideoFormRequest $request): JsonResponse

@@ -34,7 +34,6 @@ class AddMatches extends Command
     {
         $user = User::where('level', 3)->firstOrFail();
 
-        exit();
         // $leagueId = '3'; // Bondesliga
         // $seasonId = 'eq.45'; // Bondesliga
         // $leagueId = '8'; // Bondesliga
@@ -99,13 +98,7 @@ class AddMatches extends Command
                         'user_id' => $user->id,
                     ]);
 
-                    if (empty($step->id)) {
-
-                        dd('step problem '.var_export($item, true));
-                        break;
-                    } else {
-                        $result['step_id'] = $step->id;
-                    }
+                    $result['step_id'] = $step->id;
 
                     $status = trim($item['status']['type']); // finished
                     $homeId = $item['home_team_id'];
@@ -115,7 +108,6 @@ class AddMatches extends Command
 
                     if ($teams->count() != 2) {
                         continue;
-                        dd('teams problem '.var_export($item, true));
                     }
 
                     foreach ($teams as $team) {

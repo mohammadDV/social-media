@@ -2,9 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Category
+ */
 class CategoryResource extends JsonResource
 {
     /**
@@ -20,7 +24,7 @@ class CategoryResource extends JsonResource
             'text' => $this->title,
             'slug' => $this->slug,
             'image' => $this->image,
-            'posts_count' => $this->when(! is_null($this->posts_count), $this->posts_count),
+            'posts_count' => $this->when(isset($this->posts_count), $this->posts_count),
         ];
     }
 }

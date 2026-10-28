@@ -47,8 +47,6 @@ class StatusController extends Controller
 
     /**
      * Delete the post.
-     *
-     * @param  Post  $post
      */
     public function destroy(Status $status): JsonResponse
     {

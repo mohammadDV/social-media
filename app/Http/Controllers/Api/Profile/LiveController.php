@@ -54,8 +54,6 @@ class LiveController extends Controller
 
     /**
      * Update the live.
-     *
-     * @param  LiveUpdateRequest  $request
      */
     public function update(LiveRequest $request, Live $live): JsonResponse
     {

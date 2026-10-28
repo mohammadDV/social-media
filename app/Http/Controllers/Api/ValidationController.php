@@ -47,7 +47,7 @@ class ValidationController extends Controller
     /**
      * Helper function to obtain the validation request object
      *
-     * @param   string The request name
+     * @param  string  $requestName  The request name
      * @return array Eroor message
      */
     protected function validationRequestObject(string $requestName, Request $request): array

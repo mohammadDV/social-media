@@ -3,7 +3,6 @@
 namespace App\Repositories\Contracts;
 
 use App\Http\Requests\MatchRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Matches;
 use App\Models\Step;
 use Illuminate\Http\JsonResponse;
@@ -32,8 +31,6 @@ interface IMatchRepository
 
     /**
      * Delete the match.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Matches $match): JsonResponse;
 }

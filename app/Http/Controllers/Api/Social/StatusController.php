@@ -53,8 +53,6 @@ class StatusController extends Controller
 
     /**
      * Get the status info
-     *
-     * @param  ?User  $user
      */
     public function getInfo(Status $status): JsonResponse
     {

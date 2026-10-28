@@ -44,8 +44,6 @@ interface ILiveRepository
 
     /**
      * Delete the live.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Live $live): JsonResponse;
 }

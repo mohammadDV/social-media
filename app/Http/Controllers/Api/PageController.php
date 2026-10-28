@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Page;
 use App\Repositories\Contracts\IPageRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -28,8 +27,6 @@ class PageController extends Controller
 
     /**
      * Get the active page.
-     *
-     * @return Page
      */
     public function getActivePage(string $slug): JsonResponse
     {

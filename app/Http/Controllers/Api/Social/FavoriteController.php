@@ -39,8 +39,6 @@ class FavoriteController extends Controller
 
     /**
      * Store favorite club for the user
-     *
-     * @param  Club  $request
      */
     public function storeClub(Club $club): JsonResponse
     {
@@ -49,8 +47,6 @@ class FavoriteController extends Controller
 
     /**
      * Search to choose favorite club for the user
-     *
-     * @return JsonResponse
      */
     public function search(SearchClubRequest $request): LengthAwarePaginator
     {

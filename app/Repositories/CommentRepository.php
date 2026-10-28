@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\PostUpdateRequest;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use App\Models\Notification;
@@ -9,6 +10,7 @@ use App\Models\Post;
 use App\Models\Status;
 use App\Models\User;
 use App\Repositories\Contracts\ICommentRepository;
+use App\Repositories\Contracts\IPostRepository;
 use App\Services\TelegramNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -16,7 +18,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentRepository implements ICommentRepository
 {
-    public function __construct(protected TelegramNotificationService $service) {}
+    public function __construct(
+        protected TelegramNotificationService $service,
+        protected IPostRepository $postRepository,
+    ) {}
 
     /**
      * Get the post comment
@@ -42,7 +47,7 @@ class CommentRepository implements ICommentRepository
                 ->with('parents.user')
                 ->with('likes')
                 ->with('likes.user')
-                ->orderBy('id', 'DESC')
+                ->orderBy('id', 'desc')
                 ->paginate(10);
         }
 
@@ -57,7 +62,7 @@ class CommentRepository implements ICommentRepository
                 ->with('parents.user')
                 ->with('likes')
                 ->with('likes.user')
-                ->orderBy('id', 'DESC')
+                ->orderBy('id', 'desc')
                 ->paginate(10);
         });
 
@@ -135,7 +140,7 @@ class CommentRepository implements ICommentRepository
             ->with('parents.user')
             ->with('likes')
             ->with('likes.user')
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
     }
@@ -217,5 +222,20 @@ class CommentRepository implements ICommentRepository
                     'has_email' => 1,
                 ]);
             });
+    }
+
+    public function update(PostUpdateRequest $request, Post $post): JsonResponse
+    {
+        return $this->postRepository->update($request, $post);
+    }
+
+    public function destroy(Post $post): JsonResponse
+    {
+        return $this->postRepository->destroy($post);
+    }
+
+    public function realDestroy(int $id): JsonResponse
+    {
+        return $this->postRepository->realDestroy($id);
     }
 }

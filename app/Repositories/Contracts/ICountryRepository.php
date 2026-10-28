@@ -5,7 +5,6 @@ namespace App\Repositories\Contracts;
 use App\Http\Requests\CountryRequest;
 use App\Http\Requests\CountryUpdateRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Country;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +23,7 @@ interface ICountryRepository
     /**
      * Get the countries.
      */
-    public function index(): Collection;
+    public function index(?TableRequest $request = null): Collection;
 
     /**
      * Get the country.
@@ -47,8 +46,6 @@ interface ICountryRepository
 
     /**
      * Delete the country.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Country $country): JsonResponse;
 }

@@ -22,7 +22,7 @@ interface ITicketSubjectRepository
     /**
      * Get the Subjects.
      */
-    public function index(): Collection;
+    public function index(?TableRequest $request = null): Collection;
 
     /**
      * Get the subject.

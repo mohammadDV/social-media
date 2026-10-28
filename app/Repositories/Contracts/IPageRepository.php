@@ -49,8 +49,6 @@ interface IPageRepository
 
     /**
      * Delete the page.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Page $page): JsonResponse;
 }

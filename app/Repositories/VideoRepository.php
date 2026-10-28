@@ -9,6 +9,7 @@ use App\Repositories\Contracts\IVideoRepository;
 use App\Repositories\traits\GlobalFunc;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +20,8 @@ class VideoRepository implements IVideoRepository
 
     /**
      * Get the video.
-     *
-     * @return array
      */
-    public function show(Video $video)
+    public function show(Video $video): Video
     {
 
         $this->checkLevelAccess($video->user_id == Auth::user()->id);
@@ -33,7 +32,7 @@ class VideoRepository implements IVideoRepository
     /**
      * Get all active videos.
      */
-    public function index(): Collection
+    public function index(Request $request): Collection
     {
 
         return Video::query()

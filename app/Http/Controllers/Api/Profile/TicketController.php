@@ -66,11 +66,9 @@ class TicketController extends Controller
 
     /**
      * Delete the ticket.
-     *
-     * @return JsonResponse
      */
-    public function destroy(Ticket $ticket)
+    public function destroy(Ticket $ticket): JsonResponse
     {
-        // return $this->repository->destroy($ticket);
+        return response()->json(null, Response::HTTP_NOT_IMPLEMENTED);
     }
 }

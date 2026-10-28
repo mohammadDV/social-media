@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Http\Requests\CountryRequest;
 use App\Http\Requests\CountryUpdateRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Country;
 use App\Repositories\Contracts\ICountryRepository;
 use App\Repositories\traits\GlobalFunc;
@@ -41,7 +40,7 @@ class CountryRepository implements ICountryRepository
     /**
      * Get the countrys.
      */
-    public function index(): Collection
+    public function index(?TableRequest $request = null): Collection
     {
         return Country::all();
     }
@@ -114,8 +113,6 @@ class CountryRepository implements ICountryRepository
 
     /**
      * Delete the country.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Country $country): JsonResponse
     {
@@ -123,13 +120,9 @@ class CountryRepository implements ICountryRepository
 
         $country->delete();
 
-        if ($country) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

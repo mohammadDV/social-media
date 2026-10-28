@@ -3,6 +3,7 @@
 namespace App\Repositories\Contracts;
 
 use App\Http\Requests\TableRequest;
+use App\Http\Requests\TicketMessageRequest;
 use App\Http\Requests\TicketRequest;
 use App\Http\Requests\TicketStatusRequest;
 use App\Models\Ticket;
@@ -35,4 +36,11 @@ interface ITicketRepository
      * Get the sport.
      */
     public function show(Ticket $ticket): Ticket;
+
+    /**
+     * Store a message on the ticket.
+     *
+     * @throws \Exception
+     */
+    public function storeMessage(TicketMessageRequest $request, Ticket $ticket): JsonResponse;
 }

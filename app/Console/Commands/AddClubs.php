@@ -39,17 +39,13 @@ class AddClubs extends Command
                 $country = explode(';', $data[0]);
 
                 $exist = Club::where('title', $country[2])->first();
-                if (! empty($exist?->id)) {
+                if ($exist !== null) {
                     $exist->update([
                         'image' => 'https://cdn.varzeshpod.com/country/'.intval(trim($country[0])).'.png',
                     ]);
 
                     continue;
                 }
-
-                var_dump($exist?->id);
-
-                continue;
 
                 if (! empty($country[2])) {
                     Club::create([
@@ -70,8 +66,6 @@ class AddClubs extends Command
             fclose($open);
         }
 
-        exit();
-
         if (($open = fopen(public_path('excel/clubs.csv'), 'r')) !== false) {
 
             // $id = 1;
@@ -82,7 +76,7 @@ class AddClubs extends Command
                 if (! empty($country[2])) {
                     $exist = Club::where('title', $country[2])->first();
 
-                    if (! empty($exist?->id)) {
+                    if ($exist !== null) {
                         $exist->update([
                             'image' => 'https://cdn.varzeshpod.com/clubs/'.intval(trim($country[0])).'.png',
                         ]);

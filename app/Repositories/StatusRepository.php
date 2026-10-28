@@ -33,7 +33,7 @@ class StatusRepository implements IStatusRepository
             ->where('follower_id', Auth::user()->id)
             ->where('user_id', $user->id)
             ->where('status', Follow::STATUS_ACCEPTED)
-            ->count() == 0 && $user?->is_private == 1 && Auth::user()->id != $user->id) {
+            ->count() == 0 && $user->is_private == 1 && Auth::user()->id != $user->id) {
             return [];
         }
 
@@ -51,28 +51,24 @@ class StatusRepository implements IStatusRepository
             })
             ->with(['likes', 'user', 'favorites'])
             ->where('status', 1)
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->paginate(10);
     }
 
     /**
      * Get the status.
-     *
-     * @param  ?User  $user
      */
     public function getAllPerUser(User $user): LengthAwarePaginator
     {
         return Status::query()
             ->where('user_id', $user->id)
             ->with(['likes', 'user', 'favorites'])
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->paginate(10);
     }
 
     /**
      * Get favorites.
-     *
-     * @param  ?User  $user
      */
     public function getFavorite(User $user): LengthAwarePaginator
     {
@@ -81,7 +77,7 @@ class StatusRepository implements IStatusRepository
                 $query->where('user_id', $user->id);
             })
             ->with(['likes', 'user', 'favorites'])
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->paginate(2);
     }
 
@@ -125,10 +121,8 @@ class StatusRepository implements IStatusRepository
 
     /**
      * Get the status info.
-     *
-     * @return StatusResource
      */
-    public function getInfo(Status $status)
+    public function getInfo(Status $status): ?Status
     {
         return Status::query()
             ->with(['likes', 'user'])

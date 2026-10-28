@@ -2,9 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Post
+ */
 class PostResource extends JsonResource
 {
     /**
@@ -34,16 +39,21 @@ class PostResource extends JsonResource
             'video' => $this->video,
             'advertise' => $this->whenLoaded('advertise'),
             'user' => $this->whenLoaded('user', function () {
+                $user = $this->user;
+                if (! $user instanceof User) {
+                    return null;
+                }
+
                 return [
-                    'id' => $this->user->id,
-                    'nickname' => $this->user->nickname,
-                    'profile_photo_path' => $this->user->profile_photo_path,
+                    'id' => $user->id,
+                    'nickname' => $user->nickname,
+                    'profile_photo_path' => $user->profile_photo_path,
                 ];
             }),
             'created_at' => $this->created_at,
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
-            'category' => $this->category,
+            'category' => $this->resource->getAttribute('category'),
         ];
     }
 }

@@ -63,11 +63,9 @@ class ChatController extends Controller
 
     /**
      * Delete the chat.
-     *
-     * @return JsonResponse
      */
-    public function destroy(Chat $chat)
+    public function destroy(Chat $chat): JsonResponse
     {
-        // return $this->repository->destroy($chat);
+        return response()->json(null, Response::HTTP_NOT_IMPLEMENTED);
     }
 }

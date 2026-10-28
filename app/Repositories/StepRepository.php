@@ -45,7 +45,8 @@ class StepRepository extends MatchService implements IStepRepository
         $data['matches'] = $this->getMatches($step->id);
 
         // dd();
-        if ($step->league->type == 1) {
+        $league = $step->league;
+        if ($league instanceof League && $league->type == 1) {
             $data['clubs'] = $this->getClubs($step);
         } else {
             $data['clubs'] = $this->getTournamentClubs($step->id);
@@ -57,8 +58,6 @@ class StepRepository extends MatchService implements IStepRepository
 
     /**
      * Delete the step.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Step $step): JsonResponse
     {
@@ -68,14 +67,10 @@ class StepRepository extends MatchService implements IStepRepository
         $step->matches()->delete();
         $step->delete();
 
-        if ($step) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -158,30 +153,29 @@ class StepRepository extends MatchService implements IStepRepository
             'user_id' => Auth::user()->id,
         ]);
 
-        if ($step) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 
     /**
      * Get the clubs of step.
-     *
-     * @return collectoin
      */
     public function getClubs(Step $step): Collection
     {
-        return League::find($step->league->id)->clubs;
+        $league = $step->league;
+        if (! $league instanceof League) {
+            return new Collection;
+        }
+
+        $foundLeague = League::query()->find($league->id);
+
+        return $foundLeague instanceof League ? $foundLeague->clubs : new Collection;
     }
 
     /**
      * Get the clubs of step.
-     *
-     * @return collectoin
      */
     public function getAllClubs(Step $step): Collection
     {
@@ -190,8 +184,6 @@ class StepRepository extends MatchService implements IStepRepository
 
     /**
      * Get the matches of step.
-     *
-     * @return collectoin
      */
     public function getAllMatches(Step $step): Collection
     {
@@ -200,8 +192,6 @@ class StepRepository extends MatchService implements IStepRepository
 
     /**
      * Store the club to the league.
-     *
-     * @param  League  $league
      */
     public function storeClubs(StoreClubRequest $request, Step $step): JsonResponse
     {

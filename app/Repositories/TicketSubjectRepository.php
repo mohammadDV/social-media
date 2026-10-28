@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Http\Requests\SubjectRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\TicketSubject;
 use App\Repositories\Contracts\ITicketSubjectRepository;
 use App\Repositories\traits\GlobalFunc;
@@ -39,7 +38,7 @@ class TicketSubjectRepository implements ITicketSubjectRepository
     /**
      * Get the Subjects.
      */
-    public function index(): Collection
+    public function index(?TableRequest $request = null): Collection
     {
         return TicketSubject::query()
             ->where('status', 1)
@@ -105,8 +104,6 @@ class TicketSubjectRepository implements ITicketSubjectRepository
 
     /**
      * Delete the subject.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(TicketSubject $subject): JsonResponse
     {
@@ -114,13 +111,9 @@ class TicketSubjectRepository implements ITicketSubjectRepository
 
         $subject->delete();
 
-        if ($subject) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\VideoFormRequest;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
@@ -17,14 +18,12 @@ interface IVideoRepository
     /**
      * Get all active videos.
      */
-    public function index(): Collection;
+    public function index(Request $request): Collection;
 
     /**
      * Get the video.
-     *
-     * @return array
      */
-    public function show(Video $video);
+    public function show(Video $video): Video;
 
     /**
      * Get the video pagination.

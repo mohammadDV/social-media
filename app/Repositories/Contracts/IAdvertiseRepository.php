@@ -60,15 +60,11 @@ interface IAdvertiseRepository
 
     /**
      * Delete the advertise.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Advertise $advertise): JsonResponse;
 
     /**
      * Delete the advertise form.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroyForm(AdvertiseForm $advertiseForm): JsonResponse;
 }

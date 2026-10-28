@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Http\Requests\ClubRequest;
 use App\Http\Requests\ClubUpdateRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Category;
 use App\Models\Club;
 use App\Models\Country;
@@ -45,7 +44,7 @@ class ClubRepository implements IClubRepository
                 return $query->where('country_id', $country->id);
             })
             ->with('sport', 'country')
-            ->orderBy('title', 'ASC')
+            ->orderBy('title', 'asc')
             ->get();
     }
 
@@ -106,11 +105,11 @@ class ClubRepository implements IClubRepository
     /**
      * Get the club info.
      *
-     * @return Club
+     * @return array<string, mixed>
      *
      * @throws Exception
      */
-    public function getInfo(Club $club)
+    public function getInfo(Club $club): array
     {
 
         if ($club->status != 1) {
@@ -128,8 +127,9 @@ class ClubRepository implements IClubRepository
 
         $tag = trim($club->title);
 
-        if ($club?->sport_id != 1) {
-            $tag = trim($club?->sport?->title.' '.$club->title);
+        $sport = $club->sport;
+        if ($club->sport_id != 1 && $sport instanceof Sport) {
+            $tag = trim($sport->title.' '.$club->title);
         }
 
         $tag = Tag::firstOrCreate(['title' => $tag]);
@@ -145,7 +145,7 @@ class ClubRepository implements IClubRepository
             // ->whereHas('tags', function ($query) use($tag){
             //     $query->where('id', $tag->id);
             // })
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->limit(20)
             ->get();
 
@@ -266,8 +266,6 @@ class ClubRepository implements IClubRepository
 
     /**
      * Delete the club.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Club $club): JsonResponse
     {
@@ -275,13 +273,9 @@ class ClubRepository implements IClubRepository
 
         $club->delete();
 
-        if ($club) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 }

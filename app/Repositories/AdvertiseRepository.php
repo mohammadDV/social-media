@@ -65,7 +65,7 @@ class AdvertiseRepository implements IAdvertiseRepository
     /**
      * Get the places.
      *
-     * @param array %places
+     * @param  array<int|string>  $places
      */
     public function index(array $places): array
     {
@@ -122,8 +122,8 @@ class AdvertiseRepository implements IAdvertiseRepository
         return AdvertiseForm::query()
             ->when(! empty($search), function ($query) use ($search) {
                 return $query->where('first_name', 'like', '%'.$search.'%')
-                    ->orWwhere('last_name', 'like', '%'.$search.'%')
-                    ->orWwhere('phone', 'like', '%'.$search.'%');
+                    ->orWhere('last_name', 'like', '%'.$search.'%')
+                    ->orWhere('phone', 'like', '%'.$search.'%');
             })
             ->orderBy($request->get('sortBy', 'id'), $request->get('sortType', 'desc'))
             ->paginate($request->get('rowsPerPage', 25));
@@ -131,8 +131,6 @@ class AdvertiseRepository implements IAdvertiseRepository
 
     /**
      * Get the advertise info.
-     *
-     * @return Matches
      */
     public function show(Advertise $advertise): Advertise
     {
@@ -168,8 +166,6 @@ class AdvertiseRepository implements IAdvertiseRepository
     /**
      * Update the advertise.
      *
-     * @param  AdvertiseRequest  $request
-     *
      * @throws \Exception
      */
     public function update(AdvertiseUpdateRequest $request, Advertise $advertise): JsonResponse
@@ -185,14 +181,10 @@ class AdvertiseRepository implements IAdvertiseRepository
             'link' => $request->input('link'),
         ]);
 
-        if ($advertise) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -204,14 +196,10 @@ class AdvertiseRepository implements IAdvertiseRepository
 
         $advertise->delete();
 
-        if ($advertise) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -223,14 +211,10 @@ class AdvertiseRepository implements IAdvertiseRepository
 
         $advertiseForm->delete();
 
-        if ($advertiseForm) {
-            return response()->json([
-                'status' => 1,
-                'message' => __('site.The operation has been successfully'),
-            ], Response::HTTP_OK);
-        }
-
-        throw new \Exception;
+        return response()->json([
+            'status' => 1,
+            'message' => __('site.The operation has been successfully'),
+        ], Response::HTTP_OK);
     }
 
     /**

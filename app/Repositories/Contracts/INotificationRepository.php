@@ -5,6 +5,7 @@ namespace App\Repositories\Contracts;
 use App\Http\Requests\SendNotificationRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -16,7 +17,7 @@ interface INotificationRepository
     /**
      * Get the notification pagination.
      */
-    public function indexPaginate(TableRequest $request): LengthAwarePaginator;
+    public function indexPaginate(TableRequest $request, ?User $user = null): LengthAwarePaginator;
 
     /**
      * Get the notification info.
@@ -25,8 +26,6 @@ interface INotificationRepository
 
     /**
      * Delete the notification.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Notification $notification): JsonResponse;
 
@@ -37,8 +36,6 @@ interface INotificationRepository
 
     /**
      * Check the notification users count
-     *
-     * @return JsonResponse
      */
     public function checkNotificationCount(SendNotificationRequest $request): array;
 

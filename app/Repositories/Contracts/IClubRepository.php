@@ -5,7 +5,6 @@ namespace App\Repositories\Contracts;
 use App\Http\Requests\ClubRequest;
 use App\Http\Requests\ClubUpdateRequest;
 use App\Http\Requests\TableRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Club;
 use App\Models\Country;
 use App\Models\Sport;
@@ -31,9 +30,9 @@ interface IClubRepository
     /**
      * Get the club info.
      *
-     * @return Club
+     * @return array<string, mixed>
      */
-    public function getInfo(Club $club);
+    public function getInfo(Club $club): array;
 
     /**
      * Get the clubs followers pagination.
@@ -68,8 +67,6 @@ interface IClubRepository
 
     /**
      * Delete the club.
-     *
-     * @param  UpdatePasswordRequest  $request
      */
     public function destroy(Club $club): JsonResponse;
 }

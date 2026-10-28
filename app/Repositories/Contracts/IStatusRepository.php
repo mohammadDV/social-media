@@ -22,8 +22,6 @@ interface IStatusRepository
 
     /**
      * Get the status.
-     *
-     * @param  ?User  $user
      */
     public function getAllPerUser(User $user): LengthAwarePaginator;
 
@@ -39,10 +37,8 @@ interface IStatusRepository
 
     /**
      * Get the status info.
-     *
-     * @return StatusResource
      */
-    public function getInfo(Status $status);
+    public function getInfo(Status $status): ?Status;
 
     /**
      * Get all statuses.

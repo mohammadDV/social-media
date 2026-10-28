@@ -34,8 +34,8 @@ class CategoryRepository implements ICategoryRepository
                 ->where('status', 1)
                 ->where('menu', 0)
                 ->take(150)
-                ->orderby('posts_count', 'DESC')
-                ->orderby('alias_title', 'DESC')
+                ->orderby('posts_count', 'desc')
+                ->orderby('alias_title', 'desc')
                 ->get());
         });
     }
